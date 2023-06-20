@@ -1,8 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-
-import { signOut } from 'firebase/auth';
 import Auth from './components/Auth.tsx';
 
 export default function LoginPage() {
