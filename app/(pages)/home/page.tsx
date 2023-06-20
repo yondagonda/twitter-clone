@@ -6,8 +6,12 @@ import {
   addDoc,
   collection,
   getDocs,
+  getDoc,
   deleteDoc,
   doc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
 } from 'firebase/firestore';
 import Tweetlist from '@/app/components/Tweetlist.tsx';
 import { uploadBytes, ref } from 'firebase/storage';
@@ -19,6 +23,19 @@ export default function Home() {
   // console.log(auth?.currentUser?.photoURL); // USE FOR USER THUMBNAIL LATER
   const nickname = useRef('');
 
+  // const usersCollectionRef = collection(db, 'users'); // holds all users
+  // const registerUser = async () => {
+  //   try {
+  //     await addDoc(usersCollectionRef, {
+  //       userId: auth?.currentUser?.uid,
+  //       userName: auth?.currentUser?.displayName,
+  //       userNickname: nickname.current,
+  //     });
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
+
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -26,13 +43,14 @@ export default function Home() {
         console.log(user.displayName);
         const nameSplit = user.displayName?.split(' ').join('');
         nickname.current = `${nameSplit}3425`;
+        // registerUser();
       } else {
         console.log(`No signed in users, returning to login page....`);
       }
     });
   }, []);
 
-  const tweetsCollectionRef = collection(db, 'tweets');
+  const tweetsCollectionRef = collection(db, 'tweets'); // holds all tweets
 
   const [allTweets, setAllTweets] = useState<{}>([]);
   const [tweetContent, setTweetContent] = useState('');
@@ -74,6 +92,8 @@ export default function Home() {
         date: new Date().toLocaleString(),
         authorName: auth?.currentUser?.displayName,
         authorNickname: nickname.current,
+        likedBy: [],
+        commentedBy: [],
       });
       getAllTweets();
       uploadFile();
@@ -82,9 +102,31 @@ export default function Home() {
     }
   };
 
-  const deleteTweet = async (tweet: any) => {
+  const deleteTweet = async (e, tweet: any) => {
+    e.preventDefault();
+
     const tweetsDocRef = doc(db, 'tweets', tweet.id);
     await deleteDoc(tweetsDocRef);
+    getAllTweets();
+  };
+
+  const likeTweet = async (e, tweet) => {
+    e.preventDefault();
+    const updateRef = doc(db, 'tweets', tweet.id);
+    const likeRef = doc(db, 'tweets', tweet.id);
+    const getLikes = await getDoc(likeRef);
+    console.log(getLikes?.data()?.likedBy);
+
+    const likesSoFar = getLikes?.data()?.likedBy;
+    if (likesSoFar.includes(auth?.currentUser?.uid)) {
+      await updateDoc(updateRef, {
+        likedBy: arrayRemove(auth?.currentUser?.uid),
+      });
+    } else {
+      await updateDoc(updateRef, {
+        likedBy: arrayUnion(auth?.currentUser?.uid),
+      });
+    }
     getAllTweets();
   };
 
@@ -92,7 +134,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-blue-200 dark:bg-zinc-800 min-w-[50%]">
-      <div className="font-bold text-lg p-3">Home {user && user}</div>
+      <div className="font-bold text-xl p-3">Home {user && user}</div>
       <div className="flex p-4">
         <div>Img</div>
         <div className="flex flex-col">
@@ -114,7 +156,12 @@ export default function Home() {
         </div>
       </div>
 
-      <Tweetlist auth={auth} allTweets={allTweets} deleteTweet={deleteTweet} />
+      <Tweetlist
+        auth={auth}
+        allTweets={allTweets}
+        deleteTweet={deleteTweet}
+        likeTweet={likeTweet}
+      />
     </div>
   );
 }
