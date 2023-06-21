@@ -1,7 +1,9 @@
+/* eslint-disable @next/next/no-img-element */
+
 'use client';
 
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { useEffect, useState, useRef, useContext } from 'react';
+import { useEffect, useState, useRef, useContext, use } from 'react';
 import {
   addDoc,
   collection,
@@ -14,21 +16,20 @@ import {
   arrayRemove,
 } from 'firebase/firestore';
 import Tweetlist from '@/app/components/Tweetlist.tsx';
-import { uploadBytes, ref } from 'firebase/storage';
+import { uploadBytes, ref, listAll, getDownloadURL } from 'firebase/storage';
+import { v4 } from 'uuid';
 import { db, app, storage } from '../../config/firebase.tsx';
 import { HelloContext } from '../layout.tsx';
 
 export default function Home() {
   app; // re-initialises firebase
   const auth = getAuth();
-  // console.log(auth?.currentUser?.photoURL); // USE FOR USER THUMBNAIL LATER
   const { nickname } = useContext(HelloContext);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         console.log(`User signed in: ${user.uid}`);
-        console.log(user.displayName);
         const nameSplit = user.displayName?.split(' ').join('');
         nickname.current = `${nameSplit}3425`;
       } else {
@@ -38,10 +39,8 @@ export default function Home() {
   }, []);
 
   const tweetsCollectionRef = collection(db, 'tweets'); // holds all tweets
-
   const [allTweets, setAllTweets] = useState<{}>([]);
   const [tweetContent, setTweetContent] = useState('');
-  const [ImageUpload, setImageUpload] = useState<File>();
 
   const getAllTweets = async () => {
     try {
@@ -58,21 +57,59 @@ export default function Home() {
     }
   };
 
-  useEffect(() => {
-    getAllTweets();
-  }, []);
+  const [imageUpload, setImageUpload] = useState<any>();
+  const [imagePreview, setImagePreview] = useState('');
 
-  const uploadFile = async () => {
-    if (!ImageUpload) return;
-    const filesFolderRef = ref(storage, `tweetImage/${ImageUpload.name}`);
-    try {
-      await uploadBytes(filesFolderRef, ImageUpload);
-    } catch (err) {
-      console.error(err);
-    }
+  const handleImageChange = (e) => {
+    setImageUpload(e.target.files[0]);
+    const img = URL.createObjectURL(e.target.files[0]);
+    console.log(img);
+    setImagePreview(img);
   };
 
+  const renderPreview = () => (
+    <img
+      src={imagePreview}
+      alt={`preview of image`}
+      className="rounded-xl max-w-[240px]"
+    />
+  );
+
+  const [imageURL, setImageURL] = useState('');
+  const [imageID, setImageID] = useState('');
+
+  const uploadFile = async () => {
+    setImageUpload();
+    setImagePreview('');
+    setTweetContent('');
+    document.getElementById('pickimage').value = ''; // allows onchange to fire every time
+    if (imageUpload === undefined) {
+      console.log('nothing here');
+      setImageURL('empty');
+      setImageID('empty');
+      return;
+    }
+    console.log(imageUpload);
+    const imageName = v4() + imageUpload.name;
+    console.log(imageName);
+
+    const filesFolderRef = ref(storage, `tweetImage/${imageName}`);
+    const snapshot = await uploadBytes(filesFolderRef, imageUpload);
+    const url = await getDownloadURL(snapshot.ref);
+
+    console.log(url);
+    setImageURL(url);
+    setImageID(imageName);
+  };
+
+  useEffect(() => {
+    if (imageURL) {
+      onSubmitTweet(); // this fixed our issues lol
+    }
+  }, [imageURL]);
+
   const onSubmitTweet = async () => {
+    console.log(imageURL);
     try {
       await addDoc(tweetsCollectionRef, {
         text: tweetContent,
@@ -81,16 +118,21 @@ export default function Home() {
         authorName: auth?.currentUser?.displayName,
         authorNickname: nickname.current,
         likedBy: [],
-        // replies: [],
+        replies: 0,
         isAReply: false,
         parentTweet: null,
+        authorProfileImg: auth?.currentUser?.photoURL,
+        image: { imageId: imageID, imageUrl: imageURL },
       });
       getAllTweets();
-      uploadFile();
     } catch (err) {
       console.error(err);
     }
   };
+
+  useEffect(() => {
+    getAllTweets();
+  }, []);
 
   const deleteTweet = async (e: any, tweet: any) => {
     e.preventDefault();
@@ -123,20 +165,30 @@ export default function Home() {
   const user = auth?.currentUser?.displayName;
 
   return (
-    <div className="min-h-screen bg-slate-600 dark:bg-zinc-800 min-w-[50%] text-white">
+    <div className="min-h-screen bg-slate-600 dark:bg-zinc-800 w-full max-w-[47%] text-white">
       <div className="grid grid-rows-2">
         <div className="font-bold text-xl p-3">Home {user && user}</div>
-        <div className="grid grid-cols-2 text-center border-b-[1px] border-slate-800 items-center">
-          <div className="font-bold">For you</div>
+        <div
+          className="grid grid-cols-2 text-center border-b-[1px] border-slate-800 items-center
+         cursor-pointer"
+        >
+          <div className="font-bold ">For you</div>
           <div>Following</div>
         </div>
       </div>
       <div className="flex p-4 gap-3">
-        <div>Img</div>
+        <div>
+          <img
+            src={`${auth?.currentUser?.photoURL}`}
+            className="h-8 rounded-full"
+            alt="profile photo"
+          />
+        </div>
         <div className="flex flex-col">
           <input
             className="bg-transparent ring-2"
             placeholder="What's happening?"
+            value={tweetContent}
             onChange={(e) => setTweetContent(e.target.value)}
           ></input>
 
@@ -144,12 +196,17 @@ export default function Home() {
             <div>
               <input
                 type="file"
-                className="text-xs"
-                onChange={(e) => setImageUpload(e.target.files[0])}
-                // FYI: SHOULD BE ABLE TO UPLOAD MULTIPLE IMAGES, NOT JUST 1
+                accept="image/*"
+                className="text-xs hidden"
+                id="pickimage"
+                onChange={handleImageChange}
               ></input>
+              <label htmlFor="pickimage" className="cursor-pointer">
+                Select file
+              </label>
+              {imagePreview && <div className="">{renderPreview()}</div>}
             </div>
-            <button onClick={onSubmitTweet}>Tweet</button>
+            <button onClick={uploadFile}>Tweet</button>
           </div>
         </div>
       </div>
@@ -159,6 +216,7 @@ export default function Home() {
         allTweets={allTweets}
         deleteTweet={deleteTweet}
         likeTweet={likeTweet}
+        // imageList={imageList}
       />
     </div>
   );

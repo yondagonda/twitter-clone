@@ -15,6 +15,7 @@ import {
   collection,
   getDocs,
   deleteDoc,
+  increment,
 } from 'firebase/firestore';
 import { db, auth } from '@/app/config/firebase.tsx';
 import { HelloContext } from '../../layout.tsx';
@@ -77,6 +78,11 @@ export default function TweetPage({ params }: any) {
   };
 
   const onSubmitReply = async (receivingTweet: any) => {
+    const docRef = doc(db, 'tweets', receivingTweet.id);
+    await updateDoc(docRef, {
+      replies: increment(1),
+    }); // increments replies + 1
+
     const commentDetails = {
       text: replyInput,
       authorId: auth?.currentUser?.uid,
@@ -84,23 +90,32 @@ export default function TweetPage({ params }: any) {
       authorName: auth?.currentUser?.displayName,
       authorNickname: nickname.current,
       likedBy: [],
-      // replies: [],
+      replies: 0,
+      // no images in comments?
       isAReply: true,
       parentTweet: receivingTweet.id,
+      authorProfileImg: auth?.currentUser?.photoURL,
     };
 
-    const tweetsCollectionRef = collection(db, 'tweets'); // holds all tweets
+    const tweetsCollectionRef = collection(db, 'tweets');
     await addDoc(tweetsCollectionRef, commentDetails); // ensures reply gets added as a document first
     getAllTweets();
+    getTweetData();
     // uploadFile();
   };
 
   const deleteTweet = async (e: any, tweet: any) => {
     e.preventDefault();
+    const docRef = doc(db, 'tweets', displayTweet.id); // setting this to displaytweet means
+    // this will not work when/if we add in threaded commenting (comments on replies)??
+    await updateDoc(docRef, {
+      replies: increment(-1),
+    });
 
     const tweetsDocRef = doc(db, 'tweets', tweet.id);
     await deleteDoc(tweetsDocRef);
     getAllTweets();
+    getTweetData();
   };
 
   useEffect(() => {
@@ -112,7 +127,7 @@ export default function TweetPage({ params }: any) {
   return (
     <div
       className="min-h-screen bg-slate-600 text-white
-     dark:bg-zinc-800 min-w-[50%] flex flex-col"
+     dark:bg-zinc-800 max-w-[47%] w-full flex flex-col"
     >
       <div className="flex gap-5 h-14 p-5">
         <div className="cursor-pointer" onClick={() => window.history.back()}>
@@ -124,7 +139,13 @@ export default function TweetPage({ params }: any) {
       <div className="p-4">
         <div className="flex justify-between">
           <div className="flex gap-3">
-            <div>img</div>
+            <div>
+              <img
+                src={`${displayTweet?.authorProfileImg}`}
+                className="h-8 rounded-full"
+                alt="profile photo"
+              />
+            </div>
             <div>
               <div className="font-bold text-white">
                 {displayTweet?.authorName}
@@ -136,6 +157,15 @@ export default function TweetPage({ params }: any) {
         </div>
         <div className="flex flex-col">
           <div className="py-4 text-lg">{displayTweet?.text}</div>
+          {displayTweet?.image.imageId !== 'empty' && (
+            <div className="max-w-[50%]">
+              <img
+                src={displayTweet?.image.imageUrl}
+                alt="image"
+                className="rounded-xl"
+              />
+            </div>
+          )}
           <div className="text-sm text-slate-400">{displayTweet?.date}</div>
         </div>
         <div className="flex justify-start gap-6 text-sm border-y-[1px] border-zinc-800 py-2">
@@ -145,14 +175,20 @@ export default function TweetPage({ params }: any) {
           <div>Bookmarks</div>
         </div>
         <div className="flex icon justify-evenly py-2">
-          <div>Comments</div>
+          <div>{displayTweet?.replies} Comments</div>
           <div>Retweet</div>
           <button onClick={(e) => likeTweet(e, displayTweet)}>Like</button>
           <div>Bookmark</div>
           <div>Share</div>
         </div>
         <div className="flex gap-4 border-t-[1px] border-zinc-800 py-2">
-          <div>img</div>
+          <div>
+            <img
+              src={`${auth?.currentUser?.photoURL}`}
+              className="h-8 rounded-full"
+              alt="profile photo"
+            />
+          </div>
           <div className="flex gap-10">
             <input
               className="bg-transparent ring-2"
@@ -172,7 +208,13 @@ export default function TweetPage({ params }: any) {
                 key={tweet.id}
                 className="flex gap-3 p-4 border-t-[1px] border-zinc-800"
               >
-                <div>img </div>
+                <div>
+                  <img
+                    src={`${tweet?.authorProfileImg}`}
+                    className="h-8 rounded-full"
+                    alt="profile photo"
+                  />
+                </div>
                 <div>
                   <div className="flex gap-0.5">
                     <div className="font-bold ">{tweet.authorName}</div>
@@ -182,7 +224,7 @@ export default function TweetPage({ params }: any) {
                   </div>
                   <div className="">{tweet.text}</div>
                   <div className="flex justify-evenly">
-                    <button>Comment</button>
+                    <button>{tweet.replies} Comment</button>
                     <button
                       className="text-sm"
                       onClick={(e) => likeTweet(e, tweet)}
