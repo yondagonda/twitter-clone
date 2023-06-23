@@ -214,13 +214,13 @@ export default function Home() {
         <div>
           <img
             src={`${auth?.currentUser?.photoURL}`}
-            className="h-8 rounded-full"
+            className="h-8 rounded-full min-w-[32px]"
             alt="profile photo"
           />
         </div>
         <div className="flex flex-col">
           <input
-            className="bg-transparent ring-2 py-2 px-20"
+            className="bg-transparent ring-2 py-2 px-14"
             placeholder="What's happening?"
             value={tweetContent}
             onChange={(e) => setTweetContent(e.target.value)}
