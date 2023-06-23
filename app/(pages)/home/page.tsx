@@ -3,7 +3,7 @@
 'use client';
 
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { useEffect, useState, useRef, useContext, use } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import {
   addDoc,
   collection,
@@ -16,7 +16,7 @@ import {
   arrayRemove,
 } from 'firebase/firestore';
 import Tweetlist from '@/app/components/Tweetlist.tsx';
-import { uploadBytes, ref, listAll, getDownloadURL } from 'firebase/storage';
+import { uploadBytes, ref, getDownloadURL, listAll } from 'firebase/storage';
 import { v4 } from 'uuid';
 import { db, app, storage } from '../../config/firebase.tsx';
 import { HelloContext } from '../layout.tsx';
@@ -25,18 +25,6 @@ export default function Home() {
   app; // re-initialises firebase
   const auth = getAuth();
   const { nickname } = useContext(HelloContext);
-
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        console.log(`User signed in: ${user.uid}`);
-        const nameSplit = user.displayName?.split(' ').join('');
-        nickname.current = `${nameSplit}3425`;
-      } else {
-        console.log(`No signed in users, returning to login page....`);
-      }
-    });
-  }, []);
 
   const tweetsCollectionRef = collection(db, 'tweets'); // holds all tweets
   const [allTweets, setAllTweets] = useState<{}>([]);
@@ -50,8 +38,11 @@ export default function Home() {
         ...document.data(),
         id: document.id,
       }));
-      setAllTweets(filteredData);
-      console.log(filteredData);
+      const sortedTweets = filteredData.sort((a, b) =>
+        b.date.localeCompare(a.date)
+      );
+      console.log(sortedTweets);
+      setAllTweets(sortedTweets);
     } catch (err) {
       console.error(err);
     }
@@ -79,14 +70,16 @@ export default function Home() {
   const [imageID, setImageID] = useState('');
 
   const uploadFile = async () => {
-    setImageUpload();
     setImagePreview('');
-    setTweetContent('');
-    document.getElementById('pickimage').value = ''; // allows onchange to fire every time
+    document.getElementById('pickimage')!.value = ''; // allows onchange to fire every time
+
     if (imageUpload === undefined) {
-      console.log('nothing here');
-      setImageURL('empty');
-      setImageID('empty');
+      console.log(tweetContent);
+      setImageURL('');
+      setImageID('');
+      setImageUpload();
+      setTweetContent('');
+      onSubmitTweet();
       return;
     }
     console.log(imageUpload);
@@ -97,14 +90,17 @@ export default function Home() {
     const snapshot = await uploadBytes(filesFolderRef, imageUpload);
     const url = await getDownloadURL(snapshot.ref);
 
-    console.log(url);
     setImageURL(url);
     setImageID(imageName);
+    setImageUpload();
   };
 
   useEffect(() => {
     if (imageURL) {
-      onSubmitTweet(); // this fixed our issues lol
+      onSubmitTweet(); // chaining async functions through useEffect fixed our image uploading issues
+      setTweetContent('');
+      setImageURL('');
+      setImageID('');
     }
   }, [imageURL]);
 
@@ -147,7 +143,7 @@ export default function Home() {
 
     const likeRef = doc(db, 'tweets', tweet.id);
     const getLikes = await getDoc(likeRef);
-    console.log(getLikes?.data()?.likedBy);
+    // console.log(getLikes?.data()?.likedBy);
 
     const likesSoFar = getLikes?.data()?.likedBy;
     if (likesSoFar.includes(auth?.currentUser?.uid)) {
@@ -166,7 +162,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-slate-600 dark:bg-zinc-800 w-full max-w-[47%] text-white">
-      <div className="grid grid-rows-2">
+      <div className="grid grid-rows-2 sticky top-0 bg-black/40 backdrop-blur-md">
         <div className="font-bold text-xl p-3">Home {user && user}</div>
         <div
           className="grid grid-cols-2 text-center border-b-[1px] border-slate-800 items-center
@@ -186,14 +182,15 @@ export default function Home() {
         </div>
         <div className="flex flex-col">
           <input
-            className="bg-transparent ring-2"
+            className="bg-transparent ring-2 py-2 px-20"
             placeholder="What's happening?"
             value={tweetContent}
             onChange={(e) => setTweetContent(e.target.value)}
           ></input>
 
-          <div className="flex justify-between">
-            <div>
+          <div className="w-full">
+            <div className="flex justify-between">
+              {imagePreview && <div className="">{renderPreview()}</div>}
               <input
                 type="file"
                 accept="image/*"
@@ -204,9 +201,13 @@ export default function Home() {
               <label htmlFor="pickimage" className="cursor-pointer">
                 Select file
               </label>
-              {imagePreview && <div className="">{renderPreview()}</div>}
+              <button
+                className="right-0 px-4 py-1 rounded-3xl bg-blue-400 h-auto"
+                onClick={uploadFile}
+              >
+                Tweet
+              </button>
             </div>
-            <button onClick={uploadFile}>Tweet</button>
           </div>
         </div>
       </div>
@@ -216,7 +217,6 @@ export default function Home() {
         allTweets={allTweets}
         deleteTweet={deleteTweet}
         likeTweet={likeTweet}
-        // imageList={imageList}
       />
     </div>
   );

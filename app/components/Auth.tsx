@@ -1,24 +1,40 @@
 'use client';
 
-import { FC } from 'react';
-import { signInWithPopup, signOut } from 'firebase/auth';
+import { FC, useEffect, useContext } from 'react';
+import { signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
-import { auth, googleProvider } from '../config/firebase.tsx';
+import { collection, getDocs, addDoc } from 'firebase/firestore';
+import { auth, googleProvider, db } from '../config/firebase.tsx';
+import { HelloContext } from '../(pages)/layout.tsx';
 
 const Auth: FC = () => {
   console.log(auth?.currentUser?.displayName);
   console.log(auth?.currentUser?.photoURL);
-
   const router = useRouter();
 
-  // setTimeout(() => {
-  //   router.push('/home');
-  //   // set conditions here so that if alr logged in, sends user to home
-  // }, [2000]);
+  if (auth?.currentUser?.displayName !== undefined) {
+    router.push('/home');
+  }
+  // console.log(auth?.currentUser);
+
+  useEffect(() => {
+    let authFlag = true;
+    onAuthStateChanged(auth, async (user) => {
+      if (authFlag) {
+        authFlag = false;
+        if (user) {
+          router.push('/home'); // ensures a logged in user gets redirected if on page '/'
+        }
+      }
+    });
+  }, []);
 
   const signInWithGoogle = async () => {
     try {
       await signInWithPopup(auth, googleProvider);
+      if (auth?.currentUser) {
+        router.push('/home'); // ensures redirect to home page on successful login
+      }
     } catch (err) {
       console.error(err);
     }
@@ -33,7 +49,7 @@ const Auth: FC = () => {
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col text-white text-xl">
       <input
         placeholder="email"
         onChange={() => console.log(auth?.currentUser?.displayName)}
