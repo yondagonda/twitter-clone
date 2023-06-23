@@ -18,6 +18,14 @@ import {
 import Tweetlist from '@/app/components/Tweetlist.tsx';
 import { uploadBytes, ref, getDownloadURL, listAll } from 'firebase/storage';
 import { v4 } from 'uuid';
+import formatDistanceToNow from 'date-fns/formatDistanceToNow';
+import parseISO from 'date-fns/parseISO';
+import { parse, toDate } from 'date-fns';
+import format from 'date-fns/format';
+import differenceInSeconds from 'date-fns/differenceInSeconds';
+import differenceInMinutes from 'date-fns/differenceInMinutes';
+import isToday from 'date-fns/isToday';
+import differenceInHours from 'date-fns/differenceInHours';
 import { db, app, storage } from '../../config/firebase.tsx';
 import { HelloContext } from '../layout.tsx';
 
@@ -41,8 +49,38 @@ export default function Home() {
       const sortedTweets = filteredData.sort((a, b) =>
         b.date.localeCompare(a.date)
       );
-      console.log(sortedTweets);
-      setAllTweets(sortedTweets);
+      const DateSortedTweets = sortedTweets.map((tweet) => {
+        const parsedDateFirst = parse(
+          tweet.date,
+          'dd/MM/yyyy, HH:mm:ss',
+          new Date()
+        );
+        const formattedDate = format(parsedDateFirst, 'yyyy-MM-dd HH:mm:ss');
+        const parsedDate = parse(
+          formattedDate,
+          'yyyy-MM-dd HH:mm:ss',
+          new Date()
+        );
+        const differenceSecs = differenceInSeconds(new Date(), parsedDate);
+        const differenceMins = differenceInMinutes(new Date(), parsedDate);
+        const differenceHrs = differenceInHours(new Date(), parsedDate);
+
+        let finalDate;
+        if (differenceSecs < 2) {
+          finalDate = `now`;
+        } else if (differenceSecs < 60) {
+          finalDate = `${differenceSecs}s`;
+        } else if (differenceMins < 60) {
+          finalDate = `${differenceMins}m`;
+        } else if (differenceHrs < 24) {
+          finalDate = `${differenceHrs}h`;
+        } else {
+          finalDate = format(parsedDate, 'dd MMM');
+        }
+        return { ...tweet, date: finalDate };
+      });
+      console.log(DateSortedTweets);
+      setAllTweets(DateSortedTweets);
     } catch (err) {
       console.error(err);
     }

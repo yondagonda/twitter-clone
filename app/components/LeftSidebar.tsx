@@ -67,22 +67,28 @@ export default function LeftSidebar({
         <div className="font-bold">Tweet</div>
       </div>
       <div className="bottom-0 fixed py-10">
-        <button className="text-red-400" onClick={onLogoutClick}>
+        <button className="text-red-400 pb-4" onClick={onLogoutClick}>
           Log Out
         </button>
 
-        <div className="text-sm">{currentLoggedInUser?.displayName}</div>
-        {currentLoggedInUser && (
-          <Image
-            width={0}
-            height={0}
-            sizes="100vw"
-            src={`${currentLoggedInUser.photoURL}`}
-            className="h-8 rounded-full w-auto"
-            alt="profile photo"
-          />
-        )}
-        <div className="text-sm">{userNickname && `@${userNickname}`}</div>
+        <div className="flex items-center gap-2.5 cursor-pointer">
+          {currentLoggedInUser && (
+            <Image
+              width={0}
+              height={0}
+              sizes="100vw"
+              src={`${currentLoggedInUser.photoURL}`}
+              className="h-8 rounded-full w-auto"
+              alt="profile photo"
+            />
+          )}
+          <div>
+            <div className="text-sm font-bold">
+              {currentLoggedInUser?.displayName}
+            </div>
+            <div className="text-sm">{userNickname && `@${userNickname}`}</div>
+          </div>
+        </div>
       </div>
     </div>
   );

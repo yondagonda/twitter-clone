@@ -3,7 +3,7 @@ import { FC } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
-export const Tweetlist: FC = ({
+export const TweetRepliesList: FC = ({
   allTweets,
   auth,
   deleteTweet,
@@ -11,8 +11,9 @@ export const Tweetlist: FC = ({
 }: any) => (
   <>
     {allTweets.map((tweet: any) => {
-      // keep in mind reply tweets are filtered out of the timeline.
-      if (!tweet.isAReply) {
+      // now this filters out tweets which arent replies!
+      // can definitely improve this component to include the parent tweet info etc.
+      if (tweet.isAReply) {
         return (
           <div key={tweet.id} className="border-t-[1.5px] flex p-4 gap-3">
             <Link className="h-0" href={`/user/${tweet.authorNickname}`}>
@@ -118,4 +119,4 @@ export const Tweetlist: FC = ({
     })}
   </>
 );
-export default Tweetlist;
+export default TweetRepliesList;

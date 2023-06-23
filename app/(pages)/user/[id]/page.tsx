@@ -15,8 +15,17 @@ import {
 import { db, auth } from '@/app/config/firebase.tsx';
 import { useEffect, useState, useContext } from 'react';
 import Tweetlist from '@/app/components/Tweetlist';
-import RenderFollowButton from '@/app/components/FollowButton.tsx';
+import { TweetRepliesList } from '@/app/components/TweetRepliesList.tsx';
+import formatDistanceToNow from 'date-fns/formatDistanceToNow';
+import parseISO from 'date-fns/parseISO';
+import { parse, toDate } from 'date-fns';
+import format from 'date-fns/format';
+import differenceInSeconds from 'date-fns/differenceInSeconds';
+import differenceInMinutes from 'date-fns/differenceInMinutes';
+import isToday from 'date-fns/isToday';
+import differenceInHours from 'date-fns/differenceInHours';
 import { HelloContext } from '../../layout.tsx';
+import RenderFollowButton from '@/app/components/FollowButton.tsx';
 
 export default function UserPage({ params }: any) {
   const [profileData, setProfileData] = useState<any>({});
@@ -52,8 +61,38 @@ export default function UserPage({ params }: any) {
       const sortedTweets = filteredData.sort((a, b) =>
         b.date.localeCompare(a.date)
       );
-      console.log(sortedTweets);
-      setUsersTweets(sortedTweets);
+      const DateSortedTweets = sortedTweets.map((tweet) => {
+        const parsedDateFirst = parse(
+          tweet.date,
+          'dd/MM/yyyy, HH:mm:ss',
+          new Date()
+        );
+        const formattedDate = format(parsedDateFirst, 'yyyy-MM-dd HH:mm:ss');
+        const parsedDate = parse(
+          formattedDate,
+          'yyyy-MM-dd HH:mm:ss',
+          new Date()
+        );
+        const differenceSecs = differenceInSeconds(new Date(), parsedDate);
+        const differenceMins = differenceInMinutes(new Date(), parsedDate);
+        const differenceHrs = differenceInHours(new Date(), parsedDate);
+
+        let finalDate;
+        if (differenceSecs < 2) {
+          finalDate = `now`;
+        } else if (differenceSecs < 60) {
+          finalDate = `${differenceSecs}s`;
+        } else if (differenceMins < 60) {
+          finalDate = `${differenceMins}m`;
+        } else if (differenceHrs < 24) {
+          finalDate = `${differenceHrs}h`;
+        } else {
+          finalDate = format(parsedDate, 'dd MMM');
+        }
+        return { ...tweet, date: finalDate };
+      });
+      console.log(DateSortedTweets);
+      setUsersTweets(DateSortedTweets);
     } catch (err) {
       console.error(err);
     }
@@ -186,11 +225,29 @@ export default function UserPage({ params }: any) {
     );
   };
 
+  const [selectedTab, setSelectedTab] = useState('tweets');
+
+  console.log(selectedTab);
+  console.log(usersTweets);
+
+  const repliesOnly = usersTweets.filter((tweet) => tweet.isAReply === true);
+  console.log(repliesOnly); // when the 'Replies' tab is clicked, switch to this instead
+
   return (
     <div className="min-h-screen bg-slate-600 dark:bg-zinc-800 w-full max-w-[47%] text-white">
       <div className="h-16 bg-gray-800 flex gap-6 p-3 items-center">
         <div className="cursor-pointer" onClick={() => window.history.back()}>
-          Back
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            height={22}
+            width={22}
+            style={{ fill: 'white' }}
+          >
+            <g>
+              <path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path>
+            </g>
+          </svg>
         </div>
         <div className="text-xl font-bold">{profileData.userName}</div>
       </div>
@@ -227,20 +284,47 @@ export default function UserPage({ params }: any) {
             </div>
           </div>
           <div className="grid grid-cols-4 text-center border-b-[1px]">
-            <div className="py-4 cursor-pointer">Tweets</div>
-            <div className="py-4 cursor-pointer">Replies</div>
-            <div className="py-4 cursor-pointer">Media</div>
-            <div className="py-4 cursor-pointer">Likes</div>
+            <button
+              className={
+                selectedTab === 'tweets'
+                  ? `py-4 cursor-pointer text-blue-400 font-bold`
+                  : 'py-4 cursor-pointer'
+              }
+              onClick={() => setSelectedTab('tweets')}
+            >
+              Tweets
+            </button>
+            <button
+              className={
+                selectedTab === 'replies'
+                  ? `py-4 cursor-pointer text-blue-400 font-bold`
+                  : 'py-4 cursor-pointer'
+              }
+              onClick={() => setSelectedTab('replies')}
+            >
+              Replies
+            </button>
+            <button className="py-4 cursor-pointer">Media</button>
+            <button className="py-4 cursor-pointer">Likes</button>
           </div>
         </div>
       </div>
 
-      <Tweetlist
-        auth={auth}
-        allTweets={usersTweets}
-        deleteTweet={deleteTweet}
-        likeTweet={likeTweet}
-      />
+      {selectedTab === 'tweets' ? (
+        <Tweetlist
+          auth={auth}
+          allTweets={usersTweets}
+          deleteTweet={deleteTweet}
+          likeTweet={likeTweet}
+        />
+      ) : (
+        <TweetRepliesList
+          auth={auth}
+          allTweets={repliesOnly}
+          deleteTweet={deleteTweet}
+          likeTweet={likeTweet}
+        />
+      )}
     </div>
   );
 }

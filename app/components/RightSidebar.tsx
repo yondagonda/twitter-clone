@@ -1,7 +1,7 @@
 export default function RightSidebar() {
   return (
     <div className="right-0 h-full dark:bg-zinc-800 border py-4 text-white fixed">
-      <div className="px-0 flex flex-col gap-4">
+      <div className="px-2 flex flex-col gap-4">
         <div className="">
           <input
             className="bg-zinc-800 rounded-3xl py-2 px-4"

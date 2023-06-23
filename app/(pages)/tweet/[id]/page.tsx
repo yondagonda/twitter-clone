@@ -21,6 +21,14 @@ import {
 import { db, auth } from '@/app/config/firebase.tsx';
 import Image from 'next/image';
 import Link from 'next/link';
+import formatDistanceToNow from 'date-fns/formatDistanceToNow';
+import parseISO from 'date-fns/parseISO';
+import { parse, toDate } from 'date-fns';
+import format from 'date-fns/format';
+import differenceInSeconds from 'date-fns/differenceInSeconds';
+import differenceInMinutes from 'date-fns/differenceInMinutes';
+import isToday from 'date-fns/isToday';
+import differenceInHours from 'date-fns/differenceInHours';
 import { HelloContext } from '../../layout.tsx';
 
 export default function TweetPage({ params }: any) {
@@ -33,7 +41,17 @@ export default function TweetPage({ params }: any) {
 
       const idAddedData = { ...getTweet.data(), id: getTweet.id }; // rmb to add id as a property
       if (getTweet.exists()) {
-        setDisplayTweet(idAddedData);
+        const unformattedDate = idAddedData.date;
+        const parsedDate = parse(
+          unformattedDate,
+          'dd/MM/yyyy, HH:mm:ss',
+          new Date()
+        );
+        const formattedDate = format(parsedDate, 'h:mm a · MMM d, yyyy');
+        console.log(formattedDate);
+        const finalTweetFormat = { ...idAddedData, date: formattedDate };
+        console.log(finalTweetFormat);
+        setDisplayTweet(finalTweetFormat);
       }
     } catch (err) {
       console.error(err);
@@ -73,8 +91,40 @@ export default function TweetPage({ params }: any) {
         ...document.data(),
         id: document.id,
       }));
-      setAllTweets(filteredData);
-      console.log(filteredData);
+      const sortedTweets = filteredData.sort((a, b) =>
+        a.date.localeCompare(b.date)
+      );
+      const DateSortedTweets = sortedTweets.map((tweet) => {
+        const parsedDateFirst = parse(
+          tweet.date,
+          'dd/MM/yyyy, HH:mm:ss',
+          new Date()
+        );
+        const formattedDate = format(parsedDateFirst, 'yyyy-MM-dd HH:mm:ss');
+        const parsedDate = parse(
+          formattedDate,
+          'yyyy-MM-dd HH:mm:ss',
+          new Date()
+        );
+        const differenceSecs = differenceInSeconds(new Date(), parsedDate);
+        const differenceMins = differenceInMinutes(new Date(), parsedDate);
+        const differenceHrs = differenceInHours(new Date(), parsedDate);
+
+        let finalDate;
+        if (differenceSecs < 2) {
+          finalDate = `now`;
+        } else if (differenceSecs < 60) {
+          finalDate = `${differenceSecs}s`;
+        } else if (differenceMins < 60) {
+          finalDate = `${differenceMins}m`;
+        } else if (differenceHrs < 24) {
+          finalDate = `${differenceHrs}h`;
+        } else {
+          finalDate = format(parsedDate, 'dd MMM');
+        }
+        return { ...tweet, date: finalDate };
+      });
+      setAllTweets(DateSortedTweets);
     } catch (err) {
       console.error(err);
     }
@@ -94,7 +144,7 @@ export default function TweetPage({ params }: any) {
       authorNickname: nickname.current,
       likedBy: [],
       replies: 0,
-      // no images in comments?
+      image: { imageId: '', imageUrl: '' },
       isAReply: true,
       parentTweet: receivingTweet.id,
       authorProfileImg: auth?.currentUser?.photoURL,
@@ -132,10 +182,23 @@ export default function TweetPage({ params }: any) {
       className="min-h-screen bg-slate-600 text-white
      dark:bg-zinc-800 max-w-[47%] w-full flex flex-col"
     >
-      <div className="flex gap-5 h-14 p-5">
-        <div className="cursor-pointer" onClick={() => window.history.back()}>
-          Back
-        </div>
+      <div className="flex gap-5 h-14 p-5 items-center">
+        <button
+          className="cursor-pointer"
+          onClick={() => window.history.back()}
+        >
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            height={22}
+            width={22}
+            style={{ fill: 'white' }}
+          >
+            <g>
+              <path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path>
+            </g>
+          </svg>
+        </button>
         <div className="font-bold text-xl">Tweet</div>
       </div>
 
@@ -258,13 +321,13 @@ export default function TweetPage({ params }: any) {
                 key={tweet.id}
                 className="flex gap-3 p-4 border-t-[1px] border-zinc-800"
               >
-                <div>
+                <Link className="h-0" href={`/user/${tweet.authorNickname}`}>
                   <img
                     src={`${tweet?.authorProfileImg}`}
-                    className="h-8 rounded-full"
+                    className="h-8 rounded-full min-w-[32px]"
                     alt="profile photo"
                   />
-                </div>
+                </Link>
                 <div>
                   <div className="flex gap-0.5">
                     <div className="font-bold ">{tweet.authorName}</div>
