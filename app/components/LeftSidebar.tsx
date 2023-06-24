@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useEffect, useContext, useState } from 'react';
 import { auth } from '../config/firebase';
+import CreateTweetModal from './CreateTweetModal';
 
 export default function LeftSidebar({
   userNickname,
@@ -21,8 +22,13 @@ export default function LeftSidebar({
     }
   };
 
+  const [isCreateTweetModalOpen, setIsCreateTweetModalOpen] = useState(false);
+
   return (
-    <div className=" left-0 h-full bg-transparent ml-14 border text-white px-10 py-4 fixed">
+    <div
+      className=" left-0 h-full bg-transparent ml-14 border border-[#2f3336]
+     text-white px-10 py-4 absolute"
+    >
       <Link href="/home">
         <div className="pb-3">
           <svg
@@ -54,17 +60,29 @@ export default function LeftSidebar({
 
       <div className="flex flex-col gap-4 text-lg">
         <Link href="/home">Home</Link>
-        <div>Explore</div>
-        <div>Notifications</div>
-        <div>Messages</div>
-        <div>Lists</div>
-        <div>Bookmarks</div>
-        <div>Communities</div>
-        <div>Verified</div>
+        <div className="cursor-not-allowed">Explore</div>
+        <div className="cursor-not-allowed">Notifications</div>
+        <div className="cursor-not-allowed">Messages</div>
+        <div className="cursor-not-allowed">Lists</div>
+        <div className="cursor-not-allowed">Bookmarks</div>
+        <div className="cursor-not-allowed">Communities</div>
+        <div className="cursor-not-allowed">Verified</div>
         <Link href={`/user/${userNickname}`}>Profile</Link>
-        <div>More</div>
-        <div>img</div>
-        <div className="font-bold">Tweet</div>
+        <div className="cursor-not-allowed">More</div>
+        <button
+          onClick={() => setIsCreateTweetModalOpen(true)}
+          className="font-bold bg-[#1d9bf0] py-2 rounded-3xl"
+        >
+          Tweet
+        </button>
+
+        {isCreateTweetModalOpen && (
+          <div className="bg-blue-300/20 fixed top-0 left-0 right-0 bottom-0 z-[10]">
+            <CreateTweetModal
+              setIsCreateTweetModalOpen={setIsCreateTweetModalOpen}
+            />
+          </div>
+        )}
       </div>
       <div className="bottom-0 fixed py-10">
         <button className="text-red-400 pb-4" onClick={onLogoutClick}>
@@ -78,7 +96,7 @@ export default function LeftSidebar({
               height={0}
               sizes="100vw"
               src={`${currentLoggedInUser.photoURL}`}
-              className="h-8 rounded-full w-auto"
+              className="h-10 rounded-full w-auto"
               alt="profile photo"
             />
           )}

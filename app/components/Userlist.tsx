@@ -16,33 +16,32 @@ import {
 import { db, auth } from '../config/firebase';
 
 export const Userlist: FC = ({ likedBy }: any) => {
-  const modalRef = useRef(null);
   const [LikedUsers, setLikedUsers] = useState([]);
   const [myUserDetails, setMyUserDetails] = useState([]);
   const usersCollectionRef = collection(db, 'users');
 
+  useEffect(() => {
+    getAllUsersIncludingMyself();
+  }, [likedBy]);
+
   const getAllUsersIncludingMyself = async () => {
-    try {
-      const data = await getDocs(usersCollectionRef);
-      const filteredData: any = data.docs.map((document) => {
-        if (document.data().userId === auth.currentUser.uid) {
-          setMyUserDetails(document.data());
-        }
-        if (likedBy.includes(document.data().userId)) {
-          return { ...document.data(), docUserId: document.id };
-        }
-      });
-      setLikedUsers(filteredData.filter((user) => user !== undefined));
-    } catch (err) {
-      console.error(err);
-    }
+    const data = await getDocs(usersCollectionRef);
+
+    const promises = data.docs.map((document) => {
+      if (document.data().userId === auth?.currentUser?.uid) {
+        setMyUserDetails(document.data());
+      }
+      if (likedBy.includes(document.data().userId)) {
+        return { ...document.data(), docUserId: document.id };
+      }
+    });
+    const filteredData = await Promise.all(promises);
+    setLikedUsers(filteredData.filter((user) => user !== undefined));
   };
 
   useEffect(() => {
     getAllUsersIncludingMyself();
   }, []);
-
-  console.log(myUserDetails);
 
   const addToFollowing = async (recipientUserId: any) => {
     console.log(

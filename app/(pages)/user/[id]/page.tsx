@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-use-before-define */
 /* eslint-disable @next/next/no-img-element */
 
@@ -11,21 +12,20 @@ import {
   arrayRemove,
   arrayUnion,
   doc,
+  deleteDoc,
+  increment,
 } from 'firebase/firestore';
 import { db, auth } from '@/app/config/firebase.tsx';
 import { useEffect, useState, useContext } from 'react';
 import Tweetlist from '@/app/components/Tweetlist';
 import { TweetRepliesList } from '@/app/components/TweetRepliesList.tsx';
-import formatDistanceToNow from 'date-fns/formatDistanceToNow';
-import parseISO from 'date-fns/parseISO';
 import { parse, toDate } from 'date-fns';
 import format from 'date-fns/format';
 import differenceInSeconds from 'date-fns/differenceInSeconds';
 import differenceInMinutes from 'date-fns/differenceInMinutes';
-import isToday from 'date-fns/isToday';
 import differenceInHours from 'date-fns/differenceInHours';
+import Link from 'next/link';
 import { HelloContext } from '../../layout.tsx';
-import RenderFollowButton from '@/app/components/FollowButton.tsx';
 
 export default function UserPage({ params }: any) {
   const [profileData, setProfileData] = useState<any>({});
@@ -100,6 +100,10 @@ export default function UserPage({ params }: any) {
 
   const deleteTweet = async (e: any, tweet: any) => {
     e.preventDefault();
+    const parentTweetDocRef = doc(db, 'tweets', tweet.parentTweet);
+    await updateDoc(parentTweetDocRef, {
+      replies: increment(-1),
+    });
 
     const tweetsDocRef = doc(db, 'tweets', tweet.id);
     await deleteDoc(tweetsDocRef);
@@ -190,12 +194,11 @@ export default function UserPage({ params }: any) {
     setProfileData(profData[0]);
   };
 
-  console.log(auth?.currentUser?.uid);
   const renderFollowButton = () => {
     if (params.id === nickname.current) {
       return (
         <button
-          className="py-2 px-6 rounded-3xl bg-black h-fit mt-6 text-slate-50
+          className="py-1.5 px-5 rounded-3xl bg-black h-fit mt-6 text-slate-50
        outline outline-[0.5px]"
         >
           Edit Profile
@@ -227,16 +230,18 @@ export default function UserPage({ params }: any) {
 
   const [selectedTab, setSelectedTab] = useState('tweets');
 
-  console.log(selectedTab);
-  console.log(usersTweets);
-
   const repliesOnly = usersTweets.filter((tweet) => tweet.isAReply === true);
-  console.log(repliesOnly); // when the 'Replies' tab is clicked, switch to this instead
 
   return (
-    <div className="min-h-screen bg-slate-600 dark:bg-zinc-800 w-full max-w-[47%] text-white">
-      <div className="h-16 bg-gray-800 flex gap-6 p-3 items-center">
-        <div className="cursor-pointer" onClick={() => window.history.back()}>
+    <div
+      className="min-h-screen bg-black border-x border-[#2f3336] border-w-[1px] w-full 
+    max-w-[47%] text-white"
+    >
+      <div className="h-16 flex gap-6 p-3 items-center">
+        <button
+          className="cursor-pointer"
+          onClick={() => window.history.back()}
+        >
           <svg
             viewBox="0 0 24 24"
             aria-hidden="true"
@@ -248,8 +253,8 @@ export default function UserPage({ params }: any) {
               <path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path>
             </g>
           </svg>
-        </div>
-        <div className="text-xl font-bold">{profileData.userName}</div>
+        </button>
+        <div className="text-xl font-bold ">{profileData.userName}</div>
       </div>
       <div className="">
         {/* <div className="text-2xl border-b-[1px]">bg Image here</div> */}
@@ -268,27 +273,60 @@ export default function UserPage({ params }: any) {
           </div>
           <div className="p-4">
             <div className="font-bold text-2xl">{profileData.userName}</div>
-            <div className="text-sm">@{profileData.userNickname}</div>
+            <div className="text-[#71767b]">@{profileData.userNickname}</div>
             <div className="py-4">This is the profile page description</div>
-            <div className="flex gap-4">
+            <div className="flex gap-4 pb-1.5">
               {/* {profileData.location && (
                 <div className="text-slate-300">Location </div>
               )} */}
-              <div className="text-slate-300">
-                Joined {profileData.joinedDate}
+              <div className="text-[#71767b] flex items-center gap-1">
+                <div>
+                  <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                    width={20}
+                    height={20}
+                    className="fill-[#71767b] "
+                  >
+                    <g>
+                      <path d="M7 4V3h2v1h6V3h2v1h1.5C19.89 4 21 5.12 21 6.5v12c0 1.38-1.11 2.5-2.5 2.5h-13C4.12 21 3 19.88 3 18.5v-12C3 5.12 4.12 4 5.5 4H7zm0 2H5.5c-.27 0-.5.22-.5.5v12c0 .28.23.5.5.5h13c.28 0 .5-.22.5-.5v-12c0-.28-.22-.5-.5-.5H17v1h-2V6H9v1H7V6zm0 6h2v-2H7v2zm0 4h2v-2H7v2zm4-4h2v-2h-2v2zm0 4h2v-2h-2v2zm4-4h2v-2h-2v2z"></path>
+                    </g>
+                  </svg>
+                </div>
+                <div>Joined {profileData.joinedDate}</div>
               </div>
             </div>
             <div className="flex gap-4">
-              <div>{profileData.following?.length} Following</div>
-              <div>{profileData.followers?.length} Followers</div>
+              <Link
+                href={{
+                  pathname: `/user/${profileData.userNickname}/following`,
+                  query: {
+                    id: profileData.docId,
+                  },
+                }}
+              >
+                {profileData.following?.length}{' '}
+                <span className="text-[#71767b]">Following</span>
+              </Link>
+              <Link
+                href={{
+                  pathname: `/user/${profileData.userNickname}/followers`,
+                  query: {
+                    id: profileData.docId,
+                  },
+                }}
+              >
+                {profileData.followers?.length}{' '}
+                <span className="text-[#71767b]">Followers</span>
+              </Link>
             </div>
           </div>
-          <div className="grid grid-cols-4 text-center border-b-[1px]">
+          <div className="grid grid-cols-4 text-center">
             <button
               className={
                 selectedTab === 'tweets'
-                  ? `py-4 cursor-pointer text-blue-400 font-bold`
-                  : 'py-4 cursor-pointer'
+                  ? `py-4 cursor-pointer text-white font-bold`
+                  : 'py-4 cursor-pointer text-[#71767b]'
               }
               onClick={() => setSelectedTab('tweets')}
             >
@@ -297,15 +335,19 @@ export default function UserPage({ params }: any) {
             <button
               className={
                 selectedTab === 'replies'
-                  ? `py-4 cursor-pointer text-blue-400 font-bold`
-                  : 'py-4 cursor-pointer'
+                  ? `py-4 cursor-pointer text-white font-bold`
+                  : 'py-4 cursor-pointer text-[#71767b]'
               }
               onClick={() => setSelectedTab('replies')}
             >
               Replies
             </button>
-            <button className="py-4 cursor-pointer">Media</button>
-            <button className="py-4 cursor-pointer">Likes</button>
+            <button className="py-4 cursor-not-allowed text-[#71767b]">
+              Media
+            </button>
+            <button className="py-4 cursor-not-allowed text-[#71767b]">
+              Likes
+            </button>
           </div>
         </div>
       </div>
@@ -320,7 +362,7 @@ export default function UserPage({ params }: any) {
       ) : (
         <TweetRepliesList
           auth={auth}
-          allTweets={repliesOnly}
+          repliesOnly={repliesOnly}
           deleteTweet={deleteTweet}
           likeTweet={likeTweet}
         />
