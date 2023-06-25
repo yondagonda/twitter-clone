@@ -1,10 +1,17 @@
 export default function RightSidebar() {
   return (
-    <div className="right-0 h-full border-[#2f3336] border py-4 text-white fixed">
-      <div className="px-2 flex flex-col gap-4">
+    <div
+      className=" h-full py-4 text-white 
+    rightsidebar hidden lg:block"
+    >
+      <div
+        className="pl-3 xl:ml-4 flex flex-col gap-4 fixed 
+      w-full max-w-[28%] xl:max-w-[368px] xl:w-full"
+      >
         <div className="">
           <input
-            className="bg-[#202327] rounded-3xl py-2 px-4"
+            className="bg-[#202327] rounded-3xl py-2 px-4 outline-none w-full
+            focus:outline-[#1d9bf0] focus:bg-black outline-1"
             placeholder="Search Twitter"
             type="text"
           ></input>

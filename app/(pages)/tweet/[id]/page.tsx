@@ -28,9 +28,12 @@ import differenceInHours from 'date-fns/differenceInHours';
 import LikesModal from '@/app/components/LikesModal.tsx';
 import ImageModal from '@/app/components/ImageModal.tsx';
 import useAutosizeTextArea from '@/app/components/useAutoSizeTextArea.tsx';
+import { useRouter } from 'next/navigation';
+import displayMiniMenuModal from '@/app/components/displayMiniMenuModal.tsx';
 import { HelloContext } from '../../layout.tsx';
 
 export default function TweetPage({ params }: any) {
+  const router = useRouter();
   const [displayTweet, setDisplayTweet] = useState<any>();
 
   const getTweetData = async () => {
@@ -172,6 +175,17 @@ export default function TweetPage({ params }: any) {
     getTweetData();
   };
 
+  const deleteParentTweet = async (e: any, tweet: any) => {
+    // delete all the replies on parent tweet too?
+    console.log('deleting parent');
+    e.preventDefault();
+    const tweetsDocRef = doc(db, 'tweets', tweet.id);
+    await deleteDoc(tweetsDocRef);
+    getAllTweets();
+    getTweetData();
+    window.history.back();
+  };
+
   useEffect(() => {
     getTweetData();
     getAllTweets();
@@ -249,10 +263,29 @@ export default function TweetPage({ params }: any) {
               </div>
             </div>
           </div>
-          <div>popup</div>
+          <button
+            className="h-0 group selected"
+            onClick={(e) => {
+              e.preventDefault();
+              displayMiniMenuModal(e, displayTweet, deleteParentTweet, router);
+            }}
+            data-id={0}
+          >
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              height={20}
+              width={20}
+              className="fill-[#71767b] group-hover:fill-[#1d9bf0]"
+            >
+              <g>
+                <path d="M3 12c0-1.1.9-2 2-2s2 .9 2 2-.9 2-2 2-2-.9-2-2zm9 2c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm7 0c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"></path>
+              </g>
+            </svg>
+          </button>
         </div>
         <div className="flex flex-col mb-3">
-          <div className="py-4 text-lg">{displayTweet?.text}</div>
+          <div className="py-4 text-lg break-all">{displayTweet?.text}</div>
           {displayTweet?.image.imageId !== '' && (
             <div className="max-w-[90%] ">
               {displayTweet?.image.imageId && (
@@ -524,14 +557,26 @@ export default function TweetPage({ params }: any) {
                       </button>
                     </div>
                   </div>
-                  {auth?.currentUser?.uid === tweet.authorId && (
-                    <button
-                      className="text-sm right-0"
-                      onClick={(e) => deleteTweet(e, tweet)}
+                  <button
+                    className="h-0 group selected"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      displayMiniMenuModal(e, tweet, deleteTweet, router);
+                    }}
+                    data-id={index}
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                      height={20}
+                      width={20}
+                      className="fill-[#71767b] group-hover:fill-[#1d9bf0]"
                     >
-                      Del
-                    </button>
-                  )}
+                      <g>
+                        <path d="M3 12c0-1.1.9-2 2-2s2 .9 2 2-.9 2-2 2-2-.9-2-2zm9 2c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm7 0c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"></path>
+                      </g>
+                    </svg>
+                  </button>
                 </Link>
               </div>
             );

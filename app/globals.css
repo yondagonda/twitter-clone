@@ -26,7 +26,28 @@ body {
     rgb(var(--background-start-rgb));
 }
 
+.app-container {
+  margin-inline: auto;
+  max-width: 1300px;
+  display: flex;
+  position: relative;
+}
+
 .modal {
   box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 15px,
     rgba(255, 255, 255, 0.15) 0px 0px 3px 1px;
+}
+
+.logoutmodal {
+  box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 15px,
+    rgba(255, 255, 255, 0.15) 0px 0px 3px 1px;
+}
+
+.corner {
+  transform: rotate(180deg);
+  position: absolute;
+  filter: drop-shadow(rgb(66, 69, 71) 1px -1px 1px);
+  bottom: -14px;
+  right: 50%;
+  fill: black;
 }

@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { getDoc, doc, collection, getDocs } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import { db } from '../config/firebase';
+import displayMiniMenuModal from './displayMiniMenuModal';
 
 export const TweetRepliesList: FC = ({
   repliesOnly,
@@ -16,7 +17,7 @@ export const TweetRepliesList: FC = ({
 
   return (
     <>
-      {repliesOnly.map((tweet: any) => {
+      {repliesOnly.map((tweet: any, index: number) => {
         // now this filters out tweets which arent replies!
         if (tweet.isAReply) {
           return (
@@ -33,9 +34,9 @@ export const TweetRepliesList: FC = ({
               </Link>
               <Link
                 href={`/tweet/${tweet.id}`}
-                className="w-full p-4 flex justify-between"
+                className="w-full p-3 flex justify-between"
               >
-                <div className="pl-[50px]">
+                <div className="pl-[57px]">
                   <div className="flex gap-3">
                     <div>
                       <div className="flex gap-0.5 items-center">
@@ -126,16 +127,27 @@ export const TweetRepliesList: FC = ({
                     </div>
                   </div>
                 </div>
-                <div className="pr-4 pt-4">
-                  {auth?.currentUser?.uid === tweet.authorId && (
-                    <button
-                      className="text-sm "
-                      onClick={(e) => deleteTweet(e, tweet)}
-                    >
-                      Del
-                    </button>
-                  )}
-                </div>
+
+                <button
+                  className="h-0 group selected"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    displayMiniMenuModal(e, tweet, deleteTweet, router);
+                  }}
+                  data-id={index}
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                    height={20}
+                    width={20}
+                    className="fill-[#71767b] group-hover:fill-[#1d9bf0]"
+                  >
+                    <g>
+                      <path d="M3 12c0-1.1.9-2 2-2s2 .9 2 2-.9 2-2 2-2-.9-2-2zm9 2c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm7 0c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"></path>
+                    </g>
+                  </svg>
+                </button>
               </Link>
             </div>
           );

@@ -79,15 +79,18 @@ export default function MainLayout({
   }, []);
 
   return (
-    <div className="App flex w-full justify-center gap-2 bg-black">
-      <HelloContext.Provider value={{ nickname }}>
-        <LeftSidebar
-          userNickname={userNickname}
-          currentLoggedInUser={currentLoggedInUser}
-        />
-        {children}
-        <RightSidebar />
-      </HelloContext.Provider>
+    <div className="App bg-black h-full w-full">
+      <div className="app-container">
+        <HelloContext.Provider value={{ nickname }}>
+          <LeftSidebar
+            userNickname={userNickname}
+            currentLoggedInUser={currentLoggedInUser}
+          />
+          {children}
+
+          <RightSidebar />
+        </HelloContext.Provider>
+      </div>
     </div>
   );
 }

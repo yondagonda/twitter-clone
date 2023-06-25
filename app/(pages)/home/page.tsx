@@ -210,18 +210,17 @@ export default function Home() {
   useAutosizeTextArea(textAreaRef.current, tweetContent);
 
   // TODO (prioritising on what would be most impressive/what is most reminiscent of using twitter):
-  // homepage tweet button popup
   // mini displays when hovering over names
-  // left sidebar logout area
   // user profile descriptions
+  // start refactoring functions into separate components/hooks, like e.g. the text area one
 
   return (
     <div
-      className="min-h-screen bg-black border-x border-[#2f3336] dark:bg-zinc-800 
-    w-full max-w-[47%] text-white"
+      className="min-h-screen border-x border-[#2f3336] dark:bg-zinc-800 
+     text-white flex flex-col min-w-[270px] w-full max-w-[600px]"
     >
       <div className="grid grid-rows-2 sticky top-0 bg-black/40 backdrop-blur-md z-[1]">
-        <div className="font-bold text-xl py-3 px-4">Home</div>
+        <div className="font-bold text-xl pt-3 pb-3 px-4">Home</div>
         <div
           className="grid grid-cols-2 text-center border-b-[1px] border-[#2f3336] items-center
          cursor-pointer"
