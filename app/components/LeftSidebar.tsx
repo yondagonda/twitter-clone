@@ -27,7 +27,7 @@ export default function LeftSidebar({
   return (
     <div
       className=" left-0 h-full bg-transparent ml-14 border border-[#2f3336]
-     text-white px-10 py-4 absolute"
+     text-white px-10 py-4 fixed"
     >
       <Link href="/home">
         <div className="pb-3">

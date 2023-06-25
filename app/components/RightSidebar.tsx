@@ -9,7 +9,7 @@ export default function RightSidebar() {
             type="text"
           ></input>
         </div>
-        <div className="p-2 bg-[#16181c] rounded-xl">
+        <div className="p-2 bg-[#16181c] rounded-xl ">
           <div className="text-xl font-bold">Get Verified</div>
           <div>Subscribe to unlock new features.</div>
           <button className="bg-[#1d9bf0] px-4 py-1 rounded-3xl font-bold">

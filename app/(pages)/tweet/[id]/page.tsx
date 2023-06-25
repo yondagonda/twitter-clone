@@ -4,7 +4,7 @@
 
 'use client';
 
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext, useRef } from 'react';
 import {
   getDoc,
   doc,
@@ -27,6 +27,7 @@ import differenceInMinutes from 'date-fns/differenceInMinutes';
 import differenceInHours from 'date-fns/differenceInHours';
 import LikesModal from '@/app/components/LikesModal.tsx';
 import ImageModal from '@/app/components/ImageModal.tsx';
+import useAutosizeTextArea from '@/app/components/useAutoSizeTextArea.tsx';
 import { HelloContext } from '../../layout.tsx';
 
 export default function TweetPage({ params }: any) {
@@ -126,6 +127,10 @@ export default function TweetPage({ params }: any) {
   };
 
   const onSubmitReply = async (receivingTweet: any) => {
+    setReplyInput('');
+    document.querySelector('.replyingtodropdown')?.classList.add('hidden');
+    document.querySelector('.flexcol')?.classList.remove('flex-col');
+
     const docRef = doc(db, 'tweets', receivingTweet.id);
     await updateDoc(docRef, {
       replies: increment(1),
@@ -180,6 +185,15 @@ export default function TweetPage({ params }: any) {
     show: false,
   });
 
+  const replytweetinput = document.querySelector('.replytweetinput');
+  replytweetinput?.addEventListener('mousedown', () => {
+    document.querySelector('.replyingtodropdown')?.classList.remove('hidden');
+    document.querySelector('.flexcol')?.classList.add('flex-col');
+  });
+
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+  useAutosizeTextArea(textAreaRef.current, replyInput);
+
   return (
     <div
       className="min-h-screen bg-black border-x border-[#2f3336] text-white
@@ -213,7 +227,7 @@ export default function TweetPage({ params }: any) {
         </div>
       )}
 
-      <div className="p-4">
+      <div className="px-4 pt-4 pb-2 w-full">
         <div className="flex justify-between">
           <div className="flex gap-3">
             <Link
@@ -380,26 +394,44 @@ export default function TweetPage({ params }: any) {
           </div>
         </div>
         {displayTweet?.parentTweet === null && (
-          <div className="flex gap-4 border-t-[1px] border-[#2f3336] pt-3 items-center">
-            <div>
-              <img
-                src={`${auth?.currentUser?.photoURL}`}
-                className="h-10 w-[40px] rounded-full"
-                alt="profile photo"
-              />
+          <div className="border-t-[1px] pt-3 pb-3 border-[#2f3336]">
+            <div className="replyingtodropdown hidden w-full pl-14 pt-1">
+              <div className="">
+                <span className="text-[#71767b]">Replying to</span> {''}
+                <span className="text-[#1d9bf0]">
+                  @{displayTweet.authorNickname}
+                </span>
+              </div>
             </div>
-            <div className="flex gap-10">
-              <input
-                className={`bg-transparent ring-2 px-4 py-4 outline-none`}
-                placeholder="Tweet your reply!"
-                onChange={(e) => setReplyInput(e.target.value)}
-              ></input>
-              <button
-                className={`px-4 py-0.5 rounded-3xl bg-blue-400 h-10`}
-                onClick={() => onSubmitReply(displayTweet)}
-              >
-                Reply
-              </button>
+
+            <div className="flex items-center flexcol">
+              <div className="flex gap-4 pt-1 items-center w-full align-start">
+                <div className="">
+                  <img
+                    src={`${auth?.currentUser?.photoURL}`}
+                    className="h-10 min-w-[40px] rounded-full"
+                    alt="profile photo"
+                  />
+                </div>
+                <textarea
+                  maxLength={140}
+                  rows={1}
+                  ref={textAreaRef}
+                  className={`bg-transparent w-full outline-none text-xl replytweetinput 
+                     resize-none`}
+                  placeholder="Tweet your reply!"
+                  value={replyInput}
+                  onChange={(e) => setReplyInput(e.target.value)}
+                ></textarea>
+              </div>
+              <div className="w-full text-end pt-1">
+                <button
+                  className={`px-5 rounded-3xl bg-[#1d9bf0] font-bold h-9`}
+                  onClick={() => onSubmitReply(displayTweet)}
+                >
+                  Reply
+                </button>
+              </div>
             </div>
           </div>
         )}
@@ -411,7 +443,7 @@ export default function TweetPage({ params }: any) {
             return (
               <div
                 key={tweet.id}
-                className="flex gap-3 p-4 border-t-[1px] border-[#2f3336]"
+                className="flex gap-3 p-4 border-t-[1px] border-[#2f3336] overflow-x-hidden"
               >
                 <Link className="h-0" href={`/user/${tweet.authorNickname}`}>
                   <img
@@ -430,7 +462,7 @@ export default function TweetPage({ params }: any) {
                       <span>·</span>
                       <div className="text-sm text-slate-400">{tweet.date}</div>
                     </div>
-                    <div className="pb-2">{tweet.text}</div>
+                    <div className="pb-2 break-all">{tweet.text}</div>
                     <div className="flex justify-evenly items-center">
                       <button className="flex items-center gap-2">
                         <svg

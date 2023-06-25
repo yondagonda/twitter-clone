@@ -4,7 +4,7 @@
 'use client';
 
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext, useRef } from 'react';
 import {
   addDoc,
   collection,
@@ -27,6 +27,7 @@ import differenceInSeconds from 'date-fns/differenceInSeconds';
 import differenceInMinutes from 'date-fns/differenceInMinutes';
 import isToday from 'date-fns/isToday';
 import differenceInHours from 'date-fns/differenceInHours';
+import useAutosizeTextArea from '@/app/components/useAutoSizeTextArea.tsx';
 import { db, app, storage } from '../../config/firebase.tsx';
 import { HelloContext } from '../layout.tsx';
 
@@ -144,7 +145,8 @@ export default function Home() {
   }, [imageURL]);
 
   const onSubmitTweet = async () => {
-    console.log(imageURL);
+    document.querySelector('.everyonecanreply')?.classList.add('hidden');
+    document.querySelector('.everyonedropdown')?.classList.add('hidden');
     try {
       await addDoc(tweetsCollectionRef, {
         text: tweetContent,
@@ -198,18 +200,20 @@ export default function Home() {
     getAllTweets();
   };
 
-  // TODO (prioritising on what would be most impressive/what is most reminiscent of using twitter):
-  // delete button
-  // homepage tweet button popup
-  // mini displays when hovering over names
-  // left sidebar logout area
-  // user profile descriptions
-
   const createtweet = document.querySelector('.createtweetinput');
   createtweet?.addEventListener('mousedown', () => {
     document.querySelector('.everyonecanreply')?.classList.remove('hidden');
     document.querySelector('.everyonedropdown')?.classList.remove('hidden');
   });
+
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+  useAutosizeTextArea(textAreaRef.current, tweetContent);
+
+  // TODO (prioritising on what would be most impressive/what is most reminiscent of using twitter):
+  // homepage tweet button popup
+  // mini displays when hovering over names
+  // left sidebar logout area
+  // user profile descriptions
 
   return (
     <div
@@ -226,7 +230,7 @@ export default function Home() {
           <div>Following</div>
         </div>
       </div>
-      <div className="flex p-4 gap-3">
+      <div className="flex px-4 pt-4 pb-2 gap-3">
         <div>
           <img
             src={`${auth?.currentUser?.photoURL}`}
@@ -237,7 +241,7 @@ export default function Home() {
         <div className="flex flex-col w-full">
           <div
             className="everyonedropdown hidden w-fit outline outline-1 px-4 py-0.5 rounded-3xl 
-          items-center flex text-sm mb-5 font-bold"
+          items-center flex text-sm mb-4 font-bold"
           >
             <div className="text-[#1d9bf0]">Everyone</div>
             <svg
@@ -252,22 +256,28 @@ export default function Home() {
               </g>
             </svg>
           </div>
-          <div className="group max-w-[24]">
-            <input
-              className="bg-transparent pb-3 pt-1 outline-none text-xl peer createtweetinput"
-              placeholder="What's happening?!"
-              value={tweetContent}
-              onChange={(e) => setTweetContent(e.target.value)}
-            ></input>
+          <div className="group">
+            <div className="">
+              <textarea
+                ref={textAreaRef}
+                maxLength={140}
+                className="bg-transparent pb-2 mt-2 outline-none text-xl peer createtweetinput 
+              w-full resize-none"
+                placeholder="What's happening?!"
+                value={tweetContent}
+                rows={1}
+                onChange={(e) => setTweetContent(e.target.value)}
+              ></textarea>
+            </div>
             <div className="hidden peer-focus:block everyonecanreply">
-              <div className="border-b border-[#2f3336] text-[#1d9bf0] py-2 mb-2">
+              <div className="border-b border-[#2f3336] text-[#1d9bf0] pt-2 pb-2 mb-2">
                 Everyone can reply
               </div>
             </div>
           </div>
 
           <div className="w-full">
-            <div className="flex justify-between items-center mt-1">
+            <div className="flex justify-between items-center">
               {imagePreview && <div className="">{renderPreview()}</div>}
 
               <label htmlFor="pickimage" className="cursor-pointer">
