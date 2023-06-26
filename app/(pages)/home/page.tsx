@@ -3,12 +3,9 @@
 
 'use client';
 
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { useEffect, useState, useContext, useRef } from 'react';
+import { getAuth } from 'firebase/auth';
+import { useEffect, useContext, useRef } from 'react';
 import {
-  addDoc,
-  collection,
-  getDocs,
   getDoc,
   deleteDoc,
   doc,
@@ -18,7 +15,7 @@ import {
 } from 'firebase/firestore';
 import Tweetlist from '@/app/components/Tweetlist.tsx';
 import useAutosizeTextArea from '@/app/components/useAutoSizeTextArea.tsx';
-import { db, app, storage } from '../../config/firebase.tsx';
+import { db, app } from '../../config/firebase.tsx';
 import { HelloContext } from '../layout.tsx';
 
 export default function Home() {
@@ -85,11 +82,13 @@ export default function Home() {
     getAllTweets();
   };
 
-  const createtweet = document.querySelector('.createtweetinput');
-  createtweet?.addEventListener('mousedown', () => {
-    document.querySelector('.everyonecanreply')?.classList.remove('hidden');
-    document.querySelector('.everyonedropdown')?.classList.remove('hidden');
-  });
+  if (typeof window !== 'undefined') {
+    const createtweet = document.querySelector('.createtweetinput');
+    createtweet?.addEventListener('mousedown', () => {
+      document.querySelector('.everyonecanreply')?.classList.remove('hidden');
+      document.querySelector('.everyonedropdown')?.classList.remove('hidden');
+    });
+  }
 
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   useAutosizeTextArea(textAreaRef.current, tweetContent);
@@ -97,6 +96,8 @@ export default function Home() {
   // TODO (prioritising on what would be most impressive/what is most reminiscent of using twitter):
   // pages to show during loading?
   // fill up trending section?
+  // all popup modals are currently not mobile compatible
+  // typescript all the things
 
   return (
     <div

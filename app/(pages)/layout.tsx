@@ -20,6 +20,7 @@ import differenceInMinutes from 'date-fns/differenceInMinutes';
 import differenceInHours from 'date-fns/differenceInHours';
 import { v4 } from 'uuid';
 import { uploadBytes, ref, getDownloadURL, listAll } from 'firebase/storage';
+import { parseISO } from 'date-fns';
 import { db, storage } from '../config/firebase.tsx';
 import RightSidebar from '../components/RightSidebar.tsx';
 import LeftSidebar from '../components/LeftSidebar.tsx';
@@ -94,7 +95,6 @@ export default function MainLayout({
   const getAllTweets = async () => {
     try {
       const data = await getDocs(tweetsCollectionRef);
-
       const filteredData = data.docs.map((document) => ({
         ...document.data(),
         id: document.id,
@@ -102,12 +102,15 @@ export default function MainLayout({
       const sortedTweets = filteredData.sort((a, b) =>
         b.date.localeCompare(a.date)
       );
+
       const DateSortedTweets = sortedTweets.map((tweet) => {
         const parsedDateFirst = parse(
           tweet.date,
           'dd/MM/yyyy, HH:mm:ss',
           new Date()
         );
+
+        console.log(parsedDateFirst);
         const formattedDate = format(parsedDateFirst, 'yyyy-MM-dd HH:mm:ss');
         const parsedDate = parse(
           formattedDate,
@@ -145,6 +148,16 @@ export default function MainLayout({
   const [imageUpload, setImageUpload] = useState<any>();
   const [imagePreview, setImagePreview] = useState('');
 
+  const options = {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+  };
+
   const onSubmitTweet = async () => {
     document.querySelector('.everyonecanreply')?.classList.add('hidden');
     document.querySelector('.everyonedropdown')?.classList.add('hidden');
@@ -152,7 +165,7 @@ export default function MainLayout({
       await addDoc(tweetsCollectionRef, {
         text: tweetContent,
         authorId: auth?.currentUser?.uid,
-        date: new Date().toLocaleString(),
+        date: new Date().toLocaleString('en-GB', options),
         authorName: auth?.currentUser?.displayName,
         authorNickname: nickname.current,
         likedBy: [],
