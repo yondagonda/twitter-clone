@@ -198,8 +198,8 @@ export default function UserPage({ params }: any) {
     if (params.id === nickname.current) {
       return (
         <button
-          className="py-1.5 px-5 rounded-3xl bg-black h-fit mt-6 text-[#e7e9ea]
-       outline outline-[0.5px] outline-[#536471] font-bold text-sm "
+          className="py-[7px] px-5 rounded-3xl bg-black h-fit mt-6 text-[#e7e9ea]
+       outline outline-[0.5px] outline-[#536471] font-bold text-sm hover:bg-[#1f1f1f] duration-200"
         >
           Edit Profile
         </button>
@@ -210,18 +210,18 @@ export default function UserPage({ params }: any) {
       return (
         <button
           onClick={(e) => onFollowClick(profileData.docId)}
-          className="py-2 px-6 rounded-3xl bg-black h-fit mt-6 text-[#e7e9ea] font-bold text-sm
-          outline outline-[0.5px] outline-[#536471] "
+          className="py-[7px] px-6 rounded-3xl bg-black h-fit mt-6 text-[#e7e9ea] font-bold text-sm
+          outline outline-[0.5px] outline-[#536471] hover:outline-[#f4212e] hover:text-[#f4212e]
+          before:content-['Following'] hover:before:content-['Unfollow']"
           data-profile-nickname={params.id}
-        >
-          Unfollow
-        </button>
+        ></button>
       );
     }
     return (
       <button
         onClick={(e) => onFollowClick(profileData.docId)}
-        className="py-2 px-6 rounded-3xl bg-[#eff3f4] h-fit mt-6 font-bold text-sm text-black"
+        className="py-[7px] px-6 rounded-3xl bg-[#eff3f4] h-fit mt-6 font-bold text-sm text-black hover:bg-[#d1d1d1] 
+        duration-200"
         data-profile-nickname={params.id}
       >
         Follow
@@ -264,7 +264,7 @@ export default function UserPage({ params }: any) {
           <div className="flex justify-between px-4">
             <div>
               <img
-                className="rounded-full outline outline-black"
+                className="rounded-full outline outline-black hover:brightness-90 duration-200"
                 src={profileData.userProfileImg}
                 alt="profile photo"
               />
@@ -305,6 +305,7 @@ export default function UserPage({ params }: any) {
                     id: profileData.docId,
                   },
                 }}
+                className="hover:underline"
               >
                 {profileData.following?.length}{' '}
                 <span className="text-[#71767b]">Following</span>
@@ -316,6 +317,7 @@ export default function UserPage({ params }: any) {
                     id: profileData.docId,
                   },
                 }}
+                className="hover:underline"
               >
                 {profileData.followers?.length}{' '}
                 <span className="text-[#71767b]">Followers</span>
@@ -326,8 +328,8 @@ export default function UserPage({ params }: any) {
             <button
               className={
                 selectedTab === 'tweets'
-                  ? `flex justify-center relative py-4 cursor-pointer text-[#e7e9ea] font-bold`
-                  : 'relative py-4 cursor-pointer text-[#71767b]'
+                  ? `flex justify-center relative py-4 cursor-pointer text-[#e7e9ea] font-bold hover:bg-[#181818] duration-100`
+                  : 'relative py-4 cursor-pointer text-[#71767b] hover:bg-[#181818] duration-100'
               }
               onClick={() => setSelectedTab('tweets')}
             >
@@ -339,8 +341,8 @@ export default function UserPage({ params }: any) {
             <button
               className={
                 selectedTab === 'replies'
-                  ? `flex justify-center relative py-4 cursor-pointer text-[#e7e9ea] font-bold`
-                  : 'py-4 cursor-pointer text-[#71767b]'
+                  ? `flex justify-center relative py-4 cursor-pointer text-[#e7e9ea] font-bold hover:bg-[#181818] duration-100`
+                  : 'py-4 cursor-pointer text-[#71767b] hover:bg-[#181818] duration-100'
               }
               onClick={() => setSelectedTab('replies')}
             >

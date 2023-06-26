@@ -28,7 +28,7 @@ export const TweetRepliesList: FC = ({
               <Link className="h-0" href={`/user/${tweet.authorNickname}`}>
                 <img
                   src={`${tweet?.authorProfileImg}`}
-                  className="fixed rounded-full h-10 w-auto ml-4 mt-4"
+                  className="fixed rounded-full h-10 w-auto ml-4 mt-4 hover:brightness-90 duration-200"
                   alt="profile photo"
                 />
               </Link>
@@ -40,8 +40,13 @@ export const TweetRepliesList: FC = ({
                   <div className="flex gap-3 flex-col">
                     <div>
                       <div className="flex gap-0.5 items-center">
-                        <div className=" font-bold">{tweet.authorName}</div>
-                        <div className="text-[#71767b]">
+                        <Link
+                          href={`/user/${tweet.authorNickname}`}
+                          className=" font-bold hover:underline"
+                        >
+                          {tweet.authorName}
+                        </Link>
+                        <div className="text-[#71767b] ">
                           @{tweet.authorNickname}
                         </div>
                         <span>·</span>

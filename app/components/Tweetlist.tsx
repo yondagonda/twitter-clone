@@ -27,25 +27,30 @@ export const Tweetlist: FC = ({
           return (
             <div
               key={tweet.id}
-              className="border-b-[1px] border-[#2f3336] flex"
+              className="border-b-[1px] border-[#2f3336] flex hover:bg-[#0a0a0a] duration-200"
             >
               <Link className="h-0" href={`/user/${tweet.authorNickname}`}>
                 <img
                   src={`${tweet?.authorProfileImg}`}
-                  className="h-10 ml-4 mt-4 rounded-full min-w-[40px] absolute"
+                  className="h-10 ml-4 mt-4 rounded-full w-auto absolute hover:brightness-90 duration-200"
                   alt="profile photo"
                 />
               </Link>
               <Link
                 href={`/tweet/${tweet.id}`}
                 className="flex justify-between w-full p-3 pl-[68px]
-                hover:bg-[#0a0a0a] duration-200"
+                "
               >
                 <div className="flex gap-3 flex-col  w-full">
                   <div className="pr-0.5">
                     <div className="flex gap-0.5 items-center">
-                      <div className=" font-bold">{tweet.authorName}</div>
-                      <div className="text-[#71767b] break-all">
+                      <Link
+                        href={`/user/${tweet.authorNickname}`}
+                        className=" font-bold hover:underline"
+                      >
+                        {tweet.authorName}
+                      </Link>
+                      <div className="text-[#71767b] break-all truncate">
                         @{tweet.authorNickname}
                       </div>
                       <span>·</span>

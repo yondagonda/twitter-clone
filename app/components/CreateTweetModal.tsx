@@ -3,15 +3,31 @@ import { FC, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRef } from 'react';
+import { useContext } from 'react';
 import Userlist from './Userlist';
 import { auth } from '../config/firebase';
+import { HelloContext } from '../(pages)/layout';
+import useAutosizeTextArea from './useAutoSizeTextArea';
 
 export const CreateTweetModal: FC = ({ setIsCreateTweetModalOpen }: any) => {
+  const {
+    tweetContent,
+    setTweetContent,
+    handleImageChange,
+    uploadFile,
+    imagePreview,
+    renderPreview,
+    setImageUpload,
+    setImagePreview,
+    clearInputs,
+  }: any = useContext(HelloContext);
+
   const modalRef = useRef(null);
 
   const handleClickOutside = (event) => {
     if (modalRef.current && !modalRef.current.contains(event.target)) {
       setIsCreateTweetModalOpen(false);
+      clearInputs();
     }
   };
 
@@ -19,14 +35,23 @@ export const CreateTweetModal: FC = ({ setIsCreateTweetModalOpen }: any) => {
     document.addEventListener('mousedown', handleClickOutside);
   });
 
+  const modalTextAreaRef = useRef<HTMLTextAreaElement>(null);
+  useAutosizeTextArea(modalTextAreaRef.current, tweetContent);
+
   return (
     <div
-      className="fixed top-[18%] left-[50%] translate-x-[-50%] translate-y-[-50%]
-  rounded-2xl h-[310px] w-[600px] bg-black "
+      className="fixed top-[30%] left-[50%] translate-x-[-50%] translate-y-[-50%]
+  rounded-2xl min-h-[300px] w-[600px] bg-black flex flex-col justify-between"
       ref={modalRef}
     >
       <div className="px-4 py-4 relative">
-        <div>
+        <button
+          className="w-fit"
+          onClick={() => {
+            clearInputs();
+            setIsCreateTweetModalOpen(false);
+          }}
+        >
           <svg
             viewBox="0 0 24 24"
             aria-hidden="true"
@@ -38,8 +63,8 @@ export const CreateTweetModal: FC = ({ setIsCreateTweetModalOpen }: any) => {
               <path d="M10.59 12L4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"></path>
             </g>
           </svg>
-        </div>
-        <div className="flex py-4 pr-4 gap-3 w-full">
+        </button>
+        <div className="flex pb-4 pt-2.5 pr-4 gap-3 w-full">
           <div className="pt-1">
             <img
               src={`${auth?.currentUser?.photoURL}`}
@@ -66,18 +91,22 @@ export const CreateTweetModal: FC = ({ setIsCreateTweetModalOpen }: any) => {
               </svg>
             </div>
             <textarea
-              // ref={textAreaRef}
+              ref={modalTextAreaRef}
               maxLength={140}
-              className="bg-transparent pb-2 mt-2 outline-none text-xl 
+              className="bg-transparent mt-2 outline-none text-xl 
               w-full resize-none placeholder:text-[#71767b]"
               placeholder="What's happening?!"
-              // value={tweetContent}
-              rows={4}
-              // onChange={(e) => setTweetContent(e.target.value)}
+              value={tweetContent}
+              rows={1}
+              onChange={(e) => setTweetContent(e.target.value)}
             ></textarea>
           </div>
         </div>
-        <div className="text-[#1d9bf0] pt-2 pb-2 mb-2 bottom-1 absolute text-sm font-bold flex gap-1 items-center">
+        {imagePreview && renderPreview()}
+      </div>
+
+      <div className="px-2 w-full">
+        <div className="text-[#1d9bf0] ml-3 pb-2  text-sm font-bold flex gap-1 items-center">
           <svg
             viewBox="0 0 24 24"
             aria-hidden="true"
@@ -91,9 +120,7 @@ export const CreateTweetModal: FC = ({ setIsCreateTweetModalOpen }: any) => {
           </svg>
           Everyone can reply
         </div>
-      </div>
 
-      <div className="px-2 bottom-0 fixed w-full">
         <div className="border-t-[1px] border-[#2f3336] flex justify-between pb-2 pt-2.5 items-center">
           <div className="pl-2">
             <label htmlFor="pickimage" className="cursor-pointer">
@@ -113,13 +140,16 @@ export const CreateTweetModal: FC = ({ setIsCreateTweetModalOpen }: any) => {
                 accept="image/*"
                 className="hidden"
                 id="pickimage"
-                // onChange={handleImageChange}
+                onChange={handleImageChange}
               />
             </label>
           </div>
           <button
             className="right-0 px-[17px] py-[7px] rounded-3xl bg-[#1d9bf0]  font-bold text-sm"
-            // onClick={uploadFile}
+            onClick={() => {
+              uploadFile();
+              setIsCreateTweetModalOpen(false);
+            }}
           >
             Tweet
           </button>

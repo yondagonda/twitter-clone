@@ -103,16 +103,17 @@ export const Userlist: FC = ({ likedBy }: any) => {
       return (
         <button
           onClick={(e) => onFollowClick(e, user.docUserId)}
-          className="py-1.5 px-4 rounded-3xl bg-black h-fit text-white outline-1 outline"
-        >
-          Following
-        </button>
+          className="py-[7px] px-4 rounded-3xl bg-black h-fit text-[#e7e9ea] font-bold text-sm
+          outline-[#536471] outline outline-[0.5px] hover:outline-[#f4212e] hover:text-[#f4212e]
+          before:content-['Following'] hover:before:content-['Unfollow']"
+        ></button>
       );
     }
     return (
       <button
         onClick={(e) => onFollowClick(e, user.docUserId)}
-        className="py-1.5 px-4 rounded-3xl bg-[#eff3f4] h-fit text-black"
+        className="py-[7px] px-4 rounded-3xl bg-[#eff3f4] h-fit text-black font-bold text-sm hover:bg-[#d1d1d1]
+        duration-200"
       >
         Follow
       </button>

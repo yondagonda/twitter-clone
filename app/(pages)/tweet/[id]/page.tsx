@@ -158,13 +158,11 @@ export default function TweetPage({ params }: any) {
     await addDoc(tweetsCollectionRef, commentDetails); // ensures reply gets added as a document first
     getAllTweets();
     getTweetData();
-    // uploadFile();
   };
 
   const deleteTweet = async (e: any, tweet: any) => {
     e.preventDefault();
-    const docRef = doc(db, 'tweets', displayTweet.id); // setting this to displaytweet means
-    // this will not work when/if we add in threaded commenting (comments on replies)??
+    const docRef = doc(db, 'tweets', displayTweet.id);
     await updateDoc(docRef, {
       replies: increment(-1),
     });

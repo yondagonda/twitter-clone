@@ -120,7 +120,8 @@ const displayMiniMenuModal = (e, tweet, deleteTweet, router) => {
     'text-[#e7e9ea]',
     'gap-3',
     'flex',
-    'items-center'
+    'items-center',
+    'whitespace-nowrap'
   );
   visitPageBtnContainer.addEventListener('click', (e) => {
     e.preventDefault();

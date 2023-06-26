@@ -17,16 +17,6 @@ import {
   arrayRemove,
 } from 'firebase/firestore';
 import Tweetlist from '@/app/components/Tweetlist.tsx';
-import { uploadBytes, ref, getDownloadURL, listAll } from 'firebase/storage';
-import { v4 } from 'uuid';
-import formatDistanceToNow from 'date-fns/formatDistanceToNow';
-import parseISO from 'date-fns/parseISO';
-import { parse, toDate } from 'date-fns';
-import format from 'date-fns/format';
-import differenceInSeconds from 'date-fns/differenceInSeconds';
-import differenceInMinutes from 'date-fns/differenceInMinutes';
-import isToday from 'date-fns/isToday';
-import differenceInHours from 'date-fns/differenceInHours';
 import useAutosizeTextArea from '@/app/components/useAutoSizeTextArea.tsx';
 import { db, app, storage } from '../../config/firebase.tsx';
 import { HelloContext } from '../layout.tsx';
@@ -34,108 +24,26 @@ import { HelloContext } from '../layout.tsx';
 export default function Home() {
   app; // re-initialises firebase
   const auth = getAuth();
-  const { nickname } = useContext(HelloContext);
-
-  const tweetsCollectionRef = collection(db, 'tweets'); // holds all tweets
-  const [allTweets, setAllTweets] = useState<{}>([]);
-  const [tweetContent, setTweetContent] = useState('');
-
-  const getAllTweets = async () => {
-    try {
-      const data = await getDocs(tweetsCollectionRef);
-
-      const filteredData = data.docs.map((document) => ({
-        ...document.data(),
-        id: document.id,
-      }));
-      const sortedTweets = filteredData.sort((a, b) =>
-        b.date.localeCompare(a.date)
-      );
-      const DateSortedTweets = sortedTweets.map((tweet) => {
-        const parsedDateFirst = parse(
-          tweet.date,
-          'dd/MM/yyyy, HH:mm:ss',
-          new Date()
-        );
-        const formattedDate = format(parsedDateFirst, 'yyyy-MM-dd HH:mm:ss');
-        const parsedDate = parse(
-          formattedDate,
-          'yyyy-MM-dd HH:mm:ss',
-          new Date()
-        );
-        const differenceSecs = differenceInSeconds(new Date(), parsedDate);
-        const differenceMins = differenceInMinutes(new Date(), parsedDate);
-        const differenceHrs = differenceInHours(new Date(), parsedDate);
-
-        let finalDate;
-        if (differenceSecs < 2) {
-          finalDate = `now`;
-        } else if (differenceSecs < 60) {
-          finalDate = `${differenceSecs}s`;
-        } else if (differenceMins < 60) {
-          finalDate = `${differenceMins}m`;
-        } else if (differenceHrs < 24) {
-          finalDate = `${differenceHrs}h`;
-        } else {
-          finalDate = format(parsedDate, 'dd MMM');
-        }
-        return { ...tweet, date: finalDate };
-      });
-      console.log(DateSortedTweets);
-      setAllTweets(DateSortedTweets);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const [imageUpload, setImageUpload] = useState<any>();
-  const [imagePreview, setImagePreview] = useState('');
-
-  const handleImageChange = (e) => {
-    setImageUpload(e.target.files[0]);
-    const img = URL.createObjectURL(e.target.files[0]);
-    console.log(img);
-    setImagePreview(img);
-    document.querySelector('.everyonecanreply')?.classList.remove('hidden');
-    document.querySelector('.everyonedropdown')?.classList.remove('hidden');
-  };
-
-  const renderPreview = () => (
-    <img
-      src={imagePreview}
-      alt={`preview of image`}
-      className="rounded-xl max-w-[100%] max-h-[300px]"
-    />
-  );
-
-  const [imageURL, setImageURL] = useState('');
-  const [imageID, setImageID] = useState('');
-
-  const uploadFile = async () => {
-    setImagePreview('');
-    document.getElementById('pickimage')!.value = ''; // allows onchange to fire every time
-
-    if (imageUpload === undefined) {
-      console.log(tweetContent);
-      setImageURL('');
-      setImageID('');
-      setImageUpload();
-      setTweetContent('');
-      onSubmitTweet();
-      return;
-    }
-    console.log(imageUpload);
-    const imageName = v4() + imageUpload.name;
-    console.log(imageName);
-
-    const filesFolderRef = ref(storage, `tweetImage/${imageName}`);
-    const snapshot = await uploadBytes(filesFolderRef, imageUpload);
-    const url = await getDownloadURL(snapshot.ref);
-
-    setImageURL(url);
-    setImageID(imageName);
-    setImageUpload();
-  };
+  const {
+    nickname,
+    tweetContent,
+    setTweetContent,
+    imagePreview,
+    handleImageChange,
+    setImagePreview,
+    setImageUpload,
+    imageUpload,
+    imageURL,
+    uploadFile,
+    allTweets,
+    getAllTweets,
+    onSubmitTweet,
+    setImageID,
+    setImageURL,
+    renderPreview,
+    isCreateTweetModalOpen,
+    setIsCreateTweetModalOpen,
+  }: any = useContext(HelloContext);
 
   useEffect(() => {
     if (imageURL) {
@@ -145,30 +53,6 @@ export default function Home() {
       setImageID('');
     }
   }, [imageURL]);
-
-  const onSubmitTweet = async () => {
-    document.querySelector('.everyonecanreply')?.classList.add('hidden');
-    document.querySelector('.everyonedropdown')?.classList.add('hidden');
-    try {
-      await addDoc(tweetsCollectionRef, {
-        text: tweetContent,
-        authorId: auth?.currentUser?.uid,
-        date: new Date().toLocaleString(),
-        authorName: auth?.currentUser?.displayName,
-        authorNickname: nickname.current,
-        likedBy: [],
-        replies: 0,
-        isAReply: false,
-        parentTweet: null,
-        parentTweetNickname: null,
-        authorProfileImg: auth?.currentUser?.photoURL,
-        image: { imageId: imageID, imageUrl: imageURL },
-      });
-      getAllTweets();
-    } catch (err) {
-      console.error(err);
-    }
-  };
 
   useEffect(() => {
     getAllTweets();
@@ -211,7 +95,6 @@ export default function Home() {
   useAutosizeTextArea(textAreaRef.current, tweetContent);
 
   // TODO (prioritising on what would be most impressive/what is most reminiscent of using twitter):
-  // finish tweet popup modal + create image preview deletion
   // user profile descriptions
   // cleanup login page
   // demo account functionality
@@ -233,14 +116,14 @@ export default function Home() {
             <div className="font-bold">For you</div>
             <div className="bg-[#1d9bf0] h-1 absolute bottom-0 w-[63px] rounded-full"></div>
           </div>
-          <div className="text-[#71767b]">Following</div>
+          <div className="text-[#71767b] cursor-not-allowed">Following</div>
         </div>
       </div>
       <div className="flex px-4 pt-4 pb-2 gap-3 border-b-[1px] border-[#2f3336] ">
         <div>
           <img
             src={`${auth?.currentUser?.photoURL}`}
-            className="h-10 rounded-full min-w-[40px] mt-1"
+            className="h-10 rounded-full min-w-[40px] mt-1 hover:brightness-90 duration-200"
             alt="profile photo"
           />
         </div>
@@ -270,12 +153,12 @@ export default function Home() {
                 className="bg-transparent pb-2 mt-2 outline-none text-xl peer createtweetinput 
               w-full resize-none placeholder:text-[#71767b]"
                 placeholder="What's happening?!"
-                value={tweetContent}
+                value={isCreateTweetModalOpen ? '' : tweetContent}
                 rows={1}
                 onChange={(e) => setTweetContent(e.target.value)}
               ></textarea>
             </div>
-            {imagePreview && <div className="">{renderPreview()}</div>}
+            {imagePreview && !isCreateTweetModalOpen ? renderPreview() : null}
             <div className="hidden peer-focus:block everyonecanreply">
               <div className="border-b border-[#2f3336] text-[#1d9bf0] pt-2 pb-2 mb-2 text-sm font-bold flex gap-1 items-center">
                 <svg

@@ -5,11 +5,21 @@ import Image from 'next/image';
 import { useEffect, useContext, useState } from 'react';
 import { auth } from '../config/firebase';
 import CreateTweetModal from './CreateTweetModal';
+import { HelloContext } from '../(pages)/layout';
 
 export default function LeftSidebar({
   userNickname,
   currentLoggedInUser,
 }: any) {
+  const {
+    setTweetContent,
+    setImagePreview,
+    setImageUpload,
+    isCreateTweetModalOpen,
+    setIsCreateTweetModalOpen,
+    clearInputs,
+  }: any = useContext(HelloContext);
+
   const router = useRouter();
 
   const onLogoutClick = async () => {
@@ -20,8 +30,6 @@ export default function LeftSidebar({
       console.error(err);
     }
   };
-
-  const [isCreateTweetModalOpen, setIsCreateTweetModalOpen] = useState(false);
 
   const handleClickOutside = (event) => {
     const logoutmodal = document.querySelector('.logoutmodal');
@@ -41,7 +49,7 @@ export default function LeftSidebar({
   return (
     <div
       className=" h-full bg-transparent text-[#e7e9ea] flex flex-col items-end xl:items-start 
-      min-w-[60px] sm:min-w-[10%] pr-1.5 xl:pl-6 xl:mr-36 2xl:mr-44"
+      min-w-[60px] sm:min-w-[10%] pr-1.5 xl:mr-36 2xl:mr-[170px]"
     >
       <div
         className="flex flex-col justify-between h-full items-end 
@@ -224,8 +232,11 @@ export default function LeftSidebar({
           </div>
 
           <button
-            onClick={() => setIsCreateTweetModalOpen(true)}
-            className="font-bold bg-[#1d9bf0] py-2 rounded-3xl xl:w-full xl:px-14"
+            onClick={() => {
+              setIsCreateTweetModalOpen(true);
+              clearInputs();
+            }}
+            className="font-bold bg-[#1d9bf0] py-2.5 rounded-3xl xl:w-full xl:px-14"
           >
             <div className="w-12 flex justify-center rounded-full xl:hidden">
               <svg
