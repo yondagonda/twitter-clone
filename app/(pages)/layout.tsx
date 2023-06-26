@@ -74,6 +74,9 @@ export default function MainLayout({
               followers: [],
               following: [],
               joinedDate: monthAndYear,
+              website: '',
+              bio: '',
+              locaton: '',
             });
           }
           newUser = false;

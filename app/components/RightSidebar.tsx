@@ -34,16 +34,16 @@ export default function RightSidebar() {
         </div>
         <div className=" bg-[#16181c] rounded-2xl text-[#e7e9ea]">
           <div className="text-xl font-bold p-3">What's happening</div>
-          <div className="w-full px-3 py-4 hover:bg-[#1d1f24] duration-100">
+          <div className="w-full px-3 py-4 hover:bg-[#1d1f24] duration-100 text-[15.2px]">
             some news
           </div>
-          <div className="w-full px-3 py-4  hover:bg-[#1d1f24] duration-100">
+          <div className="w-full px-3 py-4  hover:bg-[#1d1f24] duration-100 text-[15.2px]">
             some news
           </div>
-          <div className="w-full px-3 py-4 hover:bg-[#1d1f24] duration-100">
+          <div className="w-full px-3 py-4 hover:bg-[#1d1f24] duration-100 text-[15.2px]">
             some news
           </div>
-          <div className="w-full px-3 py-4 hover:bg-[#1d1f24] duration-100">
+          <div className="w-full px-3 py-4 hover:bg-[#1d1f24] duration-100 text-[15.2px]">
             some news
           </div>
           <div className="w-full px-3 py-4 rounded-b-2xl hover:bg-[#1d1f24] duration-100 text-[#1d9bf0]">
@@ -52,13 +52,13 @@ export default function RightSidebar() {
         </div>
         <div className="bg-[#16181c] rounded-2xl text-[#e7e9ea]">
           <div className="p-3 text-xl font-bold">Who to follow</div>
-          <div className="w-full px-3 py-4 hover:bg-[#1d1f24] duration-100">
+          <div className="w-full px-3 py-4 hover:bg-[#1d1f24] duration-100 text-[15.2px]">
             some person
           </div>
-          <div className="w-full px-3 py-4 hover:bg-[#1d1f24] duration-100">
+          <div className="w-full px-3 py-4 hover:bg-[#1d1f24] duration-100 text-[15.2px]">
             some person
           </div>
-          <div className="w-full px-3 py-4 hover:bg-[#1d1f24] duration-100">
+          <div className="w-full px-3 py-4 hover:bg-[#1d1f24] duration-100 text-[15.2px]">
             some person
           </div>
           <div className="w-full px-3 py-4 rounded-b-2xl hover:bg-[#1d1f24] duration-100 text-[#1d9bf0]">

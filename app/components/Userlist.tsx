@@ -119,6 +119,7 @@ export const Userlist: FC = ({ likedBy }: any) => {
       </button>
     );
   };
+  console.log(LikedUsers);
 
   return (
     <div className="flex flex-col">
@@ -126,23 +127,25 @@ export const Userlist: FC = ({ likedBy }: any) => {
         <Link
           key={user.userId}
           href={`/user/${user.userNickname}`}
-          className="flex gap-4 select-none hover:bg-[#131212] px-4 py-3 duration-150"
+          className="flex gap-3 select-none hover:bg-[#131212] px-4 py-3 duration-150"
         >
-          <div>
+          <div className="pt-1">
             <img
-              className="rounded-full w-12"
+              className="rounded-full w-10"
               src={user.userProfileImg}
               alt="user profile image"
             />
           </div>
           <div className="flex justify-between w-full">
             <div>
-              <div className="font-bold w-fit hover:underline">
+              <div className="font-bold w-fit hover:underline text-[15px]">
                 {user.userName}
               </div>
 
-              <div className="text-[#71767b]">{user.userNickname}</div>
-              <div className="text-[#e7e9ea]">user description</div>
+              <div className="text-[#71767b] text-[15px] leading-5">
+                @{user.userNickname}
+              </div>
+              <div className="text-[#e7e9ea] text-[15px]">{user.bio}</div>
             </div>
             {renderFollowButton(user)}
           </div>

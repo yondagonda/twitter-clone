@@ -95,11 +95,9 @@ export default function Home() {
   useAutosizeTextArea(textAreaRef.current, tweetContent);
 
   // TODO (prioritising on what would be most impressive/what is most reminiscent of using twitter):
-  // user profile descriptions
+  // user profile descriptions + user profile page image properly formatted
   // cleanup login page
   // demo account functionality
-  // mini displays when hovering over names?
-  // start refactoring functions into separate components/hooks, like e.g. the text area one
 
   return (
     <div

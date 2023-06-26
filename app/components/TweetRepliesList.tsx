@@ -42,18 +42,22 @@ export const TweetRepliesList: FC = ({
                       <div className="flex gap-0.5 items-center">
                         <Link
                           href={`/user/${tweet.authorNickname}`}
-                          className=" font-bold hover:underline"
+                          className=" font-bold hover:underline text-[15.2px]"
                         >
                           {tweet.authorName}
                         </Link>
-                        <div className="text-[#71767b] ">
+                        <div className="text-[#71767b] text-[15.2px]">
                           @{tweet.authorNickname}
                         </div>
-                        <span>·</span>
-                        <div className=" text-[#71767b]">{tweet.date}</div>
+                        <span className="text-[#71767b] px-0.5">·</span>
+                        <div className=" text-[#71767b] text-[15.2px]">
+                          {tweet.date}
+                        </div>
                       </div>
                       <div className="flex gap-1">
-                        <div className="text-[#71767b]">Replying to</div>
+                        <div className="text-[#71767b] text-[15.2px]">
+                          Replying to
+                        </div>
                         <button
                           className="group"
                           onClick={(e) => {
@@ -61,7 +65,7 @@ export const TweetRepliesList: FC = ({
                             router.push(`/user/${tweet.parentTweetNickname}`);
                           }}
                         >
-                          <div className="group-hover:underline text-[#1d9bf0]">
+                          <div className="group-hover:underline text-[#1d9bf0] text-[15.2px]">
                             @{tweet.parentTweetNickname}
                           </div>
                         </button>
@@ -88,8 +92,8 @@ export const TweetRepliesList: FC = ({
                         <svg
                           viewBox="0 0 24 24"
                           aria-hidden="true"
-                          height={20}
-                          width={20}
+                          height={18}
+                          width={18}
                           className="fill-[#71767b]"
                         >
                           <g>
@@ -97,14 +101,16 @@ export const TweetRepliesList: FC = ({
                           </g>
                         </svg>
 
-                        {tweet.replies !== 0 && tweet.replies}
+                        {tweet.replies !== 0 && (
+                          <span className="text-[13px]">{tweet.replies}</span>
+                        )}
                       </button>
                       <div>
                         <svg
                           viewBox="0 0 24 24"
                           aria-hidden="true"
-                          height={20}
-                          width={20}
+                          height={18}
+                          width={18}
                           className="fill-[#71767b]"
                         >
                           <g>
@@ -120,8 +126,8 @@ export const TweetRepliesList: FC = ({
                           <svg
                             viewBox="0 0 24 24"
                             aria-hidden="true"
-                            height={20}
-                            width={20}
+                            height={18}
+                            width={18}
                             fill="rgb(249, 24, 128)"
                           >
                             <g>
@@ -132,8 +138,8 @@ export const TweetRepliesList: FC = ({
                           <svg
                             viewBox="0 0 24 24"
                             aria-hidden="true"
-                            height={20}
-                            width={20}
+                            height={18}
+                            width={18}
                             className="fill-[#71767b]"
                           >
                             <g>
@@ -142,7 +148,7 @@ export const TweetRepliesList: FC = ({
                           </svg>
                         )}
                         {tweet.likedBy.length !== 0 && (
-                          <div className="text-[#71767b]">
+                          <div className="text-[#71767b] text-[13px]">
                             {tweet.likedBy.length}
                           </div>
                         )}
@@ -151,8 +157,8 @@ export const TweetRepliesList: FC = ({
                         <svg
                           viewBox="0 0 24 24"
                           aria-hidden="true"
-                          height={20}
-                          width={20}
+                          height={18}
+                          width={18}
                           className="fill-[#71767b]"
                         >
                           <g>
@@ -175,8 +181,8 @@ export const TweetRepliesList: FC = ({
                   <svg
                     viewBox="0 0 24 24"
                     aria-hidden="true"
-                    height={20}
-                    width={20}
+                    height={18}
+                    width={18}
                     className="fill-[#71767b] group-hover:fill-[#1d9bf0]"
                   >
                     <g>

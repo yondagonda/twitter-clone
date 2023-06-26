@@ -46,7 +46,7 @@ export const CreateTweetModal: FC = ({ setIsCreateTweetModalOpen }: any) => {
     >
       <div className="px-4 py-4 relative">
         <button
-          className="w-fit"
+          className="w-fit p-1.5 rounded-full hover:bg-[#141414] duration-150"
           onClick={() => {
             clearInputs();
             setIsCreateTweetModalOpen(false);
