@@ -1,5 +1,11 @@
+/* eslint-disable @next/next/no-img-element */
 import Link from 'next/link';
-import { signOut, getAuth, onAuthStateChanged } from 'firebase/auth';
+import {
+  signOut,
+  getAuth,
+  onAuthStateChanged,
+  updateProfile,
+} from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useEffect, useContext, useState } from 'react';
@@ -45,7 +51,24 @@ export default function LeftSidebar({
     document.addEventListener('mousedown', handleClickOutside);
     document.querySelector('.displaylogoutmodal').style.pointerEvents = 'none';
   };
-  // border border-[#2f3336]
+
+  // INITAL DEMO ACCOUNT CREATION SETUP STUFF
+  // if (currentLoggedInUser?.email === 'demo@gmail.com') {
+  //   updateProfile(currentLoggedInUser, {
+  //     photoURL:
+  //       'https://pbs.twimg.com/profile_images/1590968738358079488/IY9Gx6Ok_400x400.jpg',
+  //     displayName: 'Demo Account',
+  //   })
+  //     .then(() => {
+  //       console.log(currentLoggedInUser);
+  //     })
+  //     .catch((error) => {
+  //       alert(
+  //         'Sorry, demo account currently not working right now. Please continue with a Google Account.'
+  //       );
+  //     });
+  // }
+
   return (
     <div
       className=" h-full bg-transparent text-[#e7e9ea] flex flex-col items-end xl:items-start 
@@ -266,7 +289,7 @@ export default function LeftSidebar({
         <div className="flex flex-col items-center">
           <div
             className="logoutmodal mb-1 rounded-xl flex fixed bottom-20 bg-black 
-          hidden flex-col"
+          hidden flex-col ml-20 lg:ml-0"
           >
             <button
               className="py-2.5 px-4 text-start font-bold hover:bg-[#1b1b1b] duration-150
@@ -276,7 +299,7 @@ export default function LeftSidebar({
             </button>
             <button
               onClick={onLogoutClick}
-              className="py-2.5 px-4 text-start font-bold hover:bg-[#1b1b1b] duration-150"
+              className="py-2.5 px-4 text-start font-bold hover:bg-[#1b1b1b] duration-150 truncate"
             >
               Log out @{userNickname && userNickname}
             </button>
@@ -299,12 +322,9 @@ export default function LeftSidebar({
       mb-3 w-full 2xl:px-4 2xl:py-2.5 rounded-full hover:bg-[#1b1b1b] duration-200 
       displaylogoutmodal"
           >
-            {currentLoggedInUser && (
+            {currentLoggedInUser?.photoURL && (
               <div>
-                <Image
-                  width={0}
-                  height={0}
-                  sizes="100vw"
+                <img
                   src={`${currentLoggedInUser.photoURL}`}
                   className="h-10 rounded-full min-w-[40px]"
                   alt="profile photo"
