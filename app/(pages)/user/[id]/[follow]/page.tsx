@@ -36,8 +36,8 @@ export default function FollowPage({ params }: any) {
 
   return (
     <div
-      className="min-h-screen bg-black border-x border-[#2f3336] border-w-[1px] w-full
-      max-w-[47%] text-white"
+      className="min-h-screen border-x border-[#2f3336] border-w-[1px] min-w-[270px] w-full max-w-[600px]
+     text-[#e7e9ea]"
     >
       <div>
         <div className="flex p-3 gap-7">
@@ -50,7 +50,7 @@ export default function FollowPage({ params }: any) {
               aria-hidden="true"
               height={22}
               width={22}
-              style={{ fill: 'white' }}
+              className="fill-[#eff3f4]"
             >
               <g>
                 <path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path>
@@ -74,7 +74,8 @@ export default function FollowPage({ params }: any) {
           >
             <div
               className={`text-[#71767b] flex flex-col items-center justify-center ${
-                currentTab === 'followers' && 'font-bold text-white relative'
+                currentTab === 'followers' &&
+                'font-bold text-[#e7e9ea] relative'
               }`}
             >
               <div className="py-4">Followers</div>
@@ -93,7 +94,8 @@ export default function FollowPage({ params }: any) {
           >
             <div
               className={`text-[#71767b] flex flex-col items-center justify-center ${
-                currentTab === 'following' && 'font-bold text-white relative'
+                currentTab === 'following' &&
+                'font-bold text-[#e7e9ea] relative'
               }`}
             >
               <div className="py-4">Following</div>

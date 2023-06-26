@@ -112,7 +112,7 @@ export const Userlist: FC = ({ likedBy }: any) => {
     return (
       <button
         onClick={(e) => onFollowClick(e, user.docUserId)}
-        className="py-1.5 px-4 rounded-3xl bg-slate-50 h-fit text-black"
+        className="py-1.5 px-4 rounded-3xl bg-[#eff3f4] h-fit text-black"
       >
         Follow
       </button>
@@ -140,8 +140,8 @@ export const Userlist: FC = ({ likedBy }: any) => {
                 {user.userName}
               </div>
 
-              <div className="text-slate-400">{user.userNickname}</div>
-              <div>user description</div>
+              <div className="text-[#71767b]">{user.userNickname}</div>
+              <div className="text-[#e7e9ea]">user description</div>
             </div>
             {renderFollowButton(user)}
           </div>

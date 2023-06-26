@@ -198,8 +198,8 @@ export default function UserPage({ params }: any) {
     if (params.id === nickname.current) {
       return (
         <button
-          className="py-1.5 px-5 rounded-3xl bg-black h-fit mt-6 text-slate-50
-       outline outline-[0.5px]"
+          className="py-1.5 px-5 rounded-3xl bg-black h-fit mt-6 text-[#e7e9ea]
+       outline outline-[0.5px] outline-[#536471] font-bold text-sm "
         >
           Edit Profile
         </button>
@@ -210,7 +210,8 @@ export default function UserPage({ params }: any) {
       return (
         <button
           onClick={(e) => onFollowClick(profileData.docId)}
-          className="py-2 px-6 rounded-3xl bg-black h-fit mt-6 text-white"
+          className="py-2 px-6 rounded-3xl bg-black h-fit mt-6 text-[#e7e9ea] font-bold text-sm
+          outline outline-[0.5px] outline-[#536471] "
           data-profile-nickname={params.id}
         >
           Unfollow
@@ -220,7 +221,7 @@ export default function UserPage({ params }: any) {
     return (
       <button
         onClick={(e) => onFollowClick(profileData.docId)}
-        className="py-2 px-6 rounded-3xl bg-slate-50 h-fit mt-6 text-black"
+        className="py-2 px-6 rounded-3xl bg-[#eff3f4] h-fit mt-6 font-bold text-sm text-black"
         data-profile-nickname={params.id}
       >
         Follow
@@ -234,8 +235,8 @@ export default function UserPage({ params }: any) {
 
   return (
     <div
-      className="min-h-screen bg-black border-x border-[#2f3336] border-w-[1px] w-full 
-    max-w-[47%] text-white"
+      className="min-h-screen border-x border-[#2f3336] border-w-[1px] min-w-[270px] w-full max-w-[600px]
+     text-[#e7e9ea]"
     >
       <div className="h-16 flex gap-6 p-3 items-center">
         <button
@@ -247,7 +248,7 @@ export default function UserPage({ params }: any) {
             aria-hidden="true"
             height={22}
             width={22}
-            style={{ fill: 'white' }}
+            className="fill-[#eff3f4]"
           >
             <g>
               <path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path>
@@ -321,26 +322,30 @@ export default function UserPage({ params }: any) {
               </Link>
             </div>
           </div>
-          <div className="grid grid-cols-4 text-center">
+          <div className="grid grid-cols-4 text-center border-b-[1px] border-[#2f3336]">
             <button
               className={
                 selectedTab === 'tweets'
-                  ? `py-4 cursor-pointer text-white font-bold`
-                  : 'py-4 cursor-pointer text-[#71767b]'
+                  ? `flex justify-center relative py-4 cursor-pointer text-[#e7e9ea] font-bold`
+                  : 'relative py-4 cursor-pointer text-[#71767b]'
               }
               onClick={() => setSelectedTab('tweets')}
             >
               Tweets
+              {selectedTab === 'tweets' && (
+                <div className="bg-[#1d9bf0] h-1 absolute bottom-0 w-[63px] rounded-full"></div>
+              )}
             </button>
             <button
               className={
                 selectedTab === 'replies'
-                  ? `py-4 cursor-pointer text-white font-bold`
+                  ? `flex justify-center relative py-4 cursor-pointer text-[#e7e9ea] font-bold`
                   : 'py-4 cursor-pointer text-[#71767b]'
               }
               onClick={() => setSelectedTab('replies')}
             >
               Replies
+              <div className="bg-[#1d9bf0] h-1 absolute bottom-0 w-[63px] rounded-full"></div>
             </button>
             <button className="py-4 cursor-not-allowed text-[#71767b]">
               Media

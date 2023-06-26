@@ -25,10 +25,10 @@ export const ImageModal: FC = ({ setShowImageModal, showImageModal }: any) => {
   return (
     <div
       className="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]
-  rounded-lg max-w-[90%]"
+  rounded-lg"
       ref={modalRef}
     >
-      <img className="" src={showImageModal.url} alt="image full sized" />
+      <img className="w-max" src={showImageModal.url} alt="image full sized" />
     </div>
   );
 };

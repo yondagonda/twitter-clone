@@ -16,6 +16,12 @@
   }
 }
 
+html {
+  overflow: -moz-scrollbars-vertical;
+  overflow-y: scroll;
+}
+/* enables scrollbar on every page */
+
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
