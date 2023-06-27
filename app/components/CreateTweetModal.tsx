@@ -68,7 +68,7 @@ export const CreateTweetModal: FC = ({ setIsCreateTweetModalOpen }: any) => {
           <div className="pt-1">
             <img
               src={`${auth?.currentUser?.photoURL}`}
-              className="h-10 rounded-full min-w-[40px]"
+              className="h-10 rounded-full min-w-[40px] max-w-[40px] object-cover"
               alt="profile photo"
             />
           </div>
@@ -137,7 +137,7 @@ export const CreateTweetModal: FC = ({ setIsCreateTweetModalOpen }: any) => {
               </svg>
               <input
                 type="file"
-                accept="image/*"
+                accept="image/png, image/jpeg, image/jpg"
                 className="hidden"
                 id="pickimage"
                 onChange={handleImageChange}
@@ -145,7 +145,8 @@ export const CreateTweetModal: FC = ({ setIsCreateTweetModalOpen }: any) => {
             </label>
           </div>
           <button
-            className="right-0 px-[17px] py-[7px] rounded-3xl bg-[#1d9bf0]  font-bold text-sm"
+            className={`right-0 px-[17px] py-[7px] rounded-3xl bg-[#1d9bf0]  font-bold text-sm
+            ${tweetContent === '' && 'pointer-events-none brightness-50'}`}
             onClick={() => {
               uploadFile();
               setIsCreateTweetModalOpen(false);

@@ -57,3 +57,18 @@ body {
   right: 50%;
   fill: black;
 }
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-fadeIn {
+  animation-name: fadeIn;
+  animation-duration: 0.25s;
+  animation-timing-function: ease-in-out;
+}

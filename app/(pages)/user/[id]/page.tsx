@@ -284,7 +284,7 @@ export default function UserPage({ params }: any) {
             <div>
               {profileData.userProfileImg && (
                 <img
-                  className="rounded-full outline outline-[3.5px] outline-black hover:brightness-90 duration-200 
+                  className="rounded-full outline outline-[3.5px] outline-black
                 absolute top-[183px] h-[128px] max-w-[128px] object-cover"
                   src={profileData.userProfileImg}
                   alt="profile photo"

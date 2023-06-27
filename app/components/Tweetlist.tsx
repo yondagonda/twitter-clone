@@ -29,10 +29,13 @@ export const Tweetlist: FC = ({
               key={tweet.id}
               className="border-b-[1px] border-[#2f3336] flex hover:bg-[#0a0a0a] duration-200"
             >
-              <Link className="h-0" href={`/user/${tweet.authorNickname}`}>
+              <Link
+                className="absolute z-[3] h-0"
+                href={`/user/${tweet.authorNickname}`}
+              >
                 <img
                   src={`${tweet?.authorProfileImg}`}
-                  className="h-10 ml-4 mt-4 rounded-full max-w-[40px] w-full absolute hover:brightness-90 duration-200
+                  className="h-10 ml-4 mt-4 rounded-full max-w-[40px] w-full hover:brightness-[.85] duration-200
                   object-cover"
                   alt="profile photo"
                 />
@@ -80,7 +83,7 @@ export const Tweetlist: FC = ({
                           sizes="100vw"
                           src={tweet.image.imageUrl}
                           alt="image"
-                          className="rounded-xl w-auto h-auto"
+                          className="rounded-xl w-auto h-auto border border-[#2f3336]"
                         />
                       </button>
                     )}

@@ -32,10 +32,10 @@ export default function LoginPage() {
         </div>
 
         <div
-          className="flex min-h-screen flex-col  w-full
-       z-[1] bg-black col-span-5 items-start text-[#e7e9ea] sm:pt-[270px]"
+          className="flex min-h-screen flex-col  w-full items-center
+       z-[1] bg-black col-span-5 sm:items-start text-[#e7e9ea] pt-6 sm:pt-[270px]"
         >
-          <div className="pl-4 sm:pl-14">
+          <div className="sm:pl-14">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 248 204"
@@ -48,7 +48,7 @@ export default function LoginPage() {
               />
             </svg>
           </div>
-          <div className="pl-4 sm:pl-14">
+          <div className="sm:pl-14">
             <div className="text-3xl lg:text-[55px] 2xl:text-[90px] font-bold py-10 lg:mt-10 2xl:mt-14">
               Happening now
             </div>

@@ -2,7 +2,7 @@
 
 'use client';
 
-import { FC, useEffect, useContext } from 'react';
+import { FC, useEffect, useContext, useState } from 'react';
 import {
   signInWithPopup,
   signOut,
@@ -19,11 +19,14 @@ import { HelloContext } from '../(pages)/layout.tsx';
 import aang from '../../public/assets/aang.jpg';
 import walter from '../../public/assets/walter.jpg';
 import batman from '../../public/assets/batman.jpg';
+import LoadingPage from './LoadingPage.tsx';
 
 const Auth: FC = () => {
-  console.log(auth?.currentUser?.displayName);
-  console.log(auth?.currentUser?.photoURL);
+  // console.log(auth?.currentUser?.displayName);
+  // console.log(auth?.currentUser?.photoURL);
   const router = useRouter();
+
+  const [showLoading, setShowLoading] = useState<boolean>(false);
 
   if (auth?.currentUser?.displayName !== undefined) {
     router.push('/home');
@@ -35,6 +38,7 @@ const Auth: FC = () => {
       if (authFlag) {
         authFlag = false;
         if (user) {
+          setShowLoading(true);
           router.push('/home'); // ensures a logged in user gets redirected if on page '/'
         }
       }
@@ -45,9 +49,11 @@ const Auth: FC = () => {
     try {
       await signInWithPopup(auth, googleProvider);
       if (auth?.currentUser) {
+        setShowLoading(true);
         router.push('/home'); // ensures redirect to home page on successful login
       }
     } catch (err) {
+      setShowLoading(false);
       console.error(err);
     }
   };
@@ -60,24 +66,60 @@ const Auth: FC = () => {
     }
   };
 
-  const createDemoAccount = async () => {
-    try {
-      await createUserWithEmailAndPassword(auth, 'aang@gmail.com', 'aang123');
-      if (auth?.currentUser) {
-        router.push('/home'); // ensures redirect to home page on successful login
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  // const createDemoAccount = async () => {
+  //   try {
+  //     await createUserWithEmailAndPassword(
+  //       auth,
+  //       'batman@gmail.com',
+  //       'batman123'
+  //     );
+  //     if (auth?.currentUser) {
+  //       router.push('/home'); // ensures redirect to home page on successful login
+  //     }
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
 
   const signInToWalter = async () => {
     try {
+      setShowLoading(true);
       await signInWithEmailAndPassword(auth, 'walter@gmail.com', 'walter123');
       if (auth?.currentUser) {
         router.push('/home'); // ensures redirect to home page on successful login
       }
     } catch (err) {
+      setShowLoading(false);
+      alert(
+        'Sorry, demo account is currently not working right now. Please continue with a Google Account.'
+      );
+    }
+  };
+
+  const signInToAang = async () => {
+    try {
+      setShowLoading(true);
+      await signInWithEmailAndPassword(auth, 'aang@gmail.com', 'aang123');
+      if (auth?.currentUser) {
+        router.push('/home'); // ensures redirect to home page on successful login
+      }
+    } catch (err) {
+      setShowLoading(false);
+      alert(
+        'Sorry, demo account is currently not working right now. Please continue with a Google Account.'
+      );
+    }
+  };
+
+  const signInToBatman = async () => {
+    try {
+      setShowLoading(true);
+      await signInWithEmailAndPassword(auth, 'batman@gmail.com', 'batman123');
+      if (auth?.currentUser) {
+        router.push('/home'); // ensures redirect to home page on successful login
+      }
+    } catch (err) {
+      setShowLoading(false);
       alert(
         'Sorry, demo account is currently not working right now. Please continue with a Google Account.'
       );
@@ -86,6 +128,8 @@ const Auth: FC = () => {
 
   return (
     <div className="flex flex-col text-lg pl-2 sm:pl-14 pt-8 gap-4">
+      {showLoading && <LoadingPage />}
+
       <button
         className="py-3 px-8 sm:px-20 rounded-full bg-[#e7e9ea] text-black font-bold
         flex items-center gap-4 hover:bg-[#d1d1d1] duration-200"
@@ -149,6 +193,7 @@ const Auth: FC = () => {
           whileHover={{ scale: 1.06 }}
           whileTap={{ scale: 0.98 }}
           className="flex flex-col items-center gap-1 group"
+          onClick={signInToBatman}
         >
           <Image
             alt="avatar aang"
@@ -159,11 +204,12 @@ const Auth: FC = () => {
           />
           <div>Batman</div>
         </motion.button>
+
         <motion.button
           whileHover={{ scale: 1.06 }}
           whileTap={{ scale: 0.98 }}
           className="flex flex-col items-center gap-1 group"
-          onClick={createDemoAccount}
+          onClick={signInToAang}
         >
           <Image
             alt="avatar aang"
@@ -174,6 +220,7 @@ const Auth: FC = () => {
           />
           <div>Aang</div>
         </motion.button>
+
         <motion.button
           whileHover={{ scale: 1.06 }}
           whileTap={{ scale: 0.98 }}
@@ -190,14 +237,6 @@ const Auth: FC = () => {
           <div>Walter</div>
         </motion.button>
       </div>
-
-      {/* <button
-        className="py-3 px-8 sm:px-20 rounded-full bg-[#e7e9ea] text-black font-bold
-        flex items-center gap-4 hover:bg-[#d1d1d1] duration-200"
-        onClick={signInWithDemoAccount}
-      >
-        Sign in with a demo account
-      </button> */}
     </div>
   );
 };

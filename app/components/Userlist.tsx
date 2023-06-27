@@ -131,7 +131,7 @@ export const Userlist: FC = ({ likedBy }: any) => {
         >
           <div className="pt-1">
             <img
-              className="rounded-full w-10"
+              className="rounded-full min-w-[40px] max-w-[40px] hover:brightness-[.85] duration-200"
               src={user.userProfileImg}
               alt="user profile image"
             />

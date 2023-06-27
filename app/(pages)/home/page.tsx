@@ -4,7 +4,7 @@
 'use client';
 
 import { getAuth } from 'firebase/auth';
-import { useEffect, useContext, useRef } from 'react';
+import { useEffect, useContext, useRef, useState } from 'react';
 import {
   getDoc,
   deleteDoc,
@@ -93,12 +93,10 @@ export default function Home() {
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   useAutosizeTextArea(textAreaRef.current, tweetContent);
 
-  // TODO (prioritising on what would be most impressive/what is most reminiscent of using twitter):
-  // setup pages/buffer to show during loading sequences
+  // TODO:
   // figure out what to put in trending section
-  // set up another demo account or two? (create 3 total)
-  // use framer motion for some basic animations?
-  // typescript all the things, next.config typescript + eslint being ignored oof
+
+  // typescript all the things, next.config typescript + eslint being ignored during build oof
 
   return (
     <div
@@ -123,7 +121,8 @@ export default function Home() {
           {auth.currentUser?.photoURL && (
             <img
               src={`${auth?.currentUser?.photoURL}`}
-              className="h-10 rounded-full mt-1 hover:brightness-90 duration-200 w-full max-w-[40px] object-cover"
+              className="h-10 rounded-full mt-1 hover:brightness-90 duration-200 w-full max-w-[40px] 
+              object-cover min-w-[40px]"
               alt="profile photo"
             />
           )}
@@ -180,7 +179,11 @@ export default function Home() {
 
           <div className="w-full">
             <div className="flex justify-between items-center">
-              <label htmlFor="pickimage" className="cursor-pointer">
+              <label
+                htmlFor="pickimage"
+                className="cursor-pointer p-2 hover:bg-[#02131f] duration-200 rounded-full 
+                "
+              >
                 <svg
                   viewBox="0 0 24 24"
                   aria-hidden="true"
@@ -202,7 +205,13 @@ export default function Home() {
               </label>
 
               <button
-                className=" px-4 py-1.5 rounded-3xl bg-[#1d9bf0] h-auto text-sm font-bold"
+                className={`px-4 py-1.5 rounded-3xl bg-[#1d9bf0] h-auto text-sm font-bold 
+                
+                ${
+                  tweetContent !== '' && isCreateTweetModalOpen === false
+                    ? 'pointer-events-auto brightness-100'
+                    : 'pointer-events-none brightness-50'
+                } `}
                 onClick={uploadFile}
               >
                 <div className="text-white">Tweet</div>

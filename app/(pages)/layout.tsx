@@ -26,6 +26,7 @@ import { parseISO } from 'date-fns';
 import { db, storage } from '../config/firebase.tsx';
 import RightSidebar from '../components/RightSidebar.tsx';
 import LeftSidebar from '../components/LeftSidebar.tsx';
+import LoadingPage from '../components/LoadingPage.tsx';
 
 export const HelloContext = React.createContext();
 
@@ -39,6 +40,7 @@ export default function MainLayout({
   const [currentLoggedInUser, setCurrentLoggedInUser] = useState();
   const nickname = useRef('');
   const [userNickname, setUserNickname] = useState('');
+  const [showLoading, setShowLoading] = useState<boolean>(false);
 
   useEffect(() => {
     let authFlag = true;
@@ -84,6 +86,7 @@ export default function MainLayout({
           }
           newUser = false;
         } else {
+          setShowLoading(true);
           console.log(`No signed in users, returning to login page....`);
           router.push('/');
         }
@@ -272,6 +275,7 @@ export default function MainLayout({
   return (
     <div className="App bg-black h-full w-full">
       <div className="app-container">
+        {showLoading && <LoadingPage />}
         <HelloContext.Provider
           value={{
             nickname,

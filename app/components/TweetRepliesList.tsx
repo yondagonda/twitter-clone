@@ -28,7 +28,7 @@ export const TweetRepliesList: FC = ({
               <Link className="h-0" href={`/user/${tweet.authorNickname}`}>
                 <img
                   src={`${tweet?.authorProfileImg}`}
-                  className=" rounded-full h-10 ml-4 mt-4 hover:brightness-90 duration-200
+                  className=" rounded-full h-10 ml-4 mt-4 hover:brightness-[.85] duration-200
                   max-w-[40px] w-full object-cover"
                   alt="profile photo"
                 />

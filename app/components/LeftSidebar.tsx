@@ -1,17 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from 'next/link';
-import {
-  signOut,
-  getAuth,
-  onAuthStateChanged,
-  updateProfile,
-} from 'firebase/auth';
+import { signOut } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
 import { useEffect, useContext, useState } from 'react';
 import { auth } from '../config/firebase';
 import CreateTweetModal from './CreateTweetModal';
 import { HelloContext } from '../(pages)/layout';
+import LoadingPage from './LoadingPage.tsx';
 
 export default function LeftSidebar({
   userNickname,
@@ -27,12 +22,15 @@ export default function LeftSidebar({
   }: any = useContext(HelloContext);
 
   const router = useRouter();
+  const [showLoading, setShowLoading] = useState<boolean>(false);
 
   const onLogoutClick = async () => {
+    setShowLoading(true);
     router.push('/');
     try {
       await signOut(auth);
     } catch (err) {
+      setShowLoading(false);
       console.error(err);
     }
   };
@@ -53,44 +51,45 @@ export default function LeftSidebar({
   };
 
   // INITAL DEMO ACCOUNT CREATION SETUP STUFF
-  if (currentLoggedInUser?.email === 'walter@gmail.com') {
-    updateProfile(currentLoggedInUser, {
-      photoURL:
-        'https://media.wbur.org/wp/2013/09/0927_Walter_White_cog1-1000x546.jpg',
-      displayName: 'Walter White',
-    })
-      .then(() => {
-        console.log(currentLoggedInUser);
-      })
-      .catch((error) => {
-        alert(
-          'Sorry, demo account currently not working right now. Please continue with a Google Account.'
-        );
-      });
-  }
+  // if (currentLoggedInUser?.email === 'batman@gmail.com') {
+  //   updateProfile(currentLoggedInUser, {
+  //     photoURL:
+  //       'https://raw.githubusercontent.com/yondagonda/twitter-clone/main/public/assets/batman.jpg',
+  //     displayName: 'Batman',
+  //   })
+  //     .then(() => {
+  //       console.log(currentLoggedInUser);
+  //     })
+  //     .catch((error) => {
+  //       alert(
+  //         'Sorry, demo account currently not working right now. Please continue with a Google Account.'
+  //       );
+  //     });
+  // }
 
   return (
     <div
       className=" h-full bg-transparent text-[#e7e9ea] flex flex-col items-end xl:items-start 
-      min-w-[55px] sm:min-w-[10%] sm:pr-1.5 xl:mr-36 2xl:mr-[160px]"
+      min-w-[55px] sm:min-w-[10%] sm:pr-1.5 xl:mr-36 2xl:mr-[152px]"
     >
+      {showLoading && <LoadingPage />}
       <div
-        className="flex flex-col justify-between h-full items-center 
-      fixed z-[3]"
+        className="flex flex-col sm:justify-between h-full items-center 
+      fixed z-[5]"
       >
         <div
-          className="flex flex-col gap-[12px] text-lg items-center 
+          className="flex flex-col gap-0.5 sm:gap-[12px] text-lg items-center 
         xl:items-start w-full xl:w-[220px]"
         >
           <Link
             href="/home"
-            className="px-3 pt-3 pb-2.5 mt-2.5 rounded-full hover:bg-[#171818] duration-200"
+            className="px-3 pt-2 pb-2.5 mt-2.5 rounded-full hover:bg-[#171818] duration-200"
           >
             <svg
               viewBox="0 0 48 48"
               id="Layer_2"
-              width={34}
-              height={34}
+              width={36}
+              height={36}
               data-name="Layer 2"
               xmlns="http://www.w3.org/2000/svg"
               className="fill-[#e7e9ea]"
@@ -264,9 +263,9 @@ export default function LeftSidebar({
               clearInputs();
             }}
             className="font-bold text-[15.3px] bg-[#1d9bf0] hover:bg-[#1784cc] duration-200
-            py-3 rounded-3xl xl:w-full xl:px-14"
+            py-1.5 sm:py-3 rounded-3xl xl:w-full xl:px-14 max-w-[40px] min-w-[40px] sm:min-w-[52px] sm:max-w-none"
           >
-            <div className="w-12 flex justify-center rounded-full xl:hidden">
+            <div className="flex justify-center rounded-full xl:hidden">
               <svg
                 viewBox="0 0 24 24"
                 aria-hidden="true"
@@ -283,7 +282,7 @@ export default function LeftSidebar({
           </button>
 
           {isCreateTweetModalOpen && (
-            <div className="bg-blue-300/20 fixed top-0 left-0 right-0 bottom-0 z-[1] ">
+            <div className="bg-blue-300/20 fixed top-0 left-0 right-0 bottom-0 z-[10] ">
               <CreateTweetModal
                 setIsCreateTweetModalOpen={setIsCreateTweetModalOpen}
               />
@@ -294,7 +293,7 @@ export default function LeftSidebar({
         <div className="flex flex-col items-center">
           <div
             className="logoutmodal mb-1 rounded-xl flex fixed bottom-20 bg-black 
-          hidden flex-col ml-16 md:ml-10 xl:ml-0"
+          hidden animate-fadeIn flex-col ml-16 md:ml-10 xl:ml-0"
           >
             <button
               className="py-2.5 px-2 xl:px-4 text-start font-bold hover:bg-[#1b1b1b] duration-150
@@ -341,7 +340,7 @@ export default function LeftSidebar({
               <div className="text-sm font-bold text-start">
                 {currentLoggedInUser?.displayName}
               </div>
-              <div className="text-sm text-start text-[#71767b]">
+              <div className="text-sm text-start text-[#71767b] select-none">
                 {userNickname && `@${userNickname}`}
               </div>
             </div>
