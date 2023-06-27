@@ -24,7 +24,7 @@ export const LikesModal: FC = ({
 
   return (
     <div
-      className="fixed w-[500px] h-[600px] top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]
+      className="fixed  w-[85%] sm:w-[500px] h-[600px] top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]
   bg-black rounded-lg"
       ref={modalRef}
     >

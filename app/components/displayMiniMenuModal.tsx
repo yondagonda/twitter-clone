@@ -76,7 +76,8 @@ const displayMiniMenuModal = (e, tweet, deleteTweet, router) => {
       'text-[#f4212e]',
       'gap-3',
       'flex',
-      'items-center'
+      'items-center',
+      'whitespace-nowrap'
     );
     deleteBtnContainer.addEventListener('click', (e) => {
       e.preventDefault();

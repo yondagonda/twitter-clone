@@ -53,64 +53,68 @@ export default function LeftSidebar({
   };
 
   // INITAL DEMO ACCOUNT CREATION SETUP STUFF
-  // if (currentLoggedInUser?.email === 'demo@gmail.com') {
-  //   updateProfile(currentLoggedInUser, {
-  //     photoURL:
-  //       'https://pbs.twimg.com/profile_images/1590968738358079488/IY9Gx6Ok_400x400.jpg',
-  //     displayName: 'Demo Account',
-  //   })
-  //     .then(() => {
-  //       console.log(currentLoggedInUser);
-  //     })
-  //     .catch((error) => {
-  //       alert(
-  //         'Sorry, demo account currently not working right now. Please continue with a Google Account.'
-  //       );
-  //     });
-  // }
+  if (currentLoggedInUser?.email === 'walter@gmail.com') {
+    updateProfile(currentLoggedInUser, {
+      photoURL:
+        'https://media.wbur.org/wp/2013/09/0927_Walter_White_cog1-1000x546.jpg',
+      displayName: 'Walter White',
+    })
+      .then(() => {
+        console.log(currentLoggedInUser);
+      })
+      .catch((error) => {
+        alert(
+          'Sorry, demo account currently not working right now. Please continue with a Google Account.'
+        );
+      });
+  }
 
   return (
     <div
       className=" h-full bg-transparent text-[#e7e9ea] flex flex-col items-end xl:items-start 
-      min-w-[60px] sm:min-w-[10%] pr-1.5 xl:mr-36 2xl:mr-[170px]"
+      min-w-[55px] sm:min-w-[10%] sm:pr-1.5 xl:mr-36 2xl:mr-[160px]"
     >
       <div
-        className="flex flex-col justify-between h-full items-end 
+        className="flex flex-col justify-between h-full items-center 
       fixed z-[3]"
       >
         <div
-          className="flex flex-col gap-[30px] text-lg items-center 
+          className="flex flex-col gap-[12px] text-lg items-center 
         xl:items-start w-full xl:w-[220px]"
         >
-          <Link href="/home" className="">
-            <div className="pb-1.5 mt-4">
-              <svg
-                viewBox="0 0 48 48"
-                id="Layer_2"
-                width={34}
-                height={34}
-                data-name="Layer 2"
-                xmlns="http://www.w3.org/2000/svg"
-                className="fill-[#e7e9ea]"
-              >
-                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                <g
-                  id="SVGRepo_tracerCarrier"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                ></g>
-                <g id="SVGRepo_iconCarrier">
-                  <defs></defs>
-                  <path
-                    className="cls-1"
-                    d="M38.74,16.55v1c0,10.07-7.64,21.61-21.62,21.61A21.14,21.14,0,0,1,5.5,35.71a12.22,12.22,0,0,0,1.81.11,15.25,15.25,0,0,0,9.44-3.24,7.56,7.56,0,0,1-7.1-5.29,6.9,6.9,0,0,0,1.44.15,7.53,7.53,0,0,0,2-.27A7.57,7.57,0,0,1,7,19.72v-.1a7.42,7.42,0,0,0,3.44.94A7.54,7.54,0,0,1,8.05,10.5a21.58,21.58,0,0,0,15.68,7.94,6.38,6.38,0,0,1-.21-1.74,7.55,7.55,0,0,1,13.17-5.31,15.59,15.59,0,0,0,4.83-1.85,7.65,7.65,0,0,1-3.39,4.27,15.87,15.87,0,0,0,4.37-1.26,15.56,15.56,0,0,1-3.76,4Z"
-                  ></path>
-                </g>
-              </svg>
-            </div>
+          <Link
+            href="/home"
+            className="px-3 pt-3 pb-2.5 mt-2.5 rounded-full hover:bg-[#171818] duration-200"
+          >
+            <svg
+              viewBox="0 0 48 48"
+              id="Layer_2"
+              width={34}
+              height={34}
+              data-name="Layer 2"
+              xmlns="http://www.w3.org/2000/svg"
+              className="fill-[#e7e9ea]"
+            >
+              <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+              <g
+                id="SVGRepo_tracerCarrier"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              ></g>
+              <g id="SVGRepo_iconCarrier">
+                <defs></defs>
+                <path
+                  className="cls-1"
+                  d="M38.74,16.55v1c0,10.07-7.64,21.61-21.62,21.61A21.14,21.14,0,0,1,5.5,35.71a12.22,12.22,0,0,0,1.81.11,15.25,15.25,0,0,0,9.44-3.24,7.56,7.56,0,0,1-7.1-5.29,6.9,6.9,0,0,0,1.44.15,7.53,7.53,0,0,0,2-.27A7.57,7.57,0,0,1,7,19.72v-.1a7.42,7.42,0,0,0,3.44.94A7.54,7.54,0,0,1,8.05,10.5a21.58,21.58,0,0,0,15.68,7.94,6.38,6.38,0,0,1-.21-1.74,7.55,7.55,0,0,1,13.17-5.31,15.59,15.59,0,0,0,4.83-1.85,7.65,7.65,0,0,1-3.39,4.27,15.87,15.87,0,0,0,4.37-1.26,15.56,15.56,0,0,1-3.76,4Z"
+                ></path>
+              </g>
+            </svg>
           </Link>
 
-          <Link href="/home" className="flex items-center gap-4">
+          <Link
+            href="/home"
+            className="flex items-center gap-4 rounded-full hover:bg-[#171818] py-2.5 px-3 duration-200"
+          >
             <svg
               viewBox="0 0 24 24"
               aria-hidden="true"
@@ -124,7 +128,7 @@ export default function LeftSidebar({
             </svg>
             <div className="text-xl hidden xl:block">Home</div>
           </Link>
-          <div className="cursor-not-allowed flex gap-4">
+          <div className="cursor-not-allowed flex gap-4 py-2.5 px-3">
             <svg
               viewBox="0 0 24 24"
               aria-hidden="true"
@@ -138,7 +142,7 @@ export default function LeftSidebar({
             </svg>
             <div className="text-xl hidden xl:block">Explore</div>
           </div>
-          <div className="cursor-not-allowed flex gap-4">
+          <div className="cursor-not-allowed flex gap-4 py-2.5 px-3">
             <svg
               viewBox="0 0 24 24"
               aria-hidden="true"
@@ -152,7 +156,7 @@ export default function LeftSidebar({
             </svg>
             <div className="text-xl hidden xl:block">Notifications</div>
           </div>
-          <div className="cursor-not-allowed flex gap-4">
+          <div className="cursor-not-allowed flex gap-4 py-2.5 px-3">
             <svg
               viewBox="0 0 24 24"
               aria-hidden="true"
@@ -166,7 +170,7 @@ export default function LeftSidebar({
             </svg>
             <div className="text-xl hidden xl:block">Messages</div>
           </div>
-          <div className="cursor-not-allowed flex gap-4">
+          <div className="cursor-not-allowed flex gap-4 py-2.5 px-3">
             <svg
               viewBox="0 0 24 24"
               aria-hidden="true"
@@ -180,7 +184,7 @@ export default function LeftSidebar({
             </svg>
             <div className="text-xl hidden xl:block">Lists</div>
           </div>
-          <div className="cursor-not-allowed flex gap-4">
+          <div className="cursor-not-allowed flex gap-4 py-2.5 px-3">
             <svg
               viewBox="0 0 24 24"
               aria-hidden="true"
@@ -194,7 +198,7 @@ export default function LeftSidebar({
             </svg>
             <div className="text-xl hidden xl:block">Bookmarks</div>
           </div>
-          <div className="cursor-not-allowed flex gap-4">
+          <div className="cursor-not-allowed flex gap-4 py-2.5 px-3">
             <svg
               viewBox="0 0 24 24"
               aria-hidden="true"
@@ -208,7 +212,7 @@ export default function LeftSidebar({
             </svg>
             <div className="text-xl hidden xl:block">Communities</div>
           </div>
-          <div className="cursor-not-allowed flex gap-4">
+          <div className="cursor-not-allowed flex gap-4 py-2.5 px-3">
             <svg
               viewBox="0 0 24 24"
               aria-hidden="true"
@@ -224,7 +228,7 @@ export default function LeftSidebar({
           </div>
           <Link
             href={`/user/${userNickname}`}
-            className="flex items-center gap-4"
+            className="flex items-center gap-4 rounded-full hover:bg-[#171818] py-2.5 px-3 duration-200"
           >
             <svg
               viewBox="0 0 24 24"
@@ -239,7 +243,7 @@ export default function LeftSidebar({
             </svg>
             <div className="text-xl hidden xl:block">Profile</div>
           </Link>
-          <div className="cursor-not-allowed flex gap-4">
+          <div className="cursor-not-allowed flex gap-4 py-2.5 px-3">
             <svg
               viewBox="0 0 24 24"
               aria-hidden="true"
@@ -259,7 +263,8 @@ export default function LeftSidebar({
               setIsCreateTweetModalOpen(true);
               clearInputs();
             }}
-            className="font-bold bg-[#1d9bf0] py-2.5 rounded-3xl xl:w-full xl:px-14"
+            className="font-bold text-[15.3px] bg-[#1d9bf0] hover:bg-[#1784cc] duration-200
+            py-3 rounded-3xl xl:w-full xl:px-14"
           >
             <div className="w-12 flex justify-center rounded-full xl:hidden">
               <svg
@@ -289,17 +294,18 @@ export default function LeftSidebar({
         <div className="flex flex-col items-center">
           <div
             className="logoutmodal mb-1 rounded-xl flex fixed bottom-20 bg-black 
-          hidden flex-col ml-20 lg:ml-0"
+          hidden flex-col ml-16 md:ml-10 xl:ml-0"
           >
             <button
-              className="py-2.5 px-4 text-start font-bold hover:bg-[#1b1b1b] duration-150
-            cursor-not-allowed"
+              className="py-2.5 px-2 xl:px-4 text-start font-bold hover:bg-[#1b1b1b] duration-150
+            cursor-not-allowed text-sm xl:text-base"
             >
               Add an existing account
             </button>
             <button
               onClick={onLogoutClick}
-              className="py-2.5 px-4 text-start font-bold hover:bg-[#1b1b1b] duration-150 truncate"
+              className="py-2.5 px-4 text-start font-bold hover:bg-[#1b1b1b] duration-150
+              text-sm xl:text-base truncate"
             >
               Log out @{userNickname && userNickname}
             </button>
@@ -326,7 +332,7 @@ export default function LeftSidebar({
               <div>
                 <img
                   src={`${currentLoggedInUser.photoURL}`}
-                  className="h-10 rounded-full min-w-[40px]"
+                  className="h-10 rounded-full w-full max-w-[40px] object-cover"
                   alt="profile photo"
                 />
               </div>
@@ -335,7 +341,7 @@ export default function LeftSidebar({
               <div className="text-sm font-bold text-start">
                 {currentLoggedInUser?.displayName}
               </div>
-              <div className="text-sm text-[#71767b]">
+              <div className="text-sm text-start text-[#71767b]">
                 {userNickname && `@${userNickname}`}
               </div>
             </div>

@@ -190,7 +190,7 @@ export default function TweetPage({ params }: any) {
     console.log(allTweets);
   }, []);
 
-  const [showLikesModal, setShowLikesModal] = useState(false);
+  const [showLikesModal, setShowLikesModal] = useState<boolean>(false);
 
   const [showImageModal, setShowImageModal] = useState({
     url: '',
@@ -248,21 +248,24 @@ export default function TweetPage({ params }: any) {
             >
               <img
                 src={`${displayTweet?.authorProfileImg}`}
-                className="h-10 rounded-full w-[40x]"
+                className="h-10 rounded-full max-w-[40px] w-full object-cover hover:brightness-90 duration-200"
                 alt="profile photo"
               />
             </Link>
             <div>
-              <div className="font-bold text-[#e7e9ea]">
+              <Link
+                href={`/user/${displayTweet?.authorNickname}`}
+                className="font-bold text-[#e7e9ea] hover:underline cursor-pointer"
+              >
                 {displayTweet?.authorName}
-              </div>
+              </Link>
               <div className="text-sm text-[#71767b]">
                 @{displayTweet?.authorNickname}
               </div>
             </div>
           </div>
           <button
-            className="h-0 group selected"
+            className="h-fit group selected p-2 hover:bg-[#02111b] rounded-full duration-200"
             onClick={(e) => {
               e.preventDefault();
               displayMiniMenuModal(e, displayTweet, deleteParentTweet, router);
@@ -311,7 +314,7 @@ export default function TweetPage({ params }: any) {
           )}
           <div className="text-sm text-[#71767b]">{displayTweet?.date}</div>
         </div>
-        <div className="flex justify-start gap-6 text-sm border-y-[1px] border-[#2f3336] py-3">
+        <div className=" flex justify-start gap-2 sm:gap-6 text-sm border-y-[1px] border-[#2f3336] py-3">
           <div className="flex gap-1">
             <div>0</div>
             <div className="text-[#71767b]">Retweets</div>
@@ -440,7 +443,7 @@ export default function TweetPage({ params }: any) {
                 <div className="">
                   <img
                     src={`${auth?.currentUser?.photoURL}`}
-                    className="h-10 min-w-[40px] rounded-full"
+                    className="h-10 max-w-[40px] min-w-[40px] object-cover rounded-full"
                     alt="profile photo"
                   />
                 </div>
@@ -474,26 +477,33 @@ export default function TweetPage({ params }: any) {
             return (
               <div
                 key={tweet.id}
-                className="flex gap-3 p-4 border-b-[1px] border-[#2f3336] overflow-x-hidden"
+                className="flex gap-3 pt-3 pb-1 pl-3 border-b-[1px] border-[#2f3336] overflow-x-hidden relative"
               >
                 <Link className="h-0" href={`/user/${tweet.authorNickname}`}>
                   <img
                     src={`${tweet?.authorProfileImg}`}
-                    className="h-10 rounded-full min-w-[40px]"
+                    className="h-10 rounded-full max-w-[40px] min-w-[40px] w-full object-cover 
+                    hover:brightness-90 duration-200"
                     alt="profile photo"
                   />
                 </Link>
-                <Link href={`/tweet/${tweet.id}`} className="flex gap-3 w-full">
+                <Link
+                  href={`/tweet/${tweet.id}`}
+                  className="flex gap-3 w-full relative pr-9"
+                >
                   <div className="w-full">
                     <div className="flex gap-1 items-center">
-                      <div className="font-bold text-[15.2px]">
+                      <Link
+                        href={`/user/${tweet.authorNickname}`}
+                        className="font-bold text-[15.2px] hover:underline"
+                      >
                         {tweet.authorName}
-                      </div>
-                      <div className="text-[#71767b] text-[15.2px]">
+                      </Link>
+                      <div className="text-[#71767b] text-[15.2px] truncate">
                         @{tweet.authorNickname}
                       </div>
                       <span className="text-[#71767b] px-0.5">·</span>
-                      <div className="text-[#71767b] text-[15.2px]">
+                      <div className="text-[#71767b] text-[15.2px] truncate">
                         {tweet.date}
                       </div>
                     </div>
@@ -532,37 +542,44 @@ export default function TweetPage({ params }: any) {
                           </g>
                         </svg>
                       </div>
+
                       <button
-                        className="text-sm flex gap-2"
+                        className="text-sm flex gap-2 group items-center"
                         onClick={(e) => likeTweet(e, tweet)}
                       >
                         {tweet.likedBy.includes(auth?.currentUser?.uid) ? (
-                          <svg
-                            viewBox="0 0 24 24"
-                            aria-hidden="true"
-                            height={18}
-                            width={18}
-                            fill="rgb(249, 24, 128)"
-                          >
-                            <g>
-                              <path d="M20.884 13.19c-1.351 2.48-4.001 5.12-8.379 7.67l-.503.3-.504-.3c-4.379-2.55-7.029-5.19-8.382-7.67-1.36-2.5-1.41-4.86-.514-6.67.887-1.79 2.647-2.91 4.601-3.01 1.651-.09 3.368.56 4.798 2.01 1.429-1.45 3.146-2.1 4.796-2.01 1.954.1 3.714 1.22 4.601 3.01.896 1.81.846 4.17-.514 6.67z"></path>
-                            </g>
-                          </svg>
+                          <div className="p-2 rounded-full group-hover:bg-[#250313] duration-200">
+                            <svg
+                              viewBox="0 0 24 24"
+                              aria-hidden="true"
+                              height={18}
+                              width={18}
+                              fill="rgb(249, 24, 128)"
+                            >
+                              <g>
+                                <path d="M20.884 13.19c-1.351 2.48-4.001 5.12-8.379 7.67l-.503.3-.504-.3c-4.379-2.55-7.029-5.19-8.382-7.67-1.36-2.5-1.41-4.86-.514-6.67.887-1.79 2.647-2.91 4.601-3.01 1.651-.09 3.368.56 4.798 2.01 1.429-1.45 3.146-2.1 4.796-2.01 1.954.1 3.714 1.22 4.601 3.01.896 1.81.846 4.17-.514 6.67z"></path>
+                              </g>
+                            </svg>
+                          </div>
                         ) : (
-                          <svg
-                            viewBox="0 0 24 24"
-                            aria-hidden="true"
-                            height={18}
-                            width={18}
-                            className="fill-[#71767b]"
+                          <div
+                            className="p-2 rounded-full group-hover:bg-[#250313] 
+                          group-hover:fill-[#f91880] fill-[#71767b] duration-200"
                           >
-                            <g>
-                              <path d="M16.697 5.5c-1.222-.06-2.679.51-3.89 2.16l-.805 1.09-.806-1.09C9.984 6.01 8.526 5.44 7.304 5.5c-1.243.07-2.349.78-2.91 1.91-.552 1.12-.633 2.78.479 4.82 1.074 1.97 3.257 4.27 7.129 6.61 3.87-2.34 6.052-4.64 7.126-6.61 1.111-2.04 1.03-3.7.477-4.82-.561-1.13-1.666-1.84-2.908-1.91zm4.187 7.69c-1.351 2.48-4.001 5.12-8.379 7.67l-.503.3-.504-.3c-4.379-2.55-7.029-5.19-8.382-7.67-1.36-2.5-1.41-4.86-.514-6.67.887-1.79 2.647-2.91 4.601-3.01 1.651-.09 3.368.56 4.798 2.01 1.429-1.45 3.146-2.1 4.796-2.01 1.954.1 3.714 1.22 4.601 3.01.896 1.81.846 4.17-.514 6.67z"></path>
-                            </g>
-                          </svg>
+                            <svg
+                              viewBox="0 0 24 24"
+                              aria-hidden="true"
+                              height={18}
+                              width={18}
+                            >
+                              <g>
+                                <path d="M16.697 5.5c-1.222-.06-2.679.51-3.89 2.16l-.805 1.09-.806-1.09C9.984 6.01 8.526 5.44 7.304 5.5c-1.243.07-2.349.78-2.91 1.91-.552 1.12-.633 2.78.479 4.82 1.074 1.97 3.257 4.27 7.129 6.61 3.87-2.34 6.052-4.64 7.126-6.61 1.111-2.04 1.03-3.7.477-4.82-.561-1.13-1.666-1.84-2.908-1.91zm4.187 7.69c-1.351 2.48-4.001 5.12-8.379 7.67l-.503.3-.504-.3c-4.379-2.55-7.029-5.19-8.382-7.67-1.36-2.5-1.41-4.86-.514-6.67.887-1.79 2.647-2.91 4.601-3.01 1.651-.09 3.368.56 4.798 2.01 1.429-1.45 3.146-2.1 4.796-2.01 1.954.1 3.714 1.22 4.601 3.01.896 1.81.846 4.17-.514 6.67z"></path>
+                              </g>
+                            </svg>
+                          </div>
                         )}
                         {tweet.likedBy.length !== 0 && (
-                          <div className="text-[#71767b] text-[13px]">
+                          <div className="text-[#71767b] text-[13px] group-hover:text-[#f91880]">
                             {tweet.likedBy.length}
                           </div>
                         )}
@@ -582,27 +599,28 @@ export default function TweetPage({ params }: any) {
                       </div>
                     </div>
                   </div>
-                  <button
-                    className="h-0 group selected"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      displayMiniMenuModal(e, tweet, deleteTweet, router);
-                    }}
-                    data-id={index}
-                  >
-                    <svg
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
-                      height={18}
-                      width={18}
-                      className="fill-[#71767b] group-hover:fill-[#1d9bf0]"
-                    >
-                      <g>
-                        <path d="M3 12c0-1.1.9-2 2-2s2 .9 2 2-.9 2-2 2-2-.9-2-2zm9 2c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm7 0c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"></path>
-                      </g>
-                    </svg>
-                  </button>
                 </Link>
+                <button
+                  className="h-fit group selected p-2 hover:bg-[#02111b] rounded-full duration-200
+                     absolute top-1 right-1.5"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    displayMiniMenuModal(e, tweet, deleteTweet, router);
+                  }}
+                  data-id={index}
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                    height={20}
+                    width={20}
+                    className="fill-[#71767b] group-hover:fill-[#1d9bf0]"
+                  >
+                    <g>
+                      <path d="M3 12c0-1.1.9-2 2-2s2 .9 2 2-.9 2-2 2-2-.9-2-2zm9 2c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm7 0c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"></path>
+                    </g>
+                  </svg>
+                </button>
               </div>
             );
           }

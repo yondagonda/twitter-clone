@@ -33,7 +33,7 @@ export default function LoginPage() {
 
         <div
           className="flex min-h-screen flex-col  w-full
-      z-[1] bg-black col-span-5 items-start text-[#e7e9ea] sm:pt-[270px]"
+       z-[1] bg-black col-span-5 items-start text-[#e7e9ea] sm:pt-[270px]"
         >
           <div className="pl-4 sm:pl-14">
             <svg

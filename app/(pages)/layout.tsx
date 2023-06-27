@@ -1,3 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
+
 'use client';
 
 import React, { createContext, useRef, useEffect, useState } from 'react';
@@ -109,8 +111,6 @@ export default function MainLayout({
           'dd/MM/yyyy, HH:mm:ss',
           new Date()
         );
-
-        console.log(parsedDateFirst);
         const formattedDate = format(parsedDateFirst, 'yyyy-MM-dd HH:mm:ss');
         const parsedDate = parse(
           formattedDate,
@@ -185,13 +185,20 @@ export default function MainLayout({
   const handleImageChange = (e) => {
     setImageUpload(e.target.files[0]);
     if (e.target.files.length) {
-      const img = URL.createObjectURL(e.target.files[0]);
-      console.log(img);
-      setImagePreview(img);
-      if (!isCreateTweetModalOpen) {
-        document.querySelector('.everyonecanreply')?.classList.remove('hidden');
-        document.querySelector('.everyonedropdown')?.classList.remove('hidden');
-      }
+      console.log(e.target.files[0]);
+      if (e.target.files[0].size < 10000000) {
+        const img = URL.createObjectURL(e.target.files[0]);
+        console.log(img);
+        setImagePreview(img);
+        if (!isCreateTweetModalOpen) {
+          document
+            .querySelector('.everyonecanreply')
+            ?.classList.remove('hidden');
+          document
+            .querySelector('.everyonedropdown')
+            ?.classList.remove('hidden');
+        }
+      } else alert('File is too big!');
     }
   };
 
@@ -251,7 +258,8 @@ export default function MainLayout({
     </div>
   );
 
-  const [isCreateTweetModalOpen, setIsCreateTweetModalOpen] = useState(false);
+  const [isCreateTweetModalOpen, setIsCreateTweetModalOpen] =
+    useState<boolean>(false);
 
   const clearInputs = () => {
     setTweetContent('');

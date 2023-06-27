@@ -94,10 +94,11 @@ export default function Home() {
   useAutosizeTextArea(textAreaRef.current, tweetContent);
 
   // TODO (prioritising on what would be most impressive/what is most reminiscent of using twitter):
-  // pages to show during loading?
-  // fill up trending section?
-  // all popup modals are currently not mobile compatible
-  // typescript all the things
+  // setup pages/buffer to show during loading sequences
+  // figure out what to put in trending section
+  // set up another demo account or two? (create 3 total)
+  // use framer motion for some basic animations?
+  // typescript all the things, next.config typescript + eslint being ignored oof
 
   return (
     <div
@@ -119,11 +120,13 @@ export default function Home() {
       </div>
       <div className="flex px-4 pt-4 pb-2 gap-3 border-b-[1px] border-[#2f3336] ">
         <div>
-          <img
-            src={`${auth?.currentUser?.photoURL}`}
-            className="h-10 rounded-full min-w-[40px] mt-1 hover:brightness-90 duration-200"
-            alt="profile photo"
-          />
+          {auth.currentUser?.photoURL && (
+            <img
+              src={`${auth?.currentUser?.photoURL}`}
+              className="h-10 rounded-full mt-1 hover:brightness-90 duration-200 w-full max-w-[40px] object-cover"
+              alt="profile photo"
+            />
+          )}
         </div>
         <div className="flex flex-col w-full">
           <div
@@ -191,7 +194,7 @@ export default function Home() {
                 </svg>
                 <input
                   type="file"
-                  accept="image/*"
+                  accept="image/png, image/jpeg, image/jpg"
                   className="hidden"
                   id="pickimage"
                   onChange={handleImageChange}

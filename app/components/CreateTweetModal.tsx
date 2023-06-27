@@ -41,7 +41,7 @@ export const CreateTweetModal: FC = ({ setIsCreateTweetModalOpen }: any) => {
   return (
     <div
       className="fixed top-[30%] left-[50%] translate-x-[-50%] translate-y-[-50%]
-  rounded-2xl min-h-[300px] w-[600px] bg-black flex flex-col justify-between"
+  rounded-2xl min-h-[300px] w-[90%] md:w-[600px] bg-black flex flex-col justify-between"
       ref={modalRef}
     >
       <div className="px-4 py-4 relative">

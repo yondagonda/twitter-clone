@@ -28,16 +28,17 @@ export const TweetRepliesList: FC = ({
               <Link className="h-0" href={`/user/${tweet.authorNickname}`}>
                 <img
                   src={`${tweet?.authorProfileImg}`}
-                  className="fixed rounded-full h-10 w-auto ml-4 mt-4 hover:brightness-90 duration-200"
+                  className=" rounded-full h-10 ml-4 mt-4 hover:brightness-90 duration-200
+                  max-w-[40px] w-full object-cover"
                   alt="profile photo"
                 />
               </Link>
               <Link
                 href={`/tweet/${tweet.id}`}
-                className="w-full p-3 flex justify-between"
+                className="w-full px-3 pt-3 pb-1 flex justify-between relative"
               >
-                <div className="pl-[57px] w-full">
-                  <div className="flex gap-3 flex-col">
+                <div className="pl-1.5 w-full">
+                  <div className="flex gap-1.5 flex-col">
                     <div>
                       <div className="flex gap-0.5 items-center">
                         <Link
@@ -119,36 +120,42 @@ export const TweetRepliesList: FC = ({
                         </svg>
                       </div>
                       <button
-                        className="text-sm flex gap-2"
+                        className="text-sm flex gap-2 items-center group"
                         onClick={(e) => likeTweet(e, tweet)}
                       >
                         {tweet.likedBy.includes(auth?.currentUser?.uid) ? (
-                          <svg
-                            viewBox="0 0 24 24"
-                            aria-hidden="true"
-                            height={18}
-                            width={18}
-                            fill="rgb(249, 24, 128)"
-                          >
-                            <g>
-                              <path d="M20.884 13.19c-1.351 2.48-4.001 5.12-8.379 7.67l-.503.3-.504-.3c-4.379-2.55-7.029-5.19-8.382-7.67-1.36-2.5-1.41-4.86-.514-6.67.887-1.79 2.647-2.91 4.601-3.01 1.651-.09 3.368.56 4.798 2.01 1.429-1.45 3.146-2.1 4.796-2.01 1.954.1 3.714 1.22 4.601 3.01.896 1.81.846 4.17-.514 6.67z"></path>
-                            </g>
-                          </svg>
+                          <div className="p-2 rounded-full group-hover:bg-[#250313] duration-200">
+                            <svg
+                              viewBox="0 0 24 24"
+                              aria-hidden="true"
+                              height={18}
+                              width={18}
+                              fill="rgb(249, 24, 128)"
+                            >
+                              <g>
+                                <path d="M20.884 13.19c-1.351 2.48-4.001 5.12-8.379 7.67l-.503.3-.504-.3c-4.379-2.55-7.029-5.19-8.382-7.67-1.36-2.5-1.41-4.86-.514-6.67.887-1.79 2.647-2.91 4.601-3.01 1.651-.09 3.368.56 4.798 2.01 1.429-1.45 3.146-2.1 4.796-2.01 1.954.1 3.714 1.22 4.601 3.01.896 1.81.846 4.17-.514 6.67z"></path>
+                              </g>
+                            </svg>
+                          </div>
                         ) : (
-                          <svg
-                            viewBox="0 0 24 24"
-                            aria-hidden="true"
-                            height={18}
-                            width={18}
-                            className="fill-[#71767b]"
+                          <div
+                            className="p-2 rounded-full group-hover:bg-[#250313] 
+                          group-hover:fill-[#f91880] fill-[#71767b] duration-200"
                           >
-                            <g>
-                              <path d="M16.697 5.5c-1.222-.06-2.679.51-3.89 2.16l-.805 1.09-.806-1.09C9.984 6.01 8.526 5.44 7.304 5.5c-1.243.07-2.349.78-2.91 1.91-.552 1.12-.633 2.78.479 4.82 1.074 1.97 3.257 4.27 7.129 6.61 3.87-2.34 6.052-4.64 7.126-6.61 1.111-2.04 1.03-3.7.477-4.82-.561-1.13-1.666-1.84-2.908-1.91zm4.187 7.69c-1.351 2.48-4.001 5.12-8.379 7.67l-.503.3-.504-.3c-4.379-2.55-7.029-5.19-8.382-7.67-1.36-2.5-1.41-4.86-.514-6.67.887-1.79 2.647-2.91 4.601-3.01 1.651-.09 3.368.56 4.798 2.01 1.429-1.45 3.146-2.1 4.796-2.01 1.954.1 3.714 1.22 4.601 3.01.896 1.81.846 4.17-.514 6.67z"></path>
-                            </g>
-                          </svg>
+                            <svg
+                              viewBox="0 0 24 24"
+                              aria-hidden="true"
+                              height={18}
+                              width={18}
+                            >
+                              <g>
+                                <path d="M16.697 5.5c-1.222-.06-2.679.51-3.89 2.16l-.805 1.09-.806-1.09C9.984 6.01 8.526 5.44 7.304 5.5c-1.243.07-2.349.78-2.91 1.91-.552 1.12-.633 2.78.479 4.82 1.074 1.97 3.257 4.27 7.129 6.61 3.87-2.34 6.052-4.64 7.126-6.61 1.111-2.04 1.03-3.7.477-4.82-.561-1.13-1.666-1.84-2.908-1.91zm4.187 7.69c-1.351 2.48-4.001 5.12-8.379 7.67l-.503.3-.504-.3c-4.379-2.55-7.029-5.19-8.382-7.67-1.36-2.5-1.41-4.86-.514-6.67.887-1.79 2.647-2.91 4.601-3.01 1.651-.09 3.368.56 4.798 2.01 1.429-1.45 3.146-2.1 4.796-2.01 1.954.1 3.714 1.22 4.601 3.01.896 1.81.846 4.17-.514 6.67z"></path>
+                              </g>
+                            </svg>
+                          </div>
                         )}
                         {tweet.likedBy.length !== 0 && (
-                          <div className="text-[#71767b] text-[13px]">
+                          <div className="text-[#71767b] text-[13px] group-hover:text-[#f91880]">
                             {tweet.likedBy.length}
                           </div>
                         )}
@@ -171,7 +178,8 @@ export const TweetRepliesList: FC = ({
                 </div>
 
                 <button
-                  className="h-0 group selected"
+                  className="h-fit group selected p-2 hover:bg-[#02111b] rounded-full duration-200
+                  absolute top-1.5 right-1.5"
                   onClick={(e) => {
                     e.preventDefault();
                     displayMiniMenuModal(e, tweet, deleteTweet, router);
@@ -181,8 +189,8 @@ export const TweetRepliesList: FC = ({
                   <svg
                     viewBox="0 0 24 24"
                     aria-hidden="true"
-                    height={18}
-                    width={18}
+                    height={20}
+                    width={20}
                     className="fill-[#71767b] group-hover:fill-[#1d9bf0]"
                   >
                     <g>

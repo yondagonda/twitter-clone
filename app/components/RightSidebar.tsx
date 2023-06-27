@@ -25,10 +25,10 @@ export default function RightSidebar() {
             </g>
           </svg>
         </div>
-        <div className="p-3 bg-[#16181c] rounded-2xl text-[#e7e9ea] flex flex-col gap-1.5">
+        <div className="p-3 bg-[#16181c] rounded-2xl text-[#e7e9ea] flex flex-col gap-2">
           <div className="text-xl font-bold">Get Verified</div>
           <div className="font-bold ">Subscribe to unlock new features.</div>
-          <button className="bg-[#1d9bf0] px-4 py-1 rounded-3xl font-bold text-white w-fit">
+          <button className="bg-[#1d9bf0] px-4 py-1.5 rounded-3xl text-[15px] font-bold text-white w-fit">
             Get Verified
           </button>
         </div>

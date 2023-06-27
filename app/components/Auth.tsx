@@ -1,3 +1,5 @@
+/* eslint-disable no-alert */
+
 'use client';
 
 import { FC, useEffect, useContext } from 'react';
@@ -10,8 +12,13 @@ import {
 } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import { collection, getDocs, addDoc } from 'firebase/firestore';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
 import { auth, googleProvider, db } from '../config/firebase.tsx';
 import { HelloContext } from '../(pages)/layout.tsx';
+import aang from '../../public/assets/aang.jpg';
+import walter from '../../public/assets/walter.jpg';
+import batman from '../../public/assets/batman.jpg';
 
 const Auth: FC = () => {
   console.log(auth?.currentUser?.displayName);
@@ -53,18 +60,20 @@ const Auth: FC = () => {
     }
   };
 
-  const signInWithDemoAccount = async () => {
-    // try {
-    //   await createUserWithEmailAndPassword(auth, 'demo@gmail.com', 'demo123');
-    //   if (auth?.currentUser) {
-    //     router.push('/home'); // ensures redirect to home page on successful login
-    //   }
-    // } catch (err) {
-    //   console.error(err); USED THIS TO CREATE THE DEMO ACCOUNT
-    // } ALSO NEED TO PUT IN A PHOTOURL ON FIRESTORE
-
+  const createDemoAccount = async () => {
     try {
-      await signInWithEmailAndPassword(auth, 'demo@gmail.com', 'demo123');
+      await createUserWithEmailAndPassword(auth, 'aang@gmail.com', 'aang123');
+      if (auth?.currentUser) {
+        router.push('/home'); // ensures redirect to home page on successful login
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const signInToWalter = async () => {
+    try {
+      await signInWithEmailAndPassword(auth, 'walter@gmail.com', 'walter123');
       if (auth?.currentUser) {
         router.push('/home'); // ensures redirect to home page on successful login
       }
@@ -129,13 +138,66 @@ const Auth: FC = () => {
         Log in
       </button>
 
-      <button
+      <div className="grid-cols-[1fr_auto_1fr] grid items-center">
+        <div className="h-[1px] bg-[#2f3336]"></div>
+        <div className="px-3">OR use a demo account</div>
+        <div className="h-[1px] bg-[#2f3336]"></div>
+      </div>
+
+      <div className="flex justify-around">
+        <motion.button
+          whileHover={{ scale: 1.06 }}
+          whileTap={{ scale: 0.98 }}
+          className="flex flex-col items-center gap-1 group"
+        >
+          <Image
+            alt="avatar aang"
+            src={batman}
+            className="h-[68px] w-[68px] rounded-full object-cover border-[2px] border-[#536471]
+            group-hover:border-[#c5cace] duration-200"
+            draggable={false}
+          />
+          <div>Batman</div>
+        </motion.button>
+        <motion.button
+          whileHover={{ scale: 1.06 }}
+          whileTap={{ scale: 0.98 }}
+          className="flex flex-col items-center gap-1 group"
+          onClick={createDemoAccount}
+        >
+          <Image
+            alt="avatar aang"
+            src={aang}
+            className="h-[68px] w-[68px] rounded-full object-cover border-[2px] border-[#536471]
+            group-hover:border-[#c5cace] duration-200"
+            draggable={false}
+          />
+          <div>Aang</div>
+        </motion.button>
+        <motion.button
+          whileHover={{ scale: 1.06 }}
+          whileTap={{ scale: 0.98 }}
+          className="flex flex-col items-center gap-1 group"
+          onClick={signInToWalter}
+        >
+          <Image
+            alt="avatar aang"
+            src={walter}
+            className="h-[68px] w-[68px] rounded-full object-cover border-[2px] border-[#536471]
+            group-hover:border-[#c5cace] duration-200"
+            draggable={false}
+          />
+          <div>Walter</div>
+        </motion.button>
+      </div>
+
+      {/* <button
         className="py-3 px-8 sm:px-20 rounded-full bg-[#e7e9ea] text-black font-bold
         flex items-center gap-4 hover:bg-[#d1d1d1] duration-200"
         onClick={signInWithDemoAccount}
       >
         Sign in with a demo account
-      </button>
+      </button> */}
     </div>
   );
 };

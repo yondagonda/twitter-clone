@@ -52,7 +52,7 @@ export const EditProfileModal: FC = ({
 
   return (
     <div
-      className="fixed w-[550px] h-[430px] top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]
+      className="fixed w-[90%] sm:w-[550px] h-[430px] top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]
   bg-black rounded-xl"
       ref={modalRef}
     >

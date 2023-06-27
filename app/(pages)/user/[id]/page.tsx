@@ -101,10 +101,21 @@ export default function UserPage({ params }: any) {
 
   const deleteTweet = async (e: any, tweet: any) => {
     e.preventDefault();
-    const parentTweetDocRef = doc(db, 'tweets', tweet.parentTweet);
-    await updateDoc(parentTweetDocRef, {
-      replies: increment(-1),
-    });
+    console.log(tweet);
+
+    if (tweet.parentTweet !== null) {
+      const parentTweetDocRef = doc(db, 'tweets', tweet.parentTweet);
+      console.log(parentTweetDocRef);
+      try {
+        await updateDoc(parentTweetDocRef, {
+          replies: increment(-1),
+        });
+      } catch (error) {
+        console.log(
+          'Parent tweet must have already been deleted, deleting tweet'
+        );
+      }
+    }
 
     const tweetsDocRef = doc(db, 'tweets', tweet.id);
     await deleteDoc(tweetsDocRef);
@@ -116,7 +127,6 @@ export default function UserPage({ params }: any) {
 
     const likeRef = doc(db, 'tweets', tweet.id);
     const getLikes = await getDoc(likeRef);
-    // console.log(getLikes?.data()?.likedBy);
 
     const likesSoFar = getLikes?.data()?.likedBy;
     if (likesSoFar.includes(auth?.currentUser?.uid)) {
@@ -274,8 +284,8 @@ export default function UserPage({ params }: any) {
             <div>
               {profileData.userProfileImg && (
                 <img
-                  className="rounded-full w-[128px] outline outline-[3.5px] outline-black hover:brightness-90 duration-200 
-                absolute top-[183px]"
+                  className="rounded-full outline outline-[3.5px] outline-black hover:brightness-90 duration-200 
+                absolute top-[183px] h-[128px] max-w-[128px] object-cover"
                   src={profileData.userProfileImg}
                   alt="profile photo"
                 />
@@ -303,7 +313,7 @@ export default function UserPage({ params }: any) {
               <div className="pt-3 pb-0.5 text-[15px]">{profileData.bio}</div>
             )}
 
-            <div className="flex gap-3 pb-1.5 items-center pt-2.5">
+            <div className="flex gap-3 pb-1.5 items-center sm:pt-2.5">
               {profileData.location && (
                 <div className="flex gap-1 items-center">
                   <svg
@@ -420,7 +430,9 @@ export default function UserPage({ params }: any) {
               onClick={() => setSelectedTab('replies')}
             >
               Replies
-              <div className="bg-[#1d9bf0] h-1 absolute bottom-0 w-[63px] rounded-full"></div>
+              {selectedTab === 'replies' && (
+                <div className="bg-[#1d9bf0] h-1 absolute bottom-0 w-[63px] rounded-full"></div>
+              )}
             </button>
             <button className="py-4 cursor-not-allowed text-[#71767b]">
               Media
