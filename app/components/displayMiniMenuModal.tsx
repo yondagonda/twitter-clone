@@ -12,7 +12,6 @@ const handleClickOutside = (event) => {
 
 const displayMiniMenuModal = (e, tweet, deleteTweet, router) => {
   const selected = e.target.closest('[data-id]');
-  console.log(selected);
   const overlay = document.createElement('div');
   overlay.classList.add(
     'fixed',

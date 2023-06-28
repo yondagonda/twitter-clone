@@ -45,7 +45,7 @@ export const Tweetlist: FC = ({
                 className="flex justify-between w-full px-3 pt-3 pb-1 pl-[68px] relative
                 "
               >
-                <div className="flex gap-1.5 flex-col  w-full pr-3">
+                <div className="flex gap-1 flex-col  w-full pr-3">
                   <div className="pr-0.5">
                     <div className="flex gap-0.5 items-center">
                       <Link

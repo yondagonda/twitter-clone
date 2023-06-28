@@ -516,7 +516,7 @@ export default function TweetPage({ params }: any) {
                           {tweet.date}
                         </div>
                       </div>
-                      <div className="pb-2 break-all text-[15.2px]">
+                      <div className="pb-1 break-all text-[15.2px]">
                         {tweet.text}
                       </div>
                       <div className="flex justify-around items-center">

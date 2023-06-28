@@ -38,7 +38,7 @@ export const TweetRepliesList: FC = ({
                 className="w-full px-3 pt-3 pb-1 flex justify-between relative"
               >
                 <div className="pl-1.5 w-full">
-                  <div className="flex gap-1.5 flex-col">
+                  <div className="flex gap-1 flex-col">
                     <div>
                       <div className="flex gap-0.5 items-center">
                         <Link

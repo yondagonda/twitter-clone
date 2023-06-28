@@ -14,7 +14,7 @@ import {
   getDocs,
   collection,
 } from 'firebase/firestore';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import parse from 'date-fns/parse';
 import format from 'date-fns/format';
 import differenceInSeconds from 'date-fns/differenceInSeconds';
@@ -204,12 +204,13 @@ export default function MainLayout({
     }
   };
 
+  const pathname = usePathname();
+
   const uploadFile = async () => {
     setImagePreview('');
     document.getElementById('pickimage')!.value = ''; // allows onchange to fire every time
 
     if (imageUpload === undefined) {
-      console.log(tweetContent);
       setImageURL('');
       setImageID('');
       setImageUpload();

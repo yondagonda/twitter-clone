@@ -93,11 +93,8 @@ export default function UserPage({ params }: any) {
 
   const deleteTweet = async (e: any, tweet: any) => {
     e.preventDefault();
-    console.log(tweet);
-
     if (tweet.parentTweet !== null) {
       const parentTweetDocRef = doc(db, 'tweets', tweet.parentTweet);
-      console.log(parentTweetDocRef);
       try {
         await updateDoc(parentTweetDocRef, {
           replies: increment(-1),

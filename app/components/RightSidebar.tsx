@@ -24,7 +24,6 @@ export default function RightSidebar({ currentLoggedInUser }) {
   const [myUserDetails, setMyUserDetails] = useState([]);
 
   const getMyUserDetails = async () => {
-    console.log('READING API');
     const data = await getDocs(usersCollectionRef);
     data.docs.map((document) => {
       if (document.data().userId === currentLoggedInUser.uid) {
@@ -32,11 +31,6 @@ export default function RightSidebar({ currentLoggedInUser }) {
       }
     });
   };
-
-  const pathname = usePathname();
-  const param = pathname.slice(6); // grabs the nickname from the url
-
-  const followListparam = pathname.slice(-9); // grabs the follower/following status from the url
 
   useEffect(() => {
     refreshWhoToFollowTab();
@@ -77,6 +71,10 @@ export default function RightSidebar({ currentLoggedInUser }) {
       }
     });
   };
+
+  const pathname = usePathname();
+  const param = pathname.slice(6); // grabs the nickname from the url
+  const followListparam = pathname.slice(-9); // grabs the follower/following status from the url
 
   const onFollowClick = async (e, recipientDocId: any) => {
     e.preventDefault();
@@ -225,11 +223,11 @@ export default function RightSidebar({ currentLoggedInUser }) {
               height={27}
               width={27}
             >
-              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+              <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
               <g
                 id="SVGRepo_tracerCarrier"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               ></g>
               <g id="SVGRepo_iconCarrier">
                 <title>git</title>
@@ -251,11 +249,11 @@ export default function RightSidebar({ currentLoggedInUser }) {
               version="1.1"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+              <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
               <g
                 id="SVGRepo_tracerCarrier"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               ></g>
               <g id="SVGRepo_iconCarrier">
                 <path d="M873.363 924.731c-0.039 40.905-33.184 74.053-74.083 74.099h-574.519c-40.91-0.039-74.065-33.19-74.111-74.096 0-3.965 0.734-7.904 2.144-11.609l198.996-521.504c0.069-0.827 0.187-1.654 0.291-2.47v-298.833h-23.511c-18.001 0-32.564-14.587-32.564-32.576s14.563-32.576 32.564-32.576h56.076c0.003 0 0.007 0 0.012 0 17.99 0 32.576 14.586 32.576 32.576 0 0 0 0 0 0v333.925c0 1.876-0.163 3.728-0.478 5.581 0 3.973-0.956 9.321-2.388 13.014l-119.863 314.118h432.199l-123.837-313.769c-1.401-3.431-2.233-7.411-2.275-11.581l-0.241-0.957c-0.133-1.155-0.209-2.493-0.209-3.847v-336.484c0-0.003 0-0.007 0-0.012 0-17.985 14.579-32.564 32.564-32.564 0 0 0 0 0 0h57.543c18.001 0 32.564 14.587 32.564 32.576s-14.563 32.576-32.564 32.576h-24.991v300.976l205.824 521.469c1.503 3.822 2.284 7.865 2.284 11.965zM448.899 651.798c0.42-13.171 11.197-23.689 24.432-23.689s24.013 10.517 24.43 23.651c0.001 13.495-10.962 24.47-24.443 24.47s-24.42-10.975-24.42-24.432zM465.164 651.798c-0.003 0.086-0.005 0.188-0.005 0.29 0 4.505 3.651 8.156 8.156 8.156 4.505 0 8.156-3.651 8.156-8.156 0-0.115-0.002-0.228-0.006-0.341-0.178-4.347-3.759-7.814-8.148-7.814-4.402 0-7.989 3.487-8.15 7.851zM575.101 627.366c0-0.003 0-0.007 0-0.012 0-13.5 10.943-24.444 24.444-24.444 13.5 0 24.444 10.943 24.444 24.444 0 13.5-10.943 24.444-24.444 24.444-13.49-0.014-24.423-10.942-24.444-24.43zM591.389 627.366c-0.003 0.086-0.005 0.188-0.005 0.29 0 4.505 3.651 8.156 8.156 8.156 4.505 0 8.156-3.651 8.156-8.156 0-0.115-0.002-0.228-0.006-0.341-0.178-4.347-3.759-7.814-8.148-7.814-4.402 0-7.989 3.487-8.15 7.851zM507.223 545.939c0.027-18.737 15.212-33.919 33.949-33.939 18.733 0.027 33.909 15.207 33.93 33.936-0.027 18.732-15.2 33.908-33.924 33.941-18.743-0.014-33.934-15.199-33.953-33.936zM523.51 545.939c0 9.728 7.922 17.651 17.663 17.651 9.716 0 17.663-7.922 17.663-17.651 0-9.741-7.947-17.663-17.663-17.663-9.741 0-17.663 7.922-17.663 17.663z"></path>
@@ -278,11 +276,11 @@ export default function RightSidebar({ currentLoggedInUser }) {
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 32 32"
             >
-              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+              <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
               <g
                 id="SVGRepo_tracerCarrier"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               ></g>
               <g id="SVGRepo_iconCarrier">
                 <path d="M16,27c0,0,3-1,6-1s7,1,7,1V8c0,0,0-1-0.983-1.224C26.647,6.463,24.081,6,22,6c-3,0-6,1-6,1 s-3-1-6-1C7.919,6,5.353,6.463,3.983,6.776C3,7,3,8,3,8v19c0,0,4-1,7-1S16,27,16,27z M20,13h5c0.552,0,1,0.447,1,1s-0.448,1-1,1h-5 c-0.552,0-1-0.447-1-1S19.448,13,20,13z M20,17h5c0.552,0,1,0.447,1,1s-0.448,1-1,1h-5c-0.552,0-1-0.447-1-1S19.448,17,20,17z M7,13 h5c0.552,0,1,0.447,1,1s-0.448,1-1,1H7c-0.552,0-1-0.447-1-1S6.448,13,7,13z M6,18c0-0.553,0.448-1,1-1h5c0.552,0,1,0.447,1,1 s-0.448,1-1,1H7C6.448,19,6,18.553,6,18z M31,8.999v20c0,0.279-0.117,0.547-0.323,0.736c-0.186,0.17-0.427,0.264-0.677,0.264 c-0.028,0-11.004-0.913-11.004-0.913c-0.043,0.512-0.473,0.913-0.996,0.913h-4c-0.523,0-0.953-0.401-0.996-0.913L2.083,29.996 c-0.281,0.029-0.554-0.071-0.76-0.26C1.117,29.546,1,29.279,1,28.999v-20c0-0.553,0.448-1,1-1v0v19.648 c0,0.321,0.295,0.56,0.608,0.488C4.056,27.801,7.755,27,10,27c2.794,0,5.656,0.939,5.684,0.949l0.315,0.105l0.316-0.105 C16.344,27.939,19.206,27,22,27c2.245,0,5.944,0.801,7.392,1.136C29.705,28.208,30,27.969,30,27.648L30,8v0 C30.552,7.999,31,8.447,31,8.999z"></path>{' '}

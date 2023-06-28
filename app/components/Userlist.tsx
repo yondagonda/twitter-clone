@@ -32,7 +32,6 @@ export const Userlist: FC = ({ likedBy }: any) => {
   const { refreshWhoToFollowTab } = useContext(HelloContext);
 
   const getAllUsersIncludingMyself = async () => {
-    console.log('READING API');
     const data = await getDocs(usersCollectionRef);
     const promises = data.docs.map((document) => {
       if (document.data().userId === auth?.currentUser?.uid) {
