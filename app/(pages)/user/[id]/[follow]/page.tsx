@@ -4,28 +4,18 @@ import { useSearchParams } from 'next/navigation';
 import Userlist from '@/app/components/Userlist.tsx';
 import { getDoc, doc } from 'firebase/firestore';
 import { db } from '@/app/config/firebase.tsx';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
+import { HelloContext } from '@/app/(pages)/layout';
 
 export default function FollowPage({ params }: any) {
-  const searchParams = useSearchParams();
-  const profileDocId = searchParams.get('id');
-  const userRef = doc(db, 'users', profileDocId);
-
-  const [userList, setUserList] = useState([]);
   const [currentTab, setCurrentTab] = useState(params.follow);
-  const [profileDetails, setProfileDetails] = useState<any>({});
 
-  const getList = async (followersOrFollowing) => {
-    const list = await getDoc(userRef);
-    setProfileDetails(list.data());
-    if (followersOrFollowing === 'followers') {
-      setUserList(list?.data()?.followers);
-    } else {
-      setUserList(list?.data()?.following);
-    }
-  };
+  const { getList, profileDetails, userList, setUserList, setProfileDetails } =
+    useContext(HelloContext);
 
   useEffect(() => {
+    setProfileDetails(''); //
+    setUserList(''); // doing these state resets help minmise/stop the prev state to new state rendering lag
     if (params.follow === 'following') {
       getList('following');
     }

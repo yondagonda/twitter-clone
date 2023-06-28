@@ -4,8 +4,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useRef } from 'react';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { useContext } from 'react';
 import Userlist from './Userlist';
 import { db } from '../config/firebase';
+import { HelloContext } from '../(pages)/layout';
 
 export const EditProfileModal: FC = ({
   setIsEditProfileModalOpen,
@@ -37,17 +39,16 @@ export const EditProfileModal: FC = ({
 
   const onSave = async () => {
     setIsEditProfileModalOpen(false);
-
     await updateDoc(userRef, {
-      bio: bioContent,
+      bio: bioContent || '',
     });
     await updateDoc(userRef, {
-      location: locationName,
+      location: locationName || '',
     });
     await updateDoc(userRef, {
-      website: websiteUrl,
+      website: websiteUrl || '',
     });
-    getProfileData();
+    getProfileData(profileData.userNickname);
   };
 
   return (
@@ -88,7 +89,7 @@ export const EditProfileModal: FC = ({
             className="bg-transparent resize-none px-2 pb-2.5
           outline-[#333639] outline outline-1 rounded-md w-full pt-6 
             focus:outline-2 focus:outline-[#1d9bf0] peer"
-            value={bioContent}
+            value={bioContent || ''}
             rows={4}
             onChange={(e) => setBioContent(e.target.value)}
             required
@@ -107,7 +108,7 @@ export const EditProfileModal: FC = ({
             className="bg-black outline-[#333639] outline outline-1 rounded-md
             px-2 pb-2.5 w-full pt-6 focus:outline-2 focus:outline-[#1d9bf0] peer"
             type="text"
-            value={locationName}
+            value={locationName || ''}
             onChange={(e) => setLocationName(e.target.value)}
             required
           />
@@ -125,7 +126,7 @@ export const EditProfileModal: FC = ({
             className="bg-black outline-[#333639] outline outline-1 rounded-md
             px-2 pb-2.5 w-full pt-6 focus:outline-2 focus:outline-[#1d9bf0] peer"
             type="text"
-            value={websiteUrl}
+            value={websiteUrl || ''}
             onChange={(e) => setWebsiteUrl(e.target.value)}
             required
           />

@@ -44,7 +44,7 @@ export default function Home() {
 
   useEffect(() => {
     if (imageURL) {
-      onSubmitTweet(); // chaining async functions through useEffect fixed our image uploading issues
+      onSubmitTweet();
       setTweetContent('');
       setImageURL('');
       setImageID('');
@@ -94,9 +94,8 @@ export default function Home() {
   useAutosizeTextArea(textAreaRef.current, tweetContent);
 
   // TODO:
-  // figure out what to put in trending section
-
   // typescript all the things, next.config typescript + eslint being ignored during build oof
+  // set background img on demos
 
   return (
     <div

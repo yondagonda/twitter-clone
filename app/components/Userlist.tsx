@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 /* eslint-disable consistent-return */
 /* eslint-disable @next/next/no-img-element */
 import { FC, useEffect, useState } from 'react';
@@ -13,7 +14,9 @@ import {
   getDoc,
   doc,
 } from 'firebase/firestore';
+import { useContext } from 'react';
 import { db, auth } from '../config/firebase';
+import { HelloContext } from '../(pages)/layout';
 
 export const Userlist: FC = ({ likedBy }: any) => {
   const [LikedUsers, setLikedUsers] = useState([]);
@@ -21,12 +24,16 @@ export const Userlist: FC = ({ likedBy }: any) => {
   const usersCollectionRef = collection(db, 'users');
 
   useEffect(() => {
-    getAllUsersIncludingMyself();
+    if (likedBy.length > 0) {
+      getAllUsersIncludingMyself();
+    }
   }, [likedBy]);
 
-  const getAllUsersIncludingMyself = async () => {
-    const data = await getDocs(usersCollectionRef);
+  const { refreshWhoToFollowTab } = useContext(HelloContext);
 
+  const getAllUsersIncludingMyself = async () => {
+    console.log('READING API');
+    const data = await getDocs(usersCollectionRef);
     const promises = data.docs.map((document) => {
       if (document.data().userId === auth?.currentUser?.uid) {
         setMyUserDetails(document.data());
@@ -39,14 +46,7 @@ export const Userlist: FC = ({ likedBy }: any) => {
     setLikedUsers(filteredData.filter((user) => user !== undefined));
   };
 
-  useEffect(() => {
-    getAllUsersIncludingMyself();
-  }, []);
-
   const addToFollowing = async (recipientUserId: any) => {
-    console.log(
-      `now add this userid to our current following list ${recipientUserId}`
-    );
     const data = await getDocs(usersCollectionRef);
     const filteredData = data.docs.map(async (document) => {
       if (myUserDetails.userId === document.data().userId) {
@@ -59,9 +59,6 @@ export const Userlist: FC = ({ likedBy }: any) => {
   };
 
   const removeFromFollowing = async (recipientUserId: any) => {
-    console.log(
-      `now add this userid to our current following list ${recipientUserId}`
-    );
     const data = await getDocs(usersCollectionRef);
     const filteredData = data.docs.map(async (document) => {
       if (myUserDetails.userId === document.data().userId) {
@@ -84,7 +81,6 @@ export const Userlist: FC = ({ likedBy }: any) => {
         followers: arrayRemove(myUserDetails.userId),
       });
       const recipientUserId = getrecipientRef?.data()?.userId;
-      console.log(`recipient userid: ${recipientUserId}`);
       await removeFromFollowing(recipientUserId);
     } else {
       await updateDoc(recipientRef, {
@@ -93,6 +89,14 @@ export const Userlist: FC = ({ likedBy }: any) => {
       await addToFollowing(getrecipientRef?.data()?.userId);
     }
     getAllUsersIncludingMyself();
+
+    if (
+      recipientDocId === 'Gu7cpPmDQAxlhd3TazFl' ||
+      recipientDocId === 'Kn4yGgl04xxIirpIjnkF' ||
+      recipientDocId === 'yC37BTRrPSALvdcLXDFx'
+    ) {
+      refreshWhoToFollowTab(); // only refresh the tab if the follow click was on a demo user
+    }
   };
 
   const renderFollowButton = (user) => {
@@ -119,7 +123,6 @@ export const Userlist: FC = ({ likedBy }: any) => {
       </button>
     );
   };
-  console.log(LikedUsers);
 
   return (
     <div className="flex flex-col">
@@ -131,7 +134,8 @@ export const Userlist: FC = ({ likedBy }: any) => {
         >
           <div className="pt-1">
             <img
-              className="rounded-full min-w-[40px] max-w-[40px] hover:brightness-[.85] duration-200"
+              className="rounded-full min-w-[40px] max-w-[40px] hover:brightness-[.85] 
+              h-[40px] duration-200 object-cover"
               src={user.userProfileImg}
               alt="user profile image"
             />

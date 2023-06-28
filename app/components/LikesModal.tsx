@@ -45,7 +45,7 @@ export const LikesModal: FC = ({
         <div className="text-xl font-bold">Liked By</div>
       </div>
 
-      <Userlist likedBy={likedBy} />
+      {likedBy.length > 0 && <Userlist likedBy={likedBy} />}
     </div>
   );
 };

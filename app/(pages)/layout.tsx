@@ -14,7 +14,7 @@ import {
   getDocs,
   collection,
 } from 'firebase/firestore';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import parse from 'date-fns/parse';
 import format from 'date-fns/format';
 import differenceInSeconds from 'date-fns/differenceInSeconds';
@@ -48,7 +48,7 @@ export default function MainLayout({
       if (authFlag) {
         authFlag = false;
         if (user) {
-          console.log(`User signed in: ${user.uid}`);
+          // console.log(`User signed in: ${user.uid}`);
           setCurrentLoggedInUser(user);
           const usersCollectionRef = collection(db, 'users');
           const data = await getDocs(usersCollectionRef);
@@ -138,7 +138,6 @@ export default function MainLayout({
         }
         return { ...tweet, date: finalDate };
       });
-      console.log(DateSortedTweets);
       setAllTweets(DateSortedTweets);
     } catch (err) {
       console.error(err);
@@ -272,6 +271,60 @@ export default function MainLayout({
     document.querySelector('.everyonedropdown')?.classList.add('hidden');
   };
 
+  const [whoToFollowTab, setWhoToFollowTab] = useState([]);
+
+  const refreshWhoToFollowTab = async () => {
+    const walterRef = doc(db, 'users', 'Gu7cpPmDQAxlhd3TazFl');
+    const walter = await getDoc(walterRef);
+    const walterData = { ...walter.data(), docUserId: walter.id };
+
+    const aangRef = doc(db, 'users', 'yC37BTRrPSALvdcLXDFx');
+    const aang = await getDoc(aangRef);
+    const aangData = { ...aang.data(), docUserId: aang.id };
+
+    const batmanRef = doc(db, 'users', 'Kn4yGgl04xxIirpIjnkF');
+    const batman = await getDoc(batmanRef);
+    const batmanData = { ...batman.data(), docUserId: batman.id };
+
+    const demos = [];
+    demos.push(walterData);
+    demos.push(aangData);
+    demos.push(batmanData);
+    setWhoToFollowTab(demos);
+  };
+
+  const usersCollectionRef = collection(db, 'users');
+
+  const [profileData, setProfileData] = useState<any>({});
+
+  const getProfileData = async (nickname) => {
+    const id = nickname;
+    const data = await getDocs(usersCollectionRef);
+    const filteredData = data.docs.map((document) => {
+      if (id === document.data().userNickname) {
+        return { ...document.data(), docId: document.id };
+      }
+    });
+    const profData = filteredData.filter((user) => user !== undefined);
+    setProfileData(profData[0]);
+  };
+
+  const searchParams = useSearchParams();
+  const profileDocId = searchParams.get('id');
+  const [profileDetails, setProfileDetails] = useState<any>({});
+  const [userList, setUserList] = useState([]);
+
+  const getList = async (followersOrFollowing) => {
+    const userRef = doc(db, 'users', profileDocId);
+    const list = await getDoc(userRef);
+    setProfileDetails(list.data());
+    if (followersOrFollowing === 'followers') {
+      setUserList(list?.data()?.followers);
+    } else {
+      setUserList(list?.data()?.following);
+    }
+  };
+
   return (
     <div className="App bg-black h-full w-full">
       <div className="app-container">
@@ -297,6 +350,16 @@ export default function MainLayout({
             isCreateTweetModalOpen,
             setIsCreateTweetModalOpen,
             clearInputs,
+            refreshWhoToFollowTab,
+            whoToFollowTab,
+            getProfileData,
+            setProfileData,
+            profileData,
+            getList,
+            profileDetails,
+            userList,
+            setUserList,
+            setProfileDetails,
           }}
         >
           <LeftSidebar
@@ -305,7 +368,7 @@ export default function MainLayout({
           />
           {children}
 
-          <RightSidebar />
+          <RightSidebar currentLoggedInUser={currentLoggedInUser} />
         </HelloContext.Provider>
       </div>
     </div>

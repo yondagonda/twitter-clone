@@ -29,22 +29,15 @@ import EditProfileModal from '@/app/components/EditProfileModal.tsx';
 import { HelloContext } from '../../layout.tsx';
 
 export default function UserPage({ params }: any) {
-  const [profileData, setProfileData] = useState<any>({});
   const usersCollectionRef = collection(db, 'users');
 
-  const { nickname } = useContext(HelloContext);
-
-  const getProfileData = async () => {
-    const { id } = params;
-    const data = await getDocs(usersCollectionRef);
-    const filteredData = data.docs.map((document) => {
-      if (id === document.data().userNickname) {
-        return { ...document.data(), docId: document.id };
-      }
-    });
-    const profData = filteredData.filter((user) => user !== undefined);
-    setProfileData(profData[0]);
-  };
+  const {
+    nickname,
+    refreshWhoToFollowTab,
+    getProfileData,
+    profileData,
+    setProfileData,
+  } = useContext(HelloContext);
 
   const [usersTweets, setUsersTweets] = useState([]);
   const tweetsCollectionRef = collection(db, 'tweets'); // holds all tweets
@@ -92,7 +85,6 @@ export default function UserPage({ params }: any) {
         }
         return { ...tweet, date: finalDate };
       });
-      console.log(DateSortedTweets);
       setUsersTweets(DateSortedTweets);
     } catch (err) {
       console.error(err);
@@ -142,13 +134,12 @@ export default function UserPage({ params }: any) {
   };
 
   useEffect(() => {
-    getProfileData();
+    setProfileData({}); // using this to try and reset the prev profile data before rendering to prevent image lag
+    getProfileData(params.id);
     getAllUsersTweets();
   }, []);
 
   const onFollowClick = async (recipientDocId) => {
-    console.log(`recipient docid: ${recipientDocId}`);
-
     const recipientRef = doc(db, 'users', recipientDocId);
     const getrecipientRef = await getDoc(recipientRef);
     const recipientFollowers = getrecipientRef?.data()?.followers;
@@ -158,23 +149,25 @@ export default function UserPage({ params }: any) {
         followers: arrayRemove(auth?.currentUser?.uid),
       });
       const recipientUserId = getrecipientRef?.data()?.userId;
-      console.log(`recipient userid: ${recipientUserId}`);
-      // need to remove recipients userid  in current users follwing list
       removeFromFollowing(recipientUserId);
     } else {
       await updateDoc(recipientRef, {
         followers: arrayUnion(auth?.currentUser?.uid),
       });
-      // need to update current users follwing list now with the recipients userid
       addToFollowing(getrecipientRef?.data()?.userId);
     }
-    getProfileData();
+    getProfileData(params.id);
+
+    if (
+      recipientDocId === 'Gu7cpPmDQAxlhd3TazFl' ||
+      recipientDocId === 'Kn4yGgl04xxIirpIjnkF' ||
+      recipientDocId === 'yC37BTRrPSALvdcLXDFx'
+    ) {
+      refreshWhoToFollowTab();
+    }
   };
 
   const addToFollowing = async (recipientUserId) => {
-    console.log(
-      `now add this userid to our current following list ${recipientUserId}`
-    );
     const data = await getDocs(usersCollectionRef);
     const filteredData = data.docs.map(async (document) => {
       if (auth?.currentUser?.uid === document.data().userId) {
@@ -185,13 +178,10 @@ export default function UserPage({ params }: any) {
       }
     });
     const profData = filteredData.filter((user) => user !== undefined);
-    setProfileData(profData[0]);
+    // setProfileData(profData[0]); these arent needed??
   };
 
   const removeFromFollowing = async (recipientUserId) => {
-    console.log(
-      `now add this userid to our current following list ${recipientUserId}`
-    );
     const data = await getDocs(usersCollectionRef);
     const filteredData = data.docs.map(async (document) => {
       if (auth?.currentUser?.uid === document.data().userId) {
@@ -202,7 +192,7 @@ export default function UserPage({ params }: any) {
       }
     });
     const profData = filteredData.filter((user) => user !== undefined);
-    setProfileData(profData[0]);
+    // setProfileData(profData[0]);
   };
 
   const renderFollowButton = () => {
@@ -217,7 +207,6 @@ export default function UserPage({ params }: any) {
         </button>
       );
     }
-    console.log(auth.currentUser); // unfollow button rendering jittery, store the state at earlier page?
     if (profileData.followers?.includes(auth?.currentUser?.uid)) {
       return (
         <button
