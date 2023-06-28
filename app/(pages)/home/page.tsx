@@ -95,14 +95,13 @@ export default function Home() {
 
   // TODO:
   // typescript all the things, next.config typescript + eslint being ignored during build oof
-  // set background img on demos
 
   return (
     <div
       className="min-h-screen border-x border-[#2f3336]
      text-[#e7e9ea] flex flex-col min-w-[270px] w-full max-w-[600px]"
     >
-      <div className="grid grid-rows-2 sticky top-0 bg-black/40 backdrop-blur-md z-[1]">
+      <div className="grid grid-rows-2 sticky top-0 bg-black/40 backdrop-blur-md z-[4]">
         <div className="font-bold text-xl pt-3 pb-3 px-4">Home</div>
         <div
           className="grid grid-cols-2 text-center border-b-[1px] border-[#2f3336] items-center

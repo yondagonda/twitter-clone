@@ -30,7 +30,7 @@ export default function FollowPage({ params }: any) {
      text-[#e7e9ea]"
     >
       <div>
-        <div className="flex p-3 gap-7">
+        <div className="flex p-3 gap-6 h-14 items-center">
           <button
             className="cursor-pointer"
             onClick={() => window.history.back()}
@@ -49,7 +49,7 @@ export default function FollowPage({ params }: any) {
           </button>
           <div className="flex flex-col">
             <div className="text-xl font-bold">{profileDetails.userName}</div>
-            <div className="text-[#71767b] text-sm">
+            <div className="text-[#71767b] text-[13.2px] leading-3">
               @{profileDetails.userNickname}
             </div>
           </div>

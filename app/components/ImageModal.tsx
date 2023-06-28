@@ -7,7 +7,6 @@ import Userlist from './Userlist';
 
 export const ImageModal: FC = ({ setShowImageModal, showImageModal }: any) => {
   const modalRef = useRef(null);
-  console.log(showImageModal);
 
   const handleClickOutside = (event) => {
     if (modalRef.current && !modalRef.current.contains(event.target)) {

@@ -129,6 +129,16 @@ export default function TweetPage({ params }: any) {
     }
   };
 
+  const options = {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+  };
+
   const onSubmitReply = async (receivingTweet: any) => {
     setReplyInput('');
     document.querySelector('.replyingtodropdown')?.classList.add('hidden');
@@ -142,7 +152,7 @@ export default function TweetPage({ params }: any) {
     const commentDetails = {
       text: replyInput,
       authorId: auth?.currentUser?.uid,
-      date: new Date().toLocaleString(),
+      date: new Date().toLocaleString('en-GB', options),
       authorName: auth?.currentUser?.displayName,
       authorNickname: nickname.current,
       likedBy: [],
@@ -187,7 +197,6 @@ export default function TweetPage({ params }: any) {
   useEffect(() => {
     getTweetData();
     getAllTweets();
-    console.log(allTweets);
   }, []);
 
   const [showLikesModal, setShowLikesModal] = useState<boolean>(false);
@@ -197,16 +206,25 @@ export default function TweetPage({ params }: any) {
     show: false,
   });
 
-  if (typeof window !== 'undefined') {
-    const replytweetinput = document.querySelector('.replytweetinput');
-    replytweetinput?.addEventListener('mousedown', () => {
-      document.querySelector('.replyingtodropdown')?.classList.remove('hidden');
-      document.querySelector('.flexcol')?.classList.add('flex-col');
-    });
-  }
-
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   useAutosizeTextArea(textAreaRef.current, replyInput);
+
+  useEffect(() => {
+    const replytweetinput = document.querySelector('.replytweetinput');
+    if (replytweetinput) {
+      replytweetinput.addEventListener('mousedown', openInput);
+    }
+    return () => {
+      if (replytweetinput) {
+        replytweetinput.removeEventListener('mousedown', openInput);
+      }
+    };
+  }, [displayTweet]);
+
+  const openInput = () => {
+    document.querySelector('.replyingtodropdown')?.classList.remove('hidden');
+    document.querySelector('.flexcol')?.classList.add('flex-col');
+  };
 
   return (
     <div
@@ -235,11 +253,12 @@ export default function TweetPage({ params }: any) {
         </div>
       </div>
 
-      {displayTweet?.parentTweet !== null && (
+      {displayTweet?.parentTweet !== null &&
+      displayTweet?.parentTweet !== undefined ? (
         <div className="">
           <div className="border-l-2 border-[#393733] h-12 absolute ml-[34.5px] "></div>
         </div>
-      )}
+      ) : null}
 
       <div className="px-4 pt-4 pb-2 w-full border-b-[1px] border-[#393733]">
         <div className="flex justify-between">
@@ -264,7 +283,9 @@ export default function TweetPage({ params }: any) {
                 {displayTweet?.authorName}
               </Link>
               <div className="text-sm text-[#71767b]">
-                @{displayTweet?.authorNickname}
+                {displayTweet?.authorNickname && (
+                  <>@{displayTweet?.authorNickname}</>
+                )}
               </div>
             </div>
           </div>

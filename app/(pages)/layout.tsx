@@ -187,10 +187,8 @@ export default function MainLayout({
   const handleImageChange = (e) => {
     setImageUpload(e.target.files[0]);
     if (e.target.files.length) {
-      console.log(e.target.files[0]);
       if (e.target.files[0].size < 10000000) {
         const img = URL.createObjectURL(e.target.files[0]);
-        console.log(img);
         setImagePreview(img);
         if (!isCreateTweetModalOpen) {
           document
@@ -200,7 +198,7 @@ export default function MainLayout({
             .querySelector('.everyonedropdown')
             ?.classList.remove('hidden');
         }
-      } else alert('File is too big!');
+      } else alert('Image size is too big!');
     }
   };
 
@@ -218,10 +216,7 @@ export default function MainLayout({
       onSubmitTweet();
       return;
     }
-    console.log(imageUpload);
     const imageName = v4() + imageUpload.name;
-    console.log(imageName);
-
     const filesFolderRef = ref(storage, `tweetImage/${imageName}`);
     const snapshot = await uploadBytes(filesFolderRef, imageUpload);
     const url = await getDownloadURL(snapshot.ref);

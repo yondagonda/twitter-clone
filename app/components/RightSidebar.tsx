@@ -113,28 +113,30 @@ export default function RightSidebar({ currentLoggedInUser }) {
   };
 
   const renderFollowButton = (demoacc) => {
-    if (demoacc.userId === myUserDetails.userId) {
-      return;
-    }
-    if (myUserDetails.following.includes(demoacc.userId)) {
+    if (myUserDetails.length > 0 || myUserDetails.length === undefined) {
+      if (demoacc.userId === myUserDetails.userId) {
+        return;
+      }
+      if (myUserDetails.following.includes(demoacc.userId)) {
+        return (
+          <button
+            onClick={(e) => onFollowClick(e, demoacc.docUserId)}
+            className="py-[7px] px-[15px] rounded-3xl bg-black h-fit text-[#e7e9ea] font-bold text-sm
+            outline-[#536471] outline outline-[0.5px] hover:outline-[#f4212e] hover:text-[#f4212e]
+            before:content-['Following'] hover:before:content-['Unfollow']"
+          ></button>
+        );
+      }
       return (
         <button
           onClick={(e) => onFollowClick(e, demoacc.docUserId)}
-          className="py-[7px] px-[15px] rounded-3xl bg-black h-fit text-[#e7e9ea] font-bold text-sm
-          outline-[#536471] outline outline-[0.5px] hover:outline-[#f4212e] hover:text-[#f4212e]
-          before:content-['Following'] hover:before:content-['Unfollow']"
-        ></button>
+          className="py-[7px] px-[15px] rounded-3xl bg-[#eff3f4] h-fit text-black font-bold text-sm hover:bg-[#d1d1d1]
+          duration-200"
+        >
+          Follow
+        </button>
       );
     }
-    return (
-      <button
-        onClick={(e) => onFollowClick(e, demoacc.docUserId)}
-        className="py-[7px] px-[15px] rounded-3xl bg-[#eff3f4] h-fit text-black font-bold text-sm hover:bg-[#d1d1d1]
-        duration-200"
-      >
-        Follow
-      </button>
-    );
   };
 
   return (

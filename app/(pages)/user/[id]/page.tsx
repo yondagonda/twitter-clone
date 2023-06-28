@@ -26,11 +26,11 @@ import differenceInMinutes from 'date-fns/differenceInMinutes';
 import differenceInHours from 'date-fns/differenceInHours';
 import Link from 'next/link';
 import EditProfileModal from '@/app/components/EditProfileModal.tsx';
+import Image from 'next/image';
 import { HelloContext } from '../../layout.tsx';
 
 export default function UserPage({ params }: any) {
   const usersCollectionRef = collection(db, 'users');
-
   const {
     nickname,
     refreshWhoToFollowTab,
@@ -130,12 +130,6 @@ export default function UserPage({ params }: any) {
     getAllUsersTweets();
   };
 
-  useEffect(() => {
-    setProfileData({}); // using this to try and reset the prev profile data before rendering to prevent image lag
-    getProfileData(params.id);
-    getAllUsersTweets();
-  }, []);
-
   const onFollowClick = async (recipientDocId) => {
     const recipientRef = doc(db, 'users', recipientDocId);
     const getrecipientRef = await getDoc(recipientRef);
@@ -193,38 +187,40 @@ export default function UserPage({ params }: any) {
   };
 
   const renderFollowButton = () => {
-    if (params.id === nickname.current) {
-      return (
-        <button
-          className="py-[7px] px-5 rounded-3xl bg-black h-fit mt-4 text-[#e7e9ea]
-       outline outline-[0.5px] outline-[#536471] font-bold text-sm hover:bg-[#1f1f1f] duration-200"
-          onClick={() => setIsEditProfileModalOpen(true)}
-        >
-          Edit Profile
-        </button>
-      );
-    }
-    if (profileData.followers?.includes(auth?.currentUser?.uid)) {
+    if (Object.keys(profileData).length > 0) {
+      if (params.id === nickname.current) {
+        return (
+          <button
+            className="py-[7px] px-5 rounded-3xl bg-black h-fit mt-4 text-[#e7e9ea]
+         outline outline-[0.5px] outline-[#536471] font-bold text-sm hover:bg-[#1f1f1f] duration-200"
+            onClick={() => setIsEditProfileModalOpen(true)}
+          >
+            Edit Profile
+          </button>
+        );
+      }
+      if (profileData.followers?.includes(auth?.currentUser?.uid)) {
+        return (
+          <button
+            onClick={(e) => onFollowClick(profileData.docId)}
+            className="py-[7px] px-6 rounded-3xl bg-black h-fit mt-4 text-[#e7e9ea] font-bold text-sm
+            outline outline-[0.5px] outline-[#536471] hover:outline-[#f4212e] hover:text-[#f4212e]
+            before:content-['Following'] hover:before:content-['Unfollow']"
+            data-profile-nickname={params.id}
+          ></button>
+        );
+      }
       return (
         <button
           onClick={(e) => onFollowClick(profileData.docId)}
-          className="py-[7px] px-6 rounded-3xl bg-black h-fit mt-4 text-[#e7e9ea] font-bold text-sm
-          outline outline-[0.5px] outline-[#536471] hover:outline-[#f4212e] hover:text-[#f4212e]
-          before:content-['Following'] hover:before:content-['Unfollow']"
+          className="py-[7px] px-6 rounded-3xl bg-[#eff3f4] h-fit mt-4 font-bold text-sm text-black hover:bg-[#d1d1d1] 
+          duration-200"
           data-profile-nickname={params.id}
-        ></button>
+        >
+          Follow
+        </button>
       );
     }
-    return (
-      <button
-        onClick={(e) => onFollowClick(profileData.docId)}
-        className="py-[7px] px-6 rounded-3xl bg-[#eff3f4] h-fit mt-4 font-bold text-sm text-black hover:bg-[#d1d1d1] 
-        duration-200"
-        data-profile-nickname={params.id}
-      >
-        Follow
-      </button>
-    );
   };
 
   const [selectedTab, setSelectedTab] = useState('tweets');
@@ -232,6 +228,15 @@ export default function UserPage({ params }: any) {
   const repliesOnly = usersTweets.filter((tweet) => tweet.isAReply === true);
 
   const [isEditProfileModalOpen, setIsEditProfileModalOpen] = useState(false);
+
+  useEffect(() => {
+    getProfileData(params.id);
+    getAllUsersTweets();
+
+    return () => {
+      setProfileData({});
+    };
+  }, []);
 
   return (
     <div
@@ -263,8 +268,16 @@ export default function UserPage({ params }: any) {
         </div>
       </div>
       <div className="">
-        {/* <div className="text-2xl border-b-[1px]">bg Image here</div> */}
-        <div className="h-48 bg-[#333639]"></div>
+        {profileData.profileBackgroundImage ? (
+          <img
+            src={profileData.profileBackgroundImage}
+            className="h-48 w-full object-cover"
+            alt="profile background image"
+          />
+        ) : (
+          <div className="h-48 bg-[#333639]"></div>
+        )}
+
         <div className="">
           <div className="flex justify-between px-4">
             <div>
