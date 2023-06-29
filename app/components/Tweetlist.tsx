@@ -50,7 +50,7 @@ export const Tweetlist: FC = ({
                     <div className="flex gap-0.5 items-center">
                       <Link
                         href={`/user/${tweet.authorNickname}`}
-                        className=" font-bold hover:underline text-[15.2px]"
+                        className=" font-bold hover:underline text-[15.2px] truncate"
                       >
                         {tweet.authorName}
                       </Link>
@@ -58,11 +58,11 @@ export const Tweetlist: FC = ({
                         @{tweet.authorNickname}
                       </div>
                       <span className="text-[#71767b] px-0.5">·</span>
-                      <div className=" text-[#71767b] text-[15.2px]">
+                      <div className=" text-[#71767b] text-[15.2px] ">
                         {tweet.date}
                       </div>
                     </div>
-                    <div className="break-all text-[15.2px] leading-6">
+                    <div className="break-all py-1.5 sm:py-0 text-[15.2px] leading-6">
                       {tweet.text}
                     </div>
 

@@ -27,6 +27,7 @@ import differenceInHours from 'date-fns/differenceInHours';
 import Link from 'next/link';
 import EditProfileModal from '@/app/components/EditProfileModal.tsx';
 import Image from 'next/image';
+import { getStorage, ref, deleteObject } from 'firebase/storage';
 import { HelloContext } from '../../layout.tsx';
 
 export default function UserPage({ params }: any) {
@@ -93,6 +94,13 @@ export default function UserPage({ params }: any) {
 
   const deleteTweet = async (e: any, tweet: any) => {
     e.preventDefault();
+
+    if (tweet.image.imageId !== '') {
+      const storage = getStorage();
+      const deleteImageRef = ref(storage, `tweetImage/${tweet.image.imageId}`);
+      deleteObject(deleteImageRef);
+    }
+
     if (tweet.parentTweet !== null) {
       const parentTweetDocRef = doc(db, 'tweets', tweet.parentTweet);
       try {
@@ -284,7 +292,7 @@ export default function UserPage({ params }: any) {
               {profileData.userProfileImg && (
                 <img
                   className="rounded-full outline outline-[3.5px] outline-black
-                absolute top-[183px] h-[128px] max-w-[128px] object-cover"
+                absolute top-[179px] h-[128px] max-w-[128px] object-cover"
                   src={profileData.userProfileImg}
                   alt="profile photo"
                 />

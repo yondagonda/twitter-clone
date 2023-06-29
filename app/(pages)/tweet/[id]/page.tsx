@@ -30,6 +30,7 @@ import ImageModal from '@/app/components/ImageModal.tsx';
 import useAutosizeTextArea from '@/app/components/useAutoSizeTextArea.tsx';
 import { useRouter } from 'next/navigation';
 import displayMiniMenuModal from '@/app/components/displayMiniMenuModal.tsx';
+import { getStorage, ref, deleteObject } from 'firebase/storage';
 import { HelloContext } from '../../layout.tsx';
 
 export default function TweetPage({ params }: any) {
@@ -172,6 +173,7 @@ export default function TweetPage({ params }: any) {
 
   const deleteTweet = async (e: any, tweet: any) => {
     e.preventDefault();
+
     const docRef = doc(db, 'tweets', displayTweet.id);
     await updateDoc(docRef, {
       replies: increment(-1),
@@ -184,8 +186,13 @@ export default function TweetPage({ params }: any) {
   };
 
   const deleteParentTweet = async (e: any, tweet: any) => {
+    if (tweet.image.imageId !== '') {
+      const storage = getStorage();
+      const deleteImageRef = ref(storage, `tweetImage/${tweet.image.imageId}`);
+      deleteObject(deleteImageRef);
+    }
     // delete all the replies on parent tweet too?
-    console.log('deleting parent');
+
     e.preventDefault();
     const tweetsDocRef = doc(db, 'tweets', tweet.id);
     await deleteDoc(tweetsDocRef);
@@ -224,6 +231,9 @@ export default function TweetPage({ params }: any) {
   const openInput = () => {
     document.querySelector('.replyingtodropdown')?.classList.remove('hidden');
     document.querySelector('.flexcol')?.classList.add('flex-col');
+
+    document.querySelector('.fullwidth')?.classList.remove('w-fit');
+    document.querySelector('.fullwidth')?.classList.add('w-full');
   };
 
   return (
@@ -483,7 +493,7 @@ export default function TweetPage({ params }: any) {
                   onChange={(e) => setReplyInput(e.target.value)}
                 ></textarea>
               </div>
-              <div className="w-full text-end pt-1">
+              <div className="w-fit text-end pt-1 fullwidth">
                 <button
                   className={`px-5 rounded-3xl bg-[#1d9bf0] font-bold h-9 text-white ${
                     replyInput !== ''
@@ -525,7 +535,7 @@ export default function TweetPage({ params }: any) {
                       <div className="flex gap-1 items-center">
                         <Link
                           href={`/user/${tweet.authorNickname}`}
-                          className="font-bold text-[15.2px] hover:underline"
+                          className="font-bold text-[15.2px] hover:underline truncate"
                         >
                           {tweet.authorName}
                         </Link>
@@ -533,11 +543,11 @@ export default function TweetPage({ params }: any) {
                           @{tweet.authorNickname}
                         </div>
                         <span className="text-[#71767b] px-0.5">·</span>
-                        <div className="text-[#71767b] text-[15.2px] truncate">
+                        <div className="text-[#71767b] text-[15.2px]">
                           {tweet.date}
                         </div>
                       </div>
-                      <div className="pb-1 break-all text-[15.2px]">
+                      <div className="pb-1 py-1.5 sm:py-0 break-all text-[15.2px]">
                         {tweet.text}
                       </div>
                       <div className="flex justify-around items-center">

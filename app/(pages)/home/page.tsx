@@ -15,6 +15,7 @@ import {
 } from 'firebase/firestore';
 import Tweetlist from '@/app/components/Tweetlist.tsx';
 import useAutosizeTextArea from '@/app/components/useAutoSizeTextArea.tsx';
+import { getStorage, ref, deleteObject } from 'firebase/storage';
 import { db, app } from '../../config/firebase.tsx';
 import { HelloContext } from '../layout.tsx';
 
@@ -57,6 +58,12 @@ export default function Home() {
 
   const deleteTweet = async (e: any, tweet: any) => {
     e.preventDefault();
+
+    if (tweet.image.imageId !== '') {
+      const storage = getStorage();
+      const deleteImageRef = ref(storage, `tweetImage/${tweet.image.imageId}`);
+      deleteObject(deleteImageRef); // ensure if post contains an image, image gets deleted too
+    }
 
     const tweetsDocRef = doc(db, 'tweets', tweet.id);
     await deleteDoc(tweetsDocRef);
@@ -158,7 +165,10 @@ export default function Home() {
             </div>
             {imagePreview && !isCreateTweetModalOpen ? renderPreview() : null}
             <div className="hidden peer-focus:block everyonecanreply">
-              <div className="border-b border-[#2f3336] text-[#1d9bf0] pt-2 pb-2 mb-2 text-sm font-bold flex gap-1 items-center">
+              <div
+                className="border-b border-[#2f3336] text-[#1d9bf0] pt-2 pb-2 mb-2 text-sm font-bold flex 
+              gap-1 items-center"
+              >
                 <svg
                   viewBox="0 0 24 24"
                   aria-hidden="true"

@@ -123,7 +123,7 @@ export const CreateTweetModal: FC = ({ setIsCreateTweetModalOpen }: any) => {
 
         <div className="border-t-[1px] border-[#2f3336] flex justify-between pb-2 pt-2.5 items-center">
           <div className="pl-2">
-            <label htmlFor="pickimage" className="cursor-pointer">
+            <label htmlFor="pickimage" className="cursor-pointer ">
               <svg
                 viewBox="0 0 24 24"
                 aria-hidden="true"
