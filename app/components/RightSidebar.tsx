@@ -241,7 +241,14 @@ export default function RightSidebar({ currentLoggedInUser }: any) {
             </div>
           </button>
 
-          <button className="w-full px-3 py-2.5  hover:bg-[#1d1f24] duration-100 group flex gap-2 items-center">
+          <button
+            onClick={() => {
+              window.open(
+                'https://github.com/yondagonda/twitter-clone#technologies'
+              );
+            }}
+            className="w-full px-3 py-2.5  hover:bg-[#1d1f24] duration-100 group flex gap-2 items-center"
+          >
             <svg
               className="fill-[#e7e9ea] group-hover:fill-[#1d9bf0] duration-200"
               height={27}
@@ -272,6 +279,9 @@ export default function RightSidebar({ currentLoggedInUser }: any) {
           </button>
 
           <button
+            onClick={() => {
+              window.open('https://github.com/yondagonda/twitter-clone#readme');
+            }}
             className="w-full px-3 pt-2.5 pb-3  hover:bg-[#1d1f24] duration-100 group flex gap-3 items-center
           rounded-b-2xl"
           >
