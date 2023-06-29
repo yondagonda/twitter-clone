@@ -17,16 +17,15 @@ import {
 } from 'firebase/firestore';
 import { db, auth } from '@/app/config/firebase.tsx';
 import { useEffect, useState, useContext } from 'react';
-import Tweetlist from '@/app/components/Tweetlist';
+import Tweetlist from '@/app/components/Tweetlist.tsx';
 import { TweetRepliesList } from '@/app/components/TweetRepliesList.tsx';
-import { parse, toDate } from 'date-fns';
+import { parse } from 'date-fns';
 import format from 'date-fns/format';
 import differenceInSeconds from 'date-fns/differenceInSeconds';
 import differenceInMinutes from 'date-fns/differenceInMinutes';
 import differenceInHours from 'date-fns/differenceInHours';
 import Link from 'next/link';
 import EditProfileModal from '@/app/components/EditProfileModal.tsx';
-import Image from 'next/image';
 import { getStorage, ref, deleteObject } from 'firebase/storage';
 import { HelloContext } from '../../layout.tsx';
 
@@ -38,9 +37,9 @@ export default function UserPage({ params }: any) {
     getProfileData,
     profileData,
     setProfileData,
-  } = useContext(HelloContext);
+  }: any = useContext(HelloContext);
 
-  const [usersTweets, setUsersTweets] = useState([]);
+  const [usersTweets, setUsersTweets] = useState<Array>([]);
   const tweetsCollectionRef = collection(db, 'tweets'); // holds all tweets
 
   const getAllUsersTweets = async () => {
@@ -53,7 +52,7 @@ export default function UserPage({ params }: any) {
         }
       });
       filteredData = filteredData.filter((tweet) => tweet !== undefined);
-      const sortedTweets = filteredData.sort((a, b) =>
+      const sortedTweets = filteredData.sort((a: any, b: any) =>
         b.date.localeCompare(a.date)
       );
       const DateSortedTweets = sortedTweets.map((tweet) => {
@@ -138,7 +137,7 @@ export default function UserPage({ params }: any) {
     getAllUsersTweets();
   };
 
-  const onFollowClick = async (recipientDocId) => {
+  const onFollowClick = async (recipientDocId: String) => {
     const recipientRef = doc(db, 'users', recipientDocId);
     const getrecipientRef = await getDoc(recipientRef);
     const recipientFollowers = getrecipientRef?.data()?.followers;
@@ -166,7 +165,7 @@ export default function UserPage({ params }: any) {
     }
   };
 
-  const addToFollowing = async (recipientUserId) => {
+  const addToFollowing = async (recipientUserId: String) => {
     const data = await getDocs(usersCollectionRef);
     const filteredData = data.docs.map(async (document) => {
       if (auth?.currentUser?.uid === document.data().userId) {
@@ -176,11 +175,10 @@ export default function UserPage({ params }: any) {
         });
       }
     });
-    const profData = filteredData.filter((user) => user !== undefined);
-    // setProfileData(profData[0]); these arent needed??
+    filteredData.filter((user) => user !== undefined);
   };
 
-  const removeFromFollowing = async (recipientUserId) => {
+  const removeFromFollowing = async (recipientUserId: String) => {
     const data = await getDocs(usersCollectionRef);
     const filteredData = data.docs.map(async (document) => {
       if (auth?.currentUser?.uid === document.data().userId) {
@@ -190,8 +188,7 @@ export default function UserPage({ params }: any) {
         });
       }
     });
-    const profData = filteredData.filter((user) => user !== undefined);
-    // setProfileData(profData[0]);
+    filteredData.filter((user) => user !== undefined);
   };
 
   const renderFollowButton = () => {
@@ -231,11 +228,14 @@ export default function UserPage({ params }: any) {
     }
   };
 
-  const [selectedTab, setSelectedTab] = useState('tweets');
+  const [selectedTab, setSelectedTab] = useState<String>('tweets');
 
-  const repliesOnly = usersTweets.filter((tweet) => tweet.isAReply === true);
+  const repliesOnly = usersTweets.filter(
+    (tweet: Object) => tweet.isAReply === true
+  );
 
-  const [isEditProfileModalOpen, setIsEditProfileModalOpen] = useState(false);
+  const [isEditProfileModalOpen, setIsEditProfileModalOpen] =
+    useState<Boolean>(false);
 
   useEffect(() => {
     getProfileData(params.id);

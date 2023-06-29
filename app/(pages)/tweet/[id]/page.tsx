@@ -20,7 +20,7 @@ import {
 import { db, auth } from '@/app/config/firebase.tsx';
 import Image from 'next/image';
 import Link from 'next/link';
-import { parse, toDate } from 'date-fns';
+import { parse } from 'date-fns';
 import format from 'date-fns/format';
 import differenceInSeconds from 'date-fns/differenceInSeconds';
 import differenceInMinutes from 'date-fns/differenceInMinutes';
@@ -42,7 +42,7 @@ export default function TweetPage({ params }: any) {
       const docRef = doc(db, 'tweets', params.id);
       const getTweet = await getDoc(docRef);
 
-      const idAddedData = { ...getTweet.data(), id: getTweet.id }; // rmb to add id as a property
+      const idAddedData: Object = { ...getTweet.data(), id: getTweet.id };
       if (getTweet.exists()) {
         const unformattedDate = idAddedData.date;
         const parsedDate = parse(
@@ -76,12 +76,12 @@ export default function TweetPage({ params }: any) {
       });
     }
     getTweetData();
-    getAllTweets(); // performance costs could get v high with this...
+    getAllTweets(); // performance costs high with this...
   };
 
-  const [replyInput, setReplyInput] = useState('');
+  const [replyInput, setReplyInput] = useState<String>('');
   const { nickname } = useContext(HelloContext);
-  const [allTweets, setAllTweets] = useState([]);
+  const [allTweets, setAllTweets] = useState<Array>([]);
 
   const getAllTweets = async () => {
     try {
@@ -91,10 +91,10 @@ export default function TweetPage({ params }: any) {
         ...document.data(),
         id: document.id,
       }));
-      const sortedTweets = filteredData.sort((a, b) =>
+      const sortedTweets = filteredData.sort((a: any, b: any) =>
         a.date.localeCompare(b.date)
       );
-      const DateSortedTweets = sortedTweets.map((tweet) => {
+      const DateSortedTweets = sortedTweets.map((tweet: Object) => {
         const parsedDateFirst = parse(
           tweet.date,
           'dd/MM/yyyy, HH:mm:ss',
@@ -130,7 +130,7 @@ export default function TweetPage({ params }: any) {
     }
   };
 
-  const options = {
+  const options: Object = {
     day: '2-digit',
     month: '2-digit',
     year: 'numeric',
@@ -148,9 +148,9 @@ export default function TweetPage({ params }: any) {
     const docRef = doc(db, 'tweets', receivingTweet.id);
     await updateDoc(docRef, {
       replies: increment(1),
-    }); // increments replies + 1
+    });
 
-    const commentDetails = {
+    const commentDetails: Object = {
       text: replyInput,
       authorId: auth?.currentUser?.uid,
       date: new Date().toLocaleString('en-GB', options),
@@ -191,7 +191,7 @@ export default function TweetPage({ params }: any) {
       const deleteImageRef = ref(storage, `tweetImage/${tweet.image.imageId}`);
       deleteObject(deleteImageRef);
     }
-    // delete all the replies on parent tweet too?
+    // delete all the children of the parent tweet too?
 
     e.preventDefault();
     const tweetsDocRef = doc(db, 'tweets', tweet.id);
@@ -208,7 +208,7 @@ export default function TweetPage({ params }: any) {
 
   const [showLikesModal, setShowLikesModal] = useState<boolean>(false);
 
-  const [showImageModal, setShowImageModal] = useState({
+  const [showImageModal, setShowImageModal] = useState<Object>({
     url: '',
     show: false,
   });
@@ -511,7 +511,7 @@ export default function TweetPage({ params }: any) {
       </div>
 
       <div>
-        {allTweets.map((tweet: any, index) => {
+        {allTweets.map((tweet: any, index: Number) => {
           if (tweet.isAReply && tweet.parentTweet === displayTweet.id) {
             return (
               <div className="relative" key={tweet.id}>

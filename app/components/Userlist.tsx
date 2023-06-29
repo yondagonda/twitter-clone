@@ -1,10 +1,8 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable consistent-return */
 /* eslint-disable @next/next/no-img-element */
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState, useContext } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
-import { useRef } from 'react';
 import {
   collection,
   getDocs,
@@ -14,13 +12,12 @@ import {
   getDoc,
   doc,
 } from 'firebase/firestore';
-import { useContext } from 'react';
 import { db, auth } from '../config/firebase';
 import { HelloContext } from '../(pages)/layout';
 
 export const Userlist: FC = ({ likedBy }: any) => {
-  const [LikedUsers, setLikedUsers] = useState([]);
-  const [myUserDetails, setMyUserDetails] = useState([]);
+  const [LikedUsers, setLikedUsers] = useState<Array>([]);
+  const [myUserDetails, setMyUserDetails] = useState<Array>([]);
   const usersCollectionRef = collection(db, 'users');
 
   useEffect(() => {
@@ -47,7 +44,7 @@ export const Userlist: FC = ({ likedBy }: any) => {
 
   const addToFollowing = async (recipientUserId: any) => {
     const data = await getDocs(usersCollectionRef);
-    const filteredData = data.docs.map(async (document) => {
+    data.docs.map(async (document) => {
       if (myUserDetails.userId === document.data().userId) {
         const recipientRef = doc(db, 'users', document.id);
         await updateDoc(recipientRef, {
@@ -59,7 +56,7 @@ export const Userlist: FC = ({ likedBy }: any) => {
 
   const removeFromFollowing = async (recipientUserId: any) => {
     const data = await getDocs(usersCollectionRef);
-    const filteredData = data.docs.map(async (document) => {
+    data.docs.map(async (document) => {
       if (myUserDetails.userId === document.data().userId) {
         const recipientRef = doc(db, 'users', document.id);
         await updateDoc(recipientRef, {
@@ -94,11 +91,11 @@ export const Userlist: FC = ({ likedBy }: any) => {
       recipientDocId === 'Kn4yGgl04xxIirpIjnkF' ||
       recipientDocId === 'yC37BTRrPSALvdcLXDFx'
     ) {
-      refreshWhoToFollowTab(); // only refresh the tab if the follow click was on a demo user
+      refreshWhoToFollowTab();
     }
   };
 
-  const renderFollowButton = (user) => {
+  const renderFollowButton = (user: Object<any>) => {
     if (user.userId === myUserDetails.userId) {
       return;
     }

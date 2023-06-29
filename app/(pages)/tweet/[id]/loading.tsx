@@ -1,4 +1,4 @@
-// to the tweet page
+// loading to the tweet page
 
 export default function Loading() {
   return (

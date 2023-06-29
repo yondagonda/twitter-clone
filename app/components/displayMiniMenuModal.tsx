@@ -1,7 +1,6 @@
-import { useRouter } from 'next/navigation';
 import { auth } from '../config/firebase.tsx';
 
-const handleClickOutside = (event) => {
+const handleClickOutside = (event: Object) => {
   const modal = document.querySelector('.modal');
   const overlay = document.querySelector('.overlay');
   if (modal && !modal.contains(event.target)) {
@@ -10,7 +9,12 @@ const handleClickOutside = (event) => {
   }
 };
 
-const displayMiniMenuModal = (e, tweet, deleteTweet, router) => {
+const displayMiniMenuModal = (
+  e: Object,
+  tweet: any,
+  deleteTweet: Function,
+  router: any
+) => {
   const selected = e.target.closest('[data-id]');
   const overlay = document.createElement('div');
   overlay.classList.add(

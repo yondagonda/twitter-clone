@@ -1,4 +1,4 @@
-// for logging in, logging out etc.
+// to display when logging in, logging out etc.
 
 const LoadingPage = () => (
   <div

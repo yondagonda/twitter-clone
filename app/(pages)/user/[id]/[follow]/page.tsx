@@ -1,21 +1,23 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
 import Userlist from '@/app/components/Userlist.tsx';
-import { getDoc, doc } from 'firebase/firestore';
-import { db } from '@/app/config/firebase.tsx';
 import { useEffect, useState, useContext } from 'react';
-import { HelloContext } from '@/app/(pages)/layout';
+import { HelloContext } from '@/app/(pages)/layout.tsx';
 
 export default function FollowPage({ params }: any) {
   const [currentTab, setCurrentTab] = useState(params.follow);
 
-  const { getList, profileDetails, userList, setUserList, setProfileDetails } =
-    useContext(HelloContext);
+  const {
+    getList,
+    profileDetails,
+    userList,
+    setUserList,
+    setProfileDetails,
+  }: any = useContext(HelloContext);
 
   useEffect(() => {
     setProfileDetails(''); //
-    setUserList(''); // doing these state resets help minmise/stop the prev state to new state rendering lag
+    setUserList(''); // these state resets help minmise/stop the prev state to new state rendering lag
     if (params.follow === 'following') {
       getList('following');
     }

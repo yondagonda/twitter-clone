@@ -1,11 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { getDoc, doc, collection, getDocs } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
-import { db } from '../config/firebase';
-import displayMiniMenuModal from './displayMiniMenuModal';
+import displayMiniMenuModal from './displayMiniMenuModal.tsx';
 
 export const TweetRepliesList: FC = ({
   repliesOnly,
@@ -18,7 +16,7 @@ export const TweetRepliesList: FC = ({
   return (
     <>
       {repliesOnly.map((tweet: any, index: number) => {
-        // now this filters out tweets which arent replies!
+        // Filters out tweets which arent replies
         if (tweet.isAReply) {
           return (
             <div

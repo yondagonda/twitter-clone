@@ -1,4 +1,4 @@
-// to the home page
+// loading to the home page
 
 export default function Loading() {
   return (

@@ -1,13 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
-import { FC, useEffect } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { useRef } from 'react';
-import { useContext } from 'react';
-import Userlist from './Userlist';
-import { auth } from '../config/firebase';
-import { HelloContext } from '../(pages)/layout';
-import useAutosizeTextArea from './useAutoSizeTextArea';
+import { FC, useEffect, useRef, useContext } from 'react';
+import { auth } from '../config/firebase.tsx';
+import { HelloContext } from '../(pages)/layout.tsx';
+import useAutosizeTextArea from './useAutoSizeTextArea.tsx';
 
 export const CreateTweetModal: FC = ({ setIsCreateTweetModalOpen }: any) => {
   const {
@@ -17,14 +12,12 @@ export const CreateTweetModal: FC = ({ setIsCreateTweetModalOpen }: any) => {
     uploadFile,
     imagePreview,
     renderPreview,
-    setImageUpload,
-    setImagePreview,
     clearInputs,
   }: any = useContext(HelloContext);
 
   const modalRef = useRef(null);
 
-  const handleClickOutside = (event) => {
+  const handleClickOutside = (event: Object) => {
     if (modalRef.current && !modalRef.current.contains(event.target)) {
       setIsCreateTweetModalOpen(false);
       clearInputs();

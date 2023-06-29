@@ -23,14 +23,10 @@ export default function Home() {
   app; // re-initialises firebase
   const auth = getAuth();
   const {
-    nickname,
     tweetContent,
     setTweetContent,
     imagePreview,
     handleImageChange,
-    setImagePreview,
-    setImageUpload,
-    imageUpload,
     imageURL,
     uploadFile,
     allTweets,
@@ -40,7 +36,6 @@ export default function Home() {
     setImageURL,
     renderPreview,
     isCreateTweetModalOpen,
-    setIsCreateTweetModalOpen,
   }: any = useContext(HelloContext);
 
   useEffect(() => {
@@ -99,9 +94,6 @@ export default function Home() {
 
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   useAutosizeTextArea(textAreaRef.current, tweetContent);
-
-  // TODO:
-  // typescript all the things, next.config typescript + eslint being ignored during build oof
 
   return (
     <div

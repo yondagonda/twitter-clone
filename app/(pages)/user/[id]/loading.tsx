@@ -1,4 +1,4 @@
-// to the user page
+// load screen to the user page
 
 export default function Loading() {
   return (

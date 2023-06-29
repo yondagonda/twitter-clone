@@ -1,10 +1,8 @@
 'use client';
 
-import Link from 'next/link';
 import Image from 'next/image';
 import Auth from './components/Auth.tsx';
 import bird from '../public/assets/twitter-banner.png';
-import { auth } from './config/firebase.tsx';
 
 export default function LoginPage() {
   return (

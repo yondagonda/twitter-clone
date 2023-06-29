@@ -2,28 +2,22 @@
 
 'use client';
 
-import { FC, useEffect, useContext, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import {
   signInWithPopup,
-  signOut,
   onAuthStateChanged,
-  createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
-import { collection, getDocs, addDoc } from 'firebase/firestore';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { auth, googleProvider, db } from '../config/firebase.tsx';
-import { HelloContext } from '../(pages)/layout.tsx';
+import { auth, googleProvider } from '../config/firebase.tsx';
 import aang from '../../public/assets/aang.jpg';
 import walter from '../../public/assets/walter.jpg';
 import batman from '../../public/assets/batman.jpg';
 import LoadingPage from './LoadingPage.tsx';
 
 const Auth: FC = () => {
-  // console.log(auth?.currentUser?.displayName);
-  // console.log(auth?.currentUser?.photoURL);
   const router = useRouter();
 
   const [showLoading, setShowLoading] = useState<boolean>(false);
@@ -57,29 +51,6 @@ const Auth: FC = () => {
       console.error(err);
     }
   };
-
-  const logout = async () => {
-    try {
-      await signOut(auth);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  // const createDemoAccount = async () => {
-  //   try {
-  //     await createUserWithEmailAndPassword(
-  //       auth,
-  //       'batman@gmail.com',
-  //       'batman123'
-  //     );
-  //     if (auth?.currentUser) {
-  //       router.push('/home'); // ensures redirect to home page on successful login
-  //     }
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // };
 
   const signInToWalter = async () => {
     try {

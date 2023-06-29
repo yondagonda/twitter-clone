@@ -2,10 +2,9 @@
 import { FC, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import ImageModal from './ImageModal';
-import displayMiniMenuModal from './displayMiniMenuModal';
+import ImageModal from './ImageModal.tsx';
+import displayMiniMenuModal from './displayMiniMenuModal.tsx';
 
 export const Tweetlist: FC = ({
   allTweets,
@@ -21,8 +20,8 @@ export const Tweetlist: FC = ({
 
   return (
     <>
-      {allTweets.map((tweet: any, index) => {
-        // keep in mind reply tweets are filtered out of the timeline.
+      {allTweets.map((tweet: any, index: number) => {
+        // Reply tweets are filtered out of the timeline
         if (!tweet.isAReply) {
           return (
             <div

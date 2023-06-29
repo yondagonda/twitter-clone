@@ -1,18 +1,14 @@
-/* eslint-disable @next/next/no-img-element */
-import { FC, useEffect } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { useRef } from 'react';
-import Userlist from './Userlist';
+import { FC, useEffect, useRef } from 'react';
+import Userlist from './Userlist.tsx';
 
 export const LikesModal: FC = ({
   showLikesModal,
   setShowLikesModal,
   likedBy,
 }: any) => {
-  const modalRef = useRef(null);
+  const modalRef = useRef<HTMLTextAreaElement | null>(null);
 
-  const handleClickOutside = (event) => {
+  const handleClickOutside = (event: Object) => {
     if (modalRef.current && !modalRef.current.contains(event.target)) {
       setShowLikesModal(false);
     }

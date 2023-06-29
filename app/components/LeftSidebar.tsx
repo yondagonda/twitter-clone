@@ -2,10 +2,10 @@
 import Link from 'next/link';
 import { signOut } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
-import { useEffect, useContext, useState } from 'react';
-import { auth } from '../config/firebase';
-import CreateTweetModal from './CreateTweetModal';
-import { HelloContext } from '../(pages)/layout';
+import { useContext, useState } from 'react';
+import { auth } from '../config/firebase.tsx';
+import CreateTweetModal from './CreateTweetModal.tsx';
+import { HelloContext } from '../(pages)/layout.tsx';
 import LoadingPage from './LoadingPage.tsx';
 
 export default function LeftSidebar({
@@ -13,9 +13,6 @@ export default function LeftSidebar({
   currentLoggedInUser,
 }: any) {
   const {
-    setTweetContent,
-    setImagePreview,
-    setImageUpload,
     isCreateTweetModalOpen,
     setIsCreateTweetModalOpen,
     clearInputs,
@@ -35,7 +32,7 @@ export default function LeftSidebar({
     }
   };
 
-  const handleClickOutside = (event) => {
+  const handleClickOutside = (event: Object) => {
     const logoutmodal = document.querySelector('.logoutmodal');
     if (logoutmodal && !logoutmodal.contains(event.target)) {
       logoutmodal.classList.add('hidden');
@@ -49,23 +46,6 @@ export default function LeftSidebar({
     document.addEventListener('mousedown', handleClickOutside);
     document.querySelector('.displaylogoutmodal').style.pointerEvents = 'none';
   };
-
-  // INITAL DEMO ACCOUNT CREATION SETUP STUFF
-  // if (currentLoggedInUser?.email === 'batman@gmail.com') {
-  //   updateProfile(currentLoggedInUser, {
-  //     photoURL:
-  //       'https://raw.githubusercontent.com/yondagonda/twitter-clone/main/public/assets/batman.jpg',
-  //     displayName: 'Batman',
-  //   })
-  //     .then(() => {
-  //       console.log(currentLoggedInUser);
-  //     })
-  //     .catch((error) => {
-  //       alert(
-  //         'Sorry, demo account currently not working right now. Please continue with a Google Account.'
-  //       );
-  //     });
-  // }
 
   return (
     <div

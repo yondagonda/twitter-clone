@@ -4,25 +4,15 @@
 
 import React, { createContext, useRef, useEffect, useState } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import {
-  doc,
-  updateDoc,
-  arrayRemove,
-  arrayUnion,
-  getDoc,
-  addDoc,
-  getDocs,
-  collection,
-} from 'firebase/firestore';
-import { useRouter, useSearchParams, usePathname } from 'next/navigation';
+import { doc, getDoc, addDoc, getDocs, collection } from 'firebase/firestore';
+import { useRouter, useSearchParams } from 'next/navigation';
 import parse from 'date-fns/parse';
 import format from 'date-fns/format';
 import differenceInSeconds from 'date-fns/differenceInSeconds';
 import differenceInMinutes from 'date-fns/differenceInMinutes';
 import differenceInHours from 'date-fns/differenceInHours';
 import { v4 } from 'uuid';
-import { uploadBytes, ref, getDownloadURL, listAll } from 'firebase/storage';
-import { parseISO } from 'date-fns';
+import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
 import { db, storage } from '../config/firebase.tsx';
 import RightSidebar from '../components/RightSidebar.tsx';
 import LeftSidebar from '../components/LeftSidebar.tsx';
@@ -44,11 +34,10 @@ export default function MainLayout({
 
   useEffect(() => {
     let authFlag = true;
-    onAuthStateChanged(auth, async (user) => {
+    onAuthStateChanged(auth, async (user: any) => {
       if (authFlag) {
         authFlag = false;
         if (user) {
-          // console.log(`User signed in: ${user.uid}`);
           setCurrentLoggedInUser(user);
           const usersCollectionRef = collection(db, 'users');
           const data = await getDocs(usersCollectionRef);
@@ -104,11 +93,11 @@ export default function MainLayout({
         ...document.data(),
         id: document.id,
       }));
-      const sortedTweets = filteredData.sort((a, b) =>
+      const sortedTweets = filteredData.sort((a: any, b: any) =>
         b.date.localeCompare(a.date)
       );
 
-      const DateSortedTweets = sortedTweets.map((tweet) => {
+      const DateSortedTweets = sortedTweets.map((tweet: Object) => {
         const parsedDateFirst = parse(
           tweet.date,
           'dd/MM/yyyy, HH:mm:ss',
@@ -202,8 +191,6 @@ export default function MainLayout({
     }
   };
 
-  const pathname = usePathname();
-
   const uploadFile = async () => {
     setImagePreview('');
     document.getElementById('pickimage')!.value = ''; // allows onchange to fire every time
@@ -267,7 +254,7 @@ export default function MainLayout({
     document.querySelector('.everyonedropdown')?.classList.add('hidden');
   };
 
-  const [whoToFollowTab, setWhoToFollowTab] = useState([]);
+  const [whoToFollowTab, setWhoToFollowTab] = useState<Array>([]);
 
   const refreshWhoToFollowTab = async () => {
     const walterRef = doc(db, 'users', 'Gu7cpPmDQAxlhd3TazFl');
@@ -291,9 +278,9 @@ export default function MainLayout({
 
   const usersCollectionRef = collection(db, 'users');
 
-  const [profileData, setProfileData] = useState<any>({});
+  const [profileData, setProfileData] = useState<Object>({});
 
-  const getProfileData = async (nickname) => {
+  const getProfileData = async (nickname: string) => {
     const id = nickname;
     const data = await getDocs(usersCollectionRef);
     const filteredData = data.docs.map((document) => {
@@ -307,10 +294,10 @@ export default function MainLayout({
 
   const searchParams = useSearchParams();
   const profileDocId = searchParams.get('id');
-  const [profileDetails, setProfileDetails] = useState<any>({});
+  const [profileDetails, setProfileDetails] = useState<Object>({});
   const [userList, setUserList] = useState([]);
 
-  const getList = async (followersOrFollowing) => {
+  const getList = async (followersOrFollowing: String) => {
     const userRef = doc(db, 'users', profileDocId);
     const list = await getDoc(userRef);
     setProfileDetails(list.data());

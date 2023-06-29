@@ -1,21 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
-import { FC, useEffect, useState } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { useRef } from 'react';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
-import { useContext } from 'react';
-import Userlist from './Userlist';
-import { db } from '../config/firebase';
-import { HelloContext } from '../(pages)/layout';
+import { FC, useEffect, useState, useRef } from 'react';
+import { doc, updateDoc } from 'firebase/firestore';
+import { db } from '../config/firebase.tsx';
 
 export const EditProfileModal: FC = ({
   setIsEditProfileModalOpen,
   profileData,
   getProfileData,
 }: any) => {
-  const modalRef = useRef(null);
-  const handleClickOutside = (event) => {
+  const modalRef = useRef<HTMLTextAreaElement | null>(null);
+
+  const handleClickOutside = (event: Object) => {
     if (modalRef.current && !modalRef.current.contains(event.target)) {
       setIsEditProfileModalOpen(false);
     }
