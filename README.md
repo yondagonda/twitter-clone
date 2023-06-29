@@ -17,7 +17,7 @@ You can read more about [features](#features), [performance](#performance) and [
 🧪 [Live Demo](https://twitter-clone-7ujnofxqt-yondagonda.vercel.app/) available. Click "Live Demo" to open it.
 
 ## Motivations
-A big motivation for starting this project was wanting to gain experience on building a fullstack project. Up to now I had only worked on front-end only websites that didnt utilise any backend of sorts, so I figured creating a clone of a social media site like Twitter would not only be something new for myself, but also an overall good learning experience. Additionally, I wanted to gain some familiarity with using Next.js and its features, while also using TypeScript for the first time.
+My main motivation for starting this project was wanting to gain experience on building a fullstack project, and proving that I could copy a design close to 1-to-1. Up to now I had only worked on front-end only websites that didnt utilise any backend of sorts, so I figured creating a clone of a social media site like Twitter would not only be something new for myself, but also an overall good learning experience. Additionally, I wanted to gain some familiarity with using Next.js and its features, while also using TypeScript for the first time.
 
 ## Showcase
 
@@ -38,8 +38,11 @@ A big motivation for starting this project was wanting to gain experience on bui
 - Framer Motion
 
 ## What I learnt:
-
-## Possible Features/Improvements to Implement:
+- How to incorporate and utilize a backend infrastructure to handle data storage, retrieval, and other server-side operations.
+- Enhanced my understanding of asynchronous programming through the extensive use of backend API calls I had to setup for this project to work.
+- Learned how TypeScript catches potential errors during development by providing type checking and better code quality.
+- Through Next.js, learned how to create more dynamic and efficient functional page routes, enhancing the overall performance and user experience of the site.
+- Improved and refined my CSS skills through having to replicate complex designs accurately.
 
 ## Disclaimer
 This Twitter clone is a non-commercial educational project created solely for learning purposes. It is an imitation or clone of the original Twitter platform and is not affiliated with or endorsed by Twitter Inc. The clone aims to replicate the design and functionality of Twitter, but it may not reproduce all features or behaviors accurately.
