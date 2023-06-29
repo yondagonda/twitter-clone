@@ -20,6 +20,21 @@ You can read more about [features](#features), [performance](#performance) and [
 My main motivation for starting this project was wanting to gain experience on building a fullstack project, and proving that I could copy a design close to 1-to-1. Up to now I had only worked on front-end only websites that didnt utilise any backend of sorts, so I figured creating a clone of a social media site like Twitter would not only be something new for myself, but also an overall good learning experience. Additionally, I wanted to gain some familiarity with using Next.js and its features, while also using TypeScript for the first time.
 
 ## Showcase
+The following are some showcase images of the clone.
+<p>
+<img src="https://github.com/yondagonda/twitter-clone/assets/109213163/55c32a09-c568-45c3-a59e-1d2c2626e251" alt="Home page with the twitter-like feed">
+</p>
+<p>
+<img src="https://github.com/yondagonda/twitter-clone/assets/109213163/bacc829e-97c4-46c8-a2b4-bb3231f98a82" alt="">
+</p>
+<p>
+<img src="https://github.com/yondagonda/twitter-clone/assets/109213163/5baff339-4cfe-4ba5-ad0c-6af44b46ce82" alt="Profile page">
+</p>
+
+In this GIF preview, a user logs in with a demo account and then proceeds to make a tweet, before going to their profile and making some changes.
+<p align="center">
+<img src="https://github.com/yondagonda/twitter-clone/assets/109213163/9806092d-8987-4699-ac80-a5956c5976c1" alt="GIF entailing the user experience">
+</p>
 
 ## Features
 - **Authentic Twitter-like design**: Mostly close replication of the design and layout of Twitter ensures a familiar and immersive user experience. 
@@ -29,6 +44,11 @@ My main motivation for starting this project was wanting to gain experience on b
 - **Profile pages**: Users can visit other users' profile pages to view their tweets, followers, following, and other profile information. Additionally, users have the ability to edit their own profile information.
 
 ## Performance
+I ran Google Lighthouse on my application to assess its performance, accessibility, adherence to best practices, and SEO optimization. You can find the evaluation results displayed here.
+
+<p align="center">
+<img src="https://github.com/yondagonda/twitter-clone/assets/109213163/842c9766-4514-4c5b-a1c1-c9d8394434c3" alt="lighthouse scores">
+</p>
 
 ## Technologies 
 - Firebase Services
