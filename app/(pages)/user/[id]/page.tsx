@@ -15,18 +15,18 @@ import {
   deleteDoc,
   increment,
 } from 'firebase/firestore';
-import { db, auth } from '@/app/config/firebase.tsx';
 import { useEffect, useState, useContext } from 'react';
-import Tweetlist from '@/app/components/Tweetlist.tsx';
-import { TweetRepliesList } from '@/app/components/TweetRepliesList.tsx';
 import { parse } from 'date-fns';
 import format from 'date-fns/format';
 import differenceInSeconds from 'date-fns/differenceInSeconds';
 import differenceInMinutes from 'date-fns/differenceInMinutes';
 import differenceInHours from 'date-fns/differenceInHours';
 import Link from 'next/link';
-import EditProfileModal from '@/app/components/EditProfileModal.tsx';
 import { getStorage, ref, deleteObject } from 'firebase/storage';
+import EditProfileModal from '@/app/components/EditProfileModal.tsx';
+import { TweetRepliesList } from '@/app/components/TweetRepliesList.tsx';
+import Tweetlist from '@/app/components/Tweetlist.tsx';
+import { db, auth } from '@/app/config/firebase.tsx';
 import { HelloContext } from '../../layout.tsx';
 
 export default function UserPage({ params }: any) {
@@ -52,9 +52,11 @@ export default function UserPage({ params }: any) {
         }
       });
       filteredData = filteredData.filter((tweet) => tweet !== undefined);
-      const sortedTweets = filteredData.sort((a: any, b: any) =>
-        b.date.localeCompare(a.date)
-      );
+      const sortedTweets = filteredData.sort((a: any, b: any) => {
+        const dateA = parse(a.date, 'dd/MM/yyyy, HH:mm:ss', new Date());
+        const dateB = parse(b.date, 'dd/MM/yyyy, HH:mm:ss', new Date());
+        return dateB - dateA;
+      });
       const DateSortedTweets = sortedTweets.map((tweet) => {
         const parsedDateFirst = parse(
           tweet.date,

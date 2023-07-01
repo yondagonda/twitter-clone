@@ -17,7 +17,6 @@ import {
   deleteDoc,
   increment,
 } from 'firebase/firestore';
-import { db, auth } from '@/app/config/firebase.tsx';
 import Image from 'next/image';
 import Link from 'next/link';
 import { parse } from 'date-fns';
@@ -25,12 +24,13 @@ import format from 'date-fns/format';
 import differenceInSeconds from 'date-fns/differenceInSeconds';
 import differenceInMinutes from 'date-fns/differenceInMinutes';
 import differenceInHours from 'date-fns/differenceInHours';
+import { useRouter } from 'next/navigation';
+import { getStorage, ref, deleteObject } from 'firebase/storage';
 import LikesModal from '@/app/components/LikesModal.tsx';
 import ImageModal from '@/app/components/ImageModal.tsx';
 import useAutosizeTextArea from '@/app/components/useAutoSizeTextArea.tsx';
-import { useRouter } from 'next/navigation';
 import displayMiniMenuModal from '@/app/components/displayMiniMenuModal.tsx';
-import { getStorage, ref, deleteObject } from 'firebase/storage';
+import { db, auth } from '@/app/config/firebase.tsx';
 import { HelloContext } from '../../layout.tsx';
 
 export default function TweetPage({ params }: any) {
@@ -91,9 +91,11 @@ export default function TweetPage({ params }: any) {
         ...document.data(),
         id: document.id,
       }));
-      const sortedTweets = filteredData.sort((a: any, b: any) =>
-        a.date.localeCompare(b.date)
-      );
+      const sortedTweets = filteredData.sort((a: any, b: any) => {
+        const dateA = parse(a.date, 'dd/MM/yyyy, HH:mm:ss', new Date());
+        const dateB = parse(b.date, 'dd/MM/yyyy, HH:mm:ss', new Date());
+        return dateA - dateB;
+      });
       const DateSortedTweets = sortedTweets.map((tweet: Object) => {
         const parsedDateFirst = parse(
           tweet.date,

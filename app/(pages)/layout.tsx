@@ -93,9 +93,12 @@ export default function MainLayout({
         ...document.data(),
         id: document.id,
       }));
-      const sortedTweets = filteredData.sort((a: any, b: any) =>
-        b.date.localeCompare(a.date)
-      );
+
+      const sortedTweets = filteredData.sort((a: any, b: any) => {
+        const dateA = parse(a.date, 'dd/MM/yyyy, HH:mm:ss', new Date());
+        const dateB = parse(b.date, 'dd/MM/yyyy, HH:mm:ss', new Date());
+        return dateB - dateA;
+      });
 
       const DateSortedTweets = sortedTweets.map((tweet: Object) => {
         const parsedDateFirst = parse(
