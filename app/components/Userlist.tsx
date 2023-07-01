@@ -84,15 +84,15 @@ export const Userlist: FC = ({ likedBy }: any) => {
       });
       await addToFollowing(getrecipientRef?.data()?.userId);
     }
-    getAllUsersIncludingMyself();
 
     if (
       recipientDocId === 'Gu7cpPmDQAxlhd3TazFl' ||
       recipientDocId === 'Kn4yGgl04xxIirpIjnkF' ||
       recipientDocId === 'yC37BTRrPSALvdcLXDFx'
     ) {
-      refreshWhoToFollowTab();
+      await refreshWhoToFollowTab();
     }
+    await getAllUsersIncludingMyself();
   };
 
   const renderFollowButton = (user: Object<any>) => {
