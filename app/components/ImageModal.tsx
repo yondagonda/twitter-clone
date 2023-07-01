@@ -23,7 +23,11 @@ export const ImageModal: FC = ({ setShowImageModal, showImageModal }: any) => {
   rounded-lg"
       ref={modalRef}
     >
-      <img className="w-max" src={showImageModal.url} alt="image full sized" />
+      <img
+        className="w-max max-h-[55vh]"
+        src={showImageModal.url}
+        alt="image full sized"
+      />
     </div>
   );
 };

@@ -25,7 +25,7 @@ export default function LoginPage() {
           <Image
             src={bird}
             alt="banner"
-            className=" object-cover min-w-[1700px]"
+            className=" object-cover min-w-[1850px]"
           />
         </div>
 
