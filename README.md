@@ -14,7 +14,7 @@ Twitter Clone built with Firebase, Next.js, and Tailwind CSS. Features include a
 You can read more about [features](#features), [performance](#performance) and [technologies](#technologies) used in creating this clone, below.
 
 ## 🔴 Demo
-🧪 [Live Demo](https://twitter-clone-7ujnofxqt-yondagonda.vercel.app/) available. Click "Live Demo" to open it.
+🧪 [Live Demo](https://twitter-clone-yondagonda.vercel.app/) available. Click "Live Demo" to open it.
 
 ## Motivations
 My main motivation for starting this project was wanting to gain experience on building a fullstack project, and proving that I could copy a design close to 1-to-1. Up to now I had only worked on front-end only websites that didnt utilise any backend of sorts, so I figured creating a clone of a social media site like Twitter would not only be something new for myself, but also an overall good learning experience. Additionally, I wanted to gain some familiarity with using Next.js and its features, while also using TypeScript for the first time.
