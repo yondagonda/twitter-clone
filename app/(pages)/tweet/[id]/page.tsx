@@ -4,7 +4,7 @@
 
 'use client';
 
-import { useEffect, useState, useContext, useRef } from 'react';
+import React, { useEffect, useState, useContext, useRef } from 'react';
 import {
   getDoc,
   doc,
@@ -26,12 +26,12 @@ import differenceInMinutes from 'date-fns/differenceInMinutes';
 import differenceInHours from 'date-fns/differenceInHours';
 import { useRouter } from 'next/navigation';
 import { getStorage, ref, deleteObject } from 'firebase/storage';
-import LikesModal from '@/app/components/LikesModal.tsx';
-import ImageModal from '@/app/components/ImageModal.tsx';
-import useAutosizeTextArea from '@/app/components/useAutoSizeTextArea.tsx';
 import displayMiniMenuModal from '@/app/components/displayMiniMenuModal.tsx';
 import { db, auth } from '@/app/config/firebase.tsx';
+import useAutosizeTextArea from '../../../hooks/useAutoSizeTextArea.tsx';
 import { HelloContext } from '../../layout.tsx';
+import LikesModal from '../../../components/modals/LikesModal.tsx';
+import ImageModal from '../../../components/modals/ImageModal.tsx';
 
 export default function TweetPage({ params }: any) {
   const router = useRouter();
@@ -239,7 +239,7 @@ export default function TweetPage({ params }: any) {
   };
 
   return (
-    <div
+    <main
       className="min-h-screen border-x border-[#2f3336] text-[#e7e9ea]
       min-w-[270px] w-full max-w-[600px] flex flex-col"
     >
@@ -260,9 +260,9 @@ export default function TweetPage({ params }: any) {
             </g>
           </svg>
         </button>
-        <div className="font-bold text-xl">
+        <h3 className="font-bold text-xl">
           {displayTweet?.parentTweet! == null ? 'Tweet' : 'Replies'}
-        </div>
+        </h3>
       </div>
 
       {displayTweet?.parentTweet !== null &&
@@ -272,7 +272,7 @@ export default function TweetPage({ params }: any) {
         </div>
       ) : null}
 
-      <div className="px-4 pt-4 pb-2 w-full border-b-[1px] border-[#393733]">
+      <section className="px-4 pt-4 pb-2 w-full border-b-[1px] border-[#393733]">
         <div className="flex justify-between">
           <div className="flex gap-3">
             <Link
@@ -294,11 +294,11 @@ export default function TweetPage({ params }: any) {
               >
                 {displayTweet?.authorName}
               </Link>
-              <div className="text-sm text-[#71767b]">
+              <h4 className="text-sm text-[#71767b]">
                 {displayTweet?.authorNickname && (
                   <>@{displayTweet?.authorNickname}</>
                 )}
-              </div>
+              </h4>
             </div>
           </div>
           <button
@@ -323,7 +323,7 @@ export default function TweetPage({ params }: any) {
           </button>
         </div>
         <div className="flex flex-col mb-3">
-          <div className="py-4 text-lg break-all">{displayTweet?.text}</div>
+          <p className="py-4 text-lg break-all">{displayTweet?.text}</p>
           {displayTweet?.image.imageId !== '' && (
             <div className="max-w-[90%] ">
               {displayTweet?.image.imageId && (
@@ -349,29 +349,29 @@ export default function TweetPage({ params }: any) {
               )}
             </div>
           )}
-          <div className="text-sm text-[#71767b]">{displayTweet?.date}</div>
+          <time className="text-sm text-[#71767b]">{displayTweet?.date}</time>
         </div>
         <div className=" flex justify-start gap-2 sm:gap-6 text-sm border-y-[1px] border-[#2f3336] py-3">
           <div className="flex gap-1">
             <div>0</div>
-            <div className="text-[#71767b]">Retweets</div>
+            <h5 className="text-[#71767b]">Retweets</h5>
           </div>
           <div className="flex gap-1">
             <div>0</div>
-            <div className="text-[#71767b]">Quotes</div>
+            <h5 className="text-[#71767b]">Quotes</h5>
           </div>
           <button
             onClick={() => setShowLikesModal(true)}
             className="flex gap-1 group cursor-pointer"
           >
             <div>{displayTweet?.likedBy.length}</div>
-            <div className="group-hover:underline text-[#71767b] decoration-white">
+            <h5 className="group-hover:underline text-[#71767b] decoration-white">
               Likes
-            </div>
+            </h5>
           </button>
           <div className="flex gap-1">
             <div>0</div>
-            <div className="text-[#71767b]">Bookmarks</div>
+            <h5 className="text-[#71767b]">Bookmarks</h5>
           </div>
           {showLikesModal && (
             <div className="bg-blue-300/20 fixed top-0 left-0 right-0 bottom-0 z-[10]">
@@ -477,14 +477,16 @@ export default function TweetPage({ params }: any) {
 
             <div className="flex items-center flexcol">
               <div className="flex gap-4 pt-1 pb-2 items-center w-full align-start">
-                <div className="">
+                <figure className="">
                   <img
                     src={`${auth?.currentUser?.photoURL}`}
                     className="h-10 max-w-[40px] min-w-[40px] object-cover rounded-full"
                     alt="profile photo"
                   />
-                </div>
+                </figure>
+                <label htmlFor="reply-content"></label>
                 <textarea
+                  id="reply-content"
                   maxLength={140}
                   rows={1}
                   ref={textAreaRef}
@@ -510,13 +512,13 @@ export default function TweetPage({ params }: any) {
             </div>
           </div>
         )}
-      </div>
+      </section>
 
-      <div>
+      <section>
         {allTweets.map((tweet: any, index: Number) => {
           if (tweet.isAReply && tweet.parentTweet === displayTweet.id) {
             return (
-              <div className="relative" key={tweet.id}>
+              <article className="relative" key={tweet.id}>
                 <div
                   className="flex gap-3 pt-3 pb-1 pl-3 border-b-[1px] border-[#2f3336] overflow-x-hidden 
                  relative"
@@ -545,13 +547,13 @@ export default function TweetPage({ params }: any) {
                           @{tweet.authorNickname}
                         </div>
                         <span className="text-[#71767b] px-0.5">·</span>
-                        <div className="text-[#71767b] text-[15.2px]">
+                        <time className="text-[#71767b] text-[15.2px]">
                           {tweet.date}
-                        </div>
+                        </time>
                       </div>
-                      <div className="pb-1 py-1.5 sm:py-0 break-all text-[15.2px]">
+                      <p className="pb-1 py-1.5 sm:py-0 break-all text-[15.2px]">
                         {tweet.text}
-                      </div>
+                      </p>
                       <div className="flex justify-around items-center">
                         <button className="flex items-center gap-2">
                           <svg
@@ -664,11 +666,12 @@ export default function TweetPage({ params }: any) {
                     </g>
                   </svg>
                 </button>
-              </div>
+              </article>
             );
           }
         })}
-      </div>
+      </section>
+
       {showImageModal.show && (
         <div className="bg-blue-300/20 fixed top-0 left-0 right-0 bottom-0 z-[10]">
           <ImageModal
@@ -677,6 +680,6 @@ export default function TweetPage({ params }: any) {
           />
         </div>
       )}
-    </div>
+    </main>
   );
 }

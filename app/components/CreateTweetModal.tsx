@@ -1,8 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 import { FC, useEffect, useRef, useContext } from 'react';
+import React from 'react';
 import { auth } from '../config/firebase.tsx';
 import { HelloContext } from '../(pages)/layout.tsx';
-import useAutosizeTextArea from './useAutoSizeTextArea.tsx';
+import useAutosizeTextArea from '../hooks/useAutoSizeTextArea.tsx';
 
 export const CreateTweetModal: FC = ({ setIsCreateTweetModalOpen }: any) => {
   const {
@@ -57,14 +58,15 @@ export const CreateTweetModal: FC = ({ setIsCreateTweetModalOpen }: any) => {
             </g>
           </svg>
         </button>
+
         <div className="flex pb-4 pt-2.5 pr-4 gap-3 w-full">
-          <div className="pt-1">
+          <figure className="pt-1">
             <img
               src={`${auth?.currentUser?.photoURL}`}
               className="h-10 rounded-full min-w-[40px] max-w-[40px] object-cover"
               alt="profile photo"
             />
-          </div>
+          </figure>
           <div className="w-full">
             <div
               className="gap-1 w-fit outline-[#536471] outline outline-1 px-4 py-0.5 
@@ -99,7 +101,7 @@ export const CreateTweetModal: FC = ({ setIsCreateTweetModalOpen }: any) => {
       </div>
 
       <div className="px-2 w-full">
-        <div className="text-[#1d9bf0] ml-3 pb-2  text-sm font-bold flex gap-1 items-center">
+        <h4 className="text-[#1d9bf0] ml-3 pb-2  text-sm font-bold flex gap-1 items-center">
           <svg
             viewBox="0 0 24 24"
             aria-hidden="true"
@@ -112,7 +114,7 @@ export const CreateTweetModal: FC = ({ setIsCreateTweetModalOpen }: any) => {
             </g>
           </svg>
           Everyone can reply
-        </div>
+        </h4>
 
         <div className="border-t-[1px] border-[#2f3336] flex justify-between pb-2 pt-2.5 items-center">
           <div className="pl-2">

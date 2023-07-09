@@ -4,7 +4,7 @@
 'use client';
 
 import { getAuth } from 'firebase/auth';
-import { useEffect, useContext, useRef, useState } from 'react';
+import React, { useEffect, useContext, useRef, useState } from 'react';
 import {
   getDoc,
   deleteDoc,
@@ -14,7 +14,7 @@ import {
   arrayRemove,
 } from 'firebase/firestore';
 import Tweetlist from '@/app/components/Tweetlist.tsx';
-import useAutosizeTextArea from '@/app/components/useAutoSizeTextArea.tsx';
+import useAutosizeTextArea from '../../hooks/useAutoSizeTextArea.tsx';
 import { getStorage, ref, deleteObject } from 'firebase/storage';
 import { db, app } from '../../config/firebase.tsx';
 import { HelloContext } from '../layout.tsx';
@@ -96,25 +96,28 @@ export default function Home() {
   useAutosizeTextArea(textAreaRef.current, tweetContent);
 
   return (
-    <div
+    <main
       className="min-h-screen border-x border-[#2f3336]
      text-[#e7e9ea] flex flex-col min-w-[270px] w-full max-w-[600px]"
     >
-      <div className="grid grid-rows-2 sticky top-0 bg-black/40 backdrop-blur-md z-[4]">
-        <div className="font-bold text-xl pt-3 pb-3 px-4">Home</div>
+      <section className="grid grid-rows-2 sticky top-0 bg-black/40 backdrop-blur-md z-[4]">
+        <h3 className="font-bold text-xl pt-3 pb-3 px-4">Home</h3>
         <div
           className="grid grid-cols-2 text-center border-b-[1px] border-[#2f3336] items-center
          cursor-pointer"
         >
-          <div className="flex justify-center">
-            <div className="font-bold">For you</div>
+          <button className="flex justify-center">
+            <h3 className="font-bold">For you</h3>
             <div className="bg-[#1d9bf0] h-1 absolute bottom-0 w-[63px] rounded-full"></div>
-          </div>
-          <div className="text-[#71767b] cursor-not-allowed">Following</div>
+          </button>
+          <button className="text-[#71767b] cursor-not-allowed">
+            <h3>Following</h3>
+          </button>
         </div>
-      </div>
-      <div className="flex px-4 pt-4 pb-2 gap-3 border-b-[1px] border-[#2f3336] ">
-        <div>
+      </section>
+
+      <section className="flex px-4 pt-4 pb-2 gap-3 border-b-[1px] border-[#2f3336] ">
+        <figure>
           {auth.currentUser?.photoURL && (
             <img
               src={`${auth?.currentUser?.photoURL}`}
@@ -123,13 +126,14 @@ export default function Home() {
               alt="profile photo"
             />
           )}
-        </div>
+        </figure>
+
         <div className="flex flex-col w-full">
-          <div
+          <button
             className="everyonedropdown hidden w-fit outline-[#536471] outline outline-1 px-4 py-0.5 
-            rounded-3xl items-center flex gap-1 text-sm mb-4 font-bold"
+            rounded-3xl items-center flex gap-1 text-sm mb-4 font-bold cursor-not-allowed"
           >
-            <div className="text-[#1d9bf0]">Everyone</div>
+            <h4 className="text-[#1d9bf0]">Everyone</h4>
             <svg
               viewBox="0 0 24 24"
               aria-hidden="true"
@@ -141,10 +145,13 @@ export default function Home() {
                 <path d="M3.543 8.96l1.414-1.42L12 14.59l7.043-7.05 1.414 1.42L12 17.41 3.543 8.96z"></path>
               </g>
             </svg>
-          </div>
+          </button>
+
           <div className="group">
             <div className="">
+              <label htmlFor="tweet"></label>
               <textarea
+                id="tweet"
                 ref={textAreaRef}
                 maxLength={140}
                 className="bg-transparent pb-2 mt-2 outline-none text-xl peer createtweetinput 
@@ -155,7 +162,9 @@ export default function Home() {
                 onChange={(e) => setTweetContent(e.target.value)}
               ></textarea>
             </div>
+
             {imagePreview && !isCreateTweetModalOpen ? renderPreview() : null}
+
             <div className="hidden peer-focus:block everyonecanreply">
               <div
                 className="border-b border-[#2f3336] text-[#1d9bf0] pt-2 pb-2 mb-2 text-sm font-bold flex 
@@ -172,7 +181,7 @@ export default function Home() {
                     <path d="M12 1.75C6.34 1.75 1.75 6.34 1.75 12S6.34 22.25 12 22.25 22.25 17.66 22.25 12 17.66 1.75 12 1.75zm-.25 10.48L10.5 17.5l-2-1.5v-3.5L7.5 9 5.03 7.59c1.42-2.24 3.89-3.75 6.72-3.84L11 6l-2 .5L8.5 9l5 1.5-1.75 1.73zM17 14v-3l-1.5-3 2.88-1.23c1.17 1.42 1.87 3.24 1.87 5.23 0 1.3-.3 2.52-.83 3.61L17 14z"></path>
                   </g>
                 </svg>
-                <div>Everyone can reply</div>
+                <h4>Everyone can reply</h4>
               </div>
             </div>
           </div>
@@ -214,12 +223,12 @@ export default function Home() {
                 } `}
                 onClick={uploadFile}
               >
-                <div className="text-white">Tweet</div>
+                <h4 className="text-white">Tweet</h4>
               </button>
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
       <Tweetlist
         auth={auth}
@@ -227,6 +236,6 @@ export default function Home() {
         deleteTweet={deleteTweet}
         likeTweet={likeTweet}
       />
-    </div>
+    </main>
   );
 }

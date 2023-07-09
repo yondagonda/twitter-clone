@@ -12,6 +12,7 @@ import {
   getDoc,
   doc,
 } from 'firebase/firestore';
+import React from 'react';
 import { db, auth } from '../config/firebase';
 import { HelloContext } from '../(pages)/layout';
 
@@ -121,37 +122,37 @@ export const Userlist: FC = ({ likedBy }: any) => {
   };
 
   return (
-    <div className="flex flex-col">
+    <section className="flex flex-col">
       {LikedUsers.map((user: any) => (
         <Link
           key={user.userId}
           href={`/user/${user.userNickname}`}
           className="flex gap-3 select-none hover:bg-[#131212] px-4 py-3 duration-150"
         >
-          <div className="pt-1">
+          <figure className="pt-1">
             <img
               className="rounded-full min-w-[40px] max-w-[40px] hover:brightness-[.85] 
               h-[40px] duration-200 object-cover"
               src={user.userProfileImg}
               alt="user profile image"
             />
-          </div>
+          </figure>
           <div className="flex justify-between w-full">
             <div>
-              <div className="font-bold w-fit hover:underline text-[15px]">
+              <h4 className="font-bold w-fit hover:underline text-[15px]">
                 {user.userName}
-              </div>
+              </h4>
 
-              <div className="text-[#71767b] text-[15px] leading-5">
+              <h5 className="text-[#71767b] text-[15px] leading-5">
                 @{user.userNickname}
-              </div>
+              </h5>
               <div className="text-[#e7e9ea] text-[15px]">{user.bio}</div>
             </div>
             {renderFollowButton(user)}
           </div>
         </Link>
       ))}
-    </div>
+    </section>
   );
 };
 export default Userlist;

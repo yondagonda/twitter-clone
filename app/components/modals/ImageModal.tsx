@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { FC, useEffect, useRef } from 'react';
+import React from 'react';
 
 export const ImageModal: FC = ({ setShowImageModal, showImageModal }: any) => {
   const modalRef = useRef<HTMLTextAreaElement | null>(null);
@@ -18,7 +19,7 @@ export const ImageModal: FC = ({ setShowImageModal, showImageModal }: any) => {
   });
 
   return (
-    <div
+    <figure
       className="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]
   rounded-lg"
       ref={modalRef}
@@ -28,7 +29,7 @@ export const ImageModal: FC = ({ setShowImageModal, showImageModal }: any) => {
         src={showImageModal.url}
         alt="image full sized"
       />
-    </div>
+    </figure>
   );
 };
 export default ImageModal;

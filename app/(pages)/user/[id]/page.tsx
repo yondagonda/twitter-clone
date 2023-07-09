@@ -15,7 +15,7 @@ import {
   deleteDoc,
   increment,
 } from 'firebase/firestore';
-import { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { parse } from 'date-fns';
 import format from 'date-fns/format';
 import differenceInSeconds from 'date-fns/differenceInSeconds';
@@ -271,13 +271,14 @@ export default function UserPage({ params }: any) {
           </svg>
         </button>
         <div>
-          <div className="text-xl font-bold ">{profileData.userName}</div>
-          <div className="text-[#71767b] text-[13.2px] leading-3">
+          <h3 className="text-xl font-bold ">{profileData.userName}</h3>
+          <h5 className="text-[#71767b] text-[13.2px] leading-3">
             {usersTweets.length} Tweets
-          </div>
+          </h5>
         </div>
       </div>
-      <div className="">
+
+      <section className="">
         {profileData.profileBackgroundImage ? (
           <img
             src={profileData.profileBackgroundImage}
@@ -285,7 +286,7 @@ export default function UserPage({ params }: any) {
             alt="profile background image"
           />
         ) : (
-          <div className="h-48 bg-[#333639]"></div>
+          <figure className="h-48 bg-[#333639]"></figure>
         )}
 
         <div className="">
@@ -313,13 +314,13 @@ export default function UserPage({ params }: any) {
             )}
           </div>
           <div className="px-4 pb-4 pt-8">
-            <div className="font-bold text-2xl">{profileData.userName}</div>
-            <div className="text-[#71767b] text-[15px]">
+            <h2 className="font-bold text-2xl">{profileData.userName}</h2>
+            <h4 className="text-[#71767b] text-[15px]">
               @{profileData.userNickname}
-            </div>
+            </h4>
 
             {profileData.bio && (
-              <div className="pt-3 pb-0.5 text-[15px]">{profileData.bio}</div>
+              <p className="pt-3 pb-0.5 text-[15px]">{profileData.bio}</p>
             )}
 
             <div className="flex gap-3 pb-1.5 items-center sm:pt-2.5">
@@ -451,7 +452,7 @@ export default function UserPage({ params }: any) {
             </button>
           </div>
         </div>
-      </div>
+      </section>
 
       {selectedTab === 'tweets' ? (
         <Tweetlist

@@ -3,6 +3,7 @@ import { FC } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import React from 'react';
 import displayMiniMenuModal from './displayMiniMenuModal.tsx';
 
 export const TweetRepliesList: FC = ({
@@ -14,12 +15,12 @@ export const TweetRepliesList: FC = ({
   const router = useRouter();
 
   return (
-    <>
+    <section>
       {repliesOnly.map((tweet: any, index: number) => {
         // Filters out tweets which arent replies
         if (tweet.isAReply) {
           return (
-            <div
+            <article
               key={tweet.id}
               className="border-b-[1px] border-[#2f3336] flex hover:bg-[#0a0a0a] w-full"
             >
@@ -49,9 +50,9 @@ export const TweetRepliesList: FC = ({
                           @{tweet.authorNickname}
                         </div>
                         <span className="text-[#71767b] px-0.5">·</span>
-                        <div className=" text-[#71767b] text-[15.2px]">
+                        <time className=" text-[#71767b] text-[15.2px]">
                           {tweet.date}
-                        </div>
+                        </time>
                       </div>
                       <div className="flex gap-1">
                         <div className="text-[#71767b] text-[15.2px]">
@@ -69,9 +70,9 @@ export const TweetRepliesList: FC = ({
                           </div>
                         </button>
                       </div>
-                      <div className="break-all text-[15.2px] leading-6 py-1.5 sm:py-0">
+                      <p className="break-all text-[15.2px] leading-6 py-1.5 sm:py-0">
                         {tweet.text}
-                      </div>
+                      </p>
 
                       {tweet.image.imageId !== '' && (
                         <div className="max-w-[50%] pb-2 relative">
@@ -197,11 +198,11 @@ export const TweetRepliesList: FC = ({
                   </svg>
                 </button>
               </Link>
-            </div>
+            </article>
           );
         }
       })}
-    </>
+    </section>
   );
 };
 export default TweetRepliesList;

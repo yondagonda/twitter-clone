@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import React from 'react';
 import Auth from './components/Auth.tsx';
 import bird from '../public/assets/twitter-banner.png';
 
@@ -8,7 +9,7 @@ export default function LoginPage() {
   return (
     <div className="flex flex-col items-center">
       <div className="w-full lg:grid lg:grid-cols-10">
-        <div className="col-span-5 relative hidden lg:block">
+        <figure className="col-span-5 relative hidden lg:block">
           <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
             <svg
               viewBox="0 0 24 24"
@@ -27,9 +28,9 @@ export default function LoginPage() {
             alt="banner"
             className=" object-cover min-w-[1850px]"
           />
-        </div>
+        </figure>
 
-        <div
+        <main
           className="flex min-h-screen flex-col  w-full items-center
        z-[1] bg-black col-span-5 sm:items-start text-[#e7e9ea] pt-6 sm:pt-[270px]"
         >
@@ -46,16 +47,16 @@ export default function LoginPage() {
               />
             </svg>
           </div>
-          <div className="sm:pl-14">
-            <div className="text-3xl lg:text-[55px] 2xl:text-[90px] font-bold py-10 lg:mt-10 2xl:mt-14">
+          <hgroup className="sm:pl-14">
+            <h1 className="text-3xl lg:text-[55px] 2xl:text-[90px] font-bold py-10 lg:mt-10 2xl:mt-14">
               Happening now
-            </div>
-            <div className="text-xl sm:text-4xl font-bold lg:pt-10 2xl:pt-14">
+            </h1>
+            <h2 className="text-xl sm:text-4xl font-bold lg:pt-10 2xl:pt-14">
               Join Twitter today.
-            </div>
-          </div>
+            </h2>
+          </hgroup>
           <Auth />
-        </div>
+        </main>
       </div>
     </div>
   );

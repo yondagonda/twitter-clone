@@ -12,6 +12,7 @@ import {
 } from 'firebase/firestore';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import React from 'react';
 import { HelloContext } from '../(pages)/layout.tsx';
 import { db } from '../config/firebase.tsx';
 
@@ -138,15 +139,24 @@ export default function RightSidebar({ currentLoggedInUser }: any) {
     }
   };
 
+  const linksButtonsCSS: string =
+    'w-full px-3 py-2.5 hover:bg-[#1d1f24] duration-100 flex group gap-2 items-center';
+
+  const linksButtonsHeadingCSS: string =
+    'text-lg group-hover:text-[#1d9bf0] duration-200 text-[#e7e9ea]';
+
+  const articleCSS: string = 'bg-[#16181c] rounded-2xl text-[#e7e9ea]';
+
   return (
-    <div className=" h-full py-4 text-[#e7e9ea] hidden lg:block">
+    <aside className=" h-full py-4 text-[#e7e9ea] hidden lg:block">
       <div
         className="pl-3 xl:ml-4 flex flex-col gap-4 fixed
       w-full max-w-[28%] xl:max-w-[368px] xl:w-full removefixed"
       >
         <div className="relative">
+          <label htmlFor="searchBar"></label>
           <input
-            id="test"
+            id="searchBar"
             className="bg-[#202327] rounded-3xl py-3 px-4 outline-none w-full pl-[44px]
             focus:outline-[#1d9bf0] focus:bg-black outline-1 peer"
             placeholder="Search Twitter"
@@ -165,21 +175,21 @@ export default function RightSidebar({ currentLoggedInUser }: any) {
           </svg>
         </div>
 
-        <div className="p-3 bg-[#16181c] rounded-2xl text-[#e7e9ea] flex flex-col gap-2">
-          <div className="text-xl font-bold">Get Verified</div>
-          <div className="font-bold ">Subscribe to unlock new features.</div>
+        <article className={`${articleCSS} p-3 flex flex-col gap-2`}>
+          <h3 className="text-xl font-bold">Get Verified</h3>
+          <h4 className="font-bold ">Subscribe to unlock new features.</h4>
           <button className="bg-[#1d9bf0] px-4 py-1.5 rounded-3xl text-[15px] font-bold text-white w-fit">
             Get Verified
           </button>
-        </div>
+        </article>
 
-        <div className=" bg-[#16181c] rounded-2xl text-[#e7e9ea]">
-          <div className="text-xl font-bold px-3 pt-3 pb-2">Links</div>
+        <article className={articleCSS}>
+          <h3 className="text-xl font-bold px-3 pt-3 pb-2">Links</h3>
           <button
             onClick={() => {
               window.open('https://github.com/yondagonda');
             }}
-            className="w-full px-3 py-2.5 hover:bg-[#1d1f24] duration-100 flex group gap-2 items-center"
+            className={linksButtonsCSS}
           >
             <svg
               viewBox="0 0 48 48"
@@ -204,9 +214,7 @@ export default function RightSidebar({ currentLoggedInUser }: any) {
                 ></path>
               </g>
             </svg>
-            <div className="text-lg group-hover:text-[#1d9bf0] duration-200 text-[#e7e9ea]">
-              Github
-            </div>
+            <h3 className={linksButtonsHeadingCSS}>Github</h3>
           </button>
 
           <button
@@ -215,7 +223,7 @@ export default function RightSidebar({ currentLoggedInUser }: any) {
                 'https://github.com/yondagonda/twitter-clone/commits/main'
               );
             }}
-            className="w-full px-3 py-2.5  hover:bg-[#1d1f24] duration-100 group flex gap-2 items-center"
+            className={linksButtonsCSS}
           >
             <svg
               viewBox="0 0 24 24"
@@ -236,9 +244,7 @@ export default function RightSidebar({ currentLoggedInUser }: any) {
                 <path d="M2.6,10.59,8.38,4.8l1.69,1.7A2,2,0,0,0,11,8.73v5.54A2,2,0,0,0,10,16a2,2,0,0,0,4,0,2,2,0,0,0-1-1.73V9.41l2.07,2.09A1.17,1.17,0,0,0,15,12a2,2,0,1,0,2-2,1.17,1.17,0,0,0-.5.07L13.93,7.5a2,2,0,0,0-1.15-2.34,2.1,2.1,0,0,0-1.28-.09L9.8,3.38l.79-.78a2,2,0,0,1,2.82,0l8,8a2,2,0,0,1,0,2.82l-8,8a2,2,0,0,1-2.82,0l-8-8A2,2,0,0,1,2.6,10.59Z"></path>{' '}
               </g>
             </svg>
-            <div className="text-lg group-hover:text-[#1d9bf0] duration-200 text-[#e7e9ea]">
-              Commit Log
-            </div>
+            <h3 className={linksButtonsHeadingCSS}>Commit Log</h3>
           </button>
 
           <button
@@ -247,7 +253,7 @@ export default function RightSidebar({ currentLoggedInUser }: any) {
                 'https://github.com/yondagonda/twitter-clone#technologies'
               );
             }}
-            className="w-full px-3 py-2.5  hover:bg-[#1d1f24] duration-100 group flex gap-2 items-center"
+            className={linksButtonsCSS}
           >
             <svg
               className="fill-[#e7e9ea] group-hover:fill-[#1d9bf0] duration-200"
@@ -273,16 +279,14 @@ export default function RightSidebar({ currentLoggedInUser }: any) {
                 </g>
               </g>
             </svg>
-            <div className="text-lg group-hover:text-[#1d9bf0] duration-200 text-[#e7e9ea]">
-              Technologies
-            </div>
+            <h3 className={linksButtonsHeadingCSS}>Technologies</h3>
           </button>
 
           <button
             onClick={() => {
               window.open('https://github.com/yondagonda/twitter-clone#readme');
             }}
-            className="w-full px-3 pt-2.5 pb-3  hover:bg-[#1d1f24] duration-100 group flex gap-3 items-center
+            className="w-full px-3 pt-2.5 pb-3 hover:bg-[#1d1f24] duration-100 group flex gap-3 items-center
           rounded-b-2xl"
           >
             <svg
@@ -303,13 +307,12 @@ export default function RightSidebar({ currentLoggedInUser }: any) {
                 <path d="M16,27c0,0,3-1,6-1s7,1,7,1V8c0,0,0-1-0.983-1.224C26.647,6.463,24.081,6,22,6c-3,0-6,1-6,1 s-3-1-6-1C7.919,6,5.353,6.463,3.983,6.776C3,7,3,8,3,8v19c0,0,4-1,7-1S16,27,16,27z M20,13h5c0.552,0,1,0.447,1,1s-0.448,1-1,1h-5 c-0.552,0-1-0.447-1-1S19.448,13,20,13z M20,17h5c0.552,0,1,0.447,1,1s-0.448,1-1,1h-5c-0.552,0-1-0.447-1-1S19.448,17,20,17z M7,13 h5c0.552,0,1,0.447,1,1s-0.448,1-1,1H7c-0.552,0-1-0.447-1-1S6.448,13,7,13z M6,18c0-0.553,0.448-1,1-1h5c0.552,0,1,0.447,1,1 s-0.448,1-1,1H7C6.448,19,6,18.553,6,18z M31,8.999v20c0,0.279-0.117,0.547-0.323,0.736c-0.186,0.17-0.427,0.264-0.677,0.264 c-0.028,0-11.004-0.913-11.004-0.913c-0.043,0.512-0.473,0.913-0.996,0.913h-4c-0.523,0-0.953-0.401-0.996-0.913L2.083,29.996 c-0.281,0.029-0.554-0.071-0.76-0.26C1.117,29.546,1,29.279,1,28.999v-20c0-0.553,0.448-1,1-1v0v19.648 c0,0.321,0.295,0.56,0.608,0.488C4.056,27.801,7.755,27,10,27c2.794,0,5.656,0.939,5.684,0.949l0.315,0.105l0.316-0.105 C16.344,27.939,19.206,27,22,27c2.245,0,5.944,0.801,7.392,1.136C29.705,28.208,30,27.969,30,27.648L30,8v0 C30.552,7.999,31,8.447,31,8.999z"></path>{' '}
               </g>
             </svg>
-            <div className="text-lg group-hover:text-[#1d9bf0] duration-200 text-[#e7e9ea]">
-              Read Me
-            </div>
+            <h3 className={linksButtonsHeadingCSS}>Read Me</h3>
           </button>
-        </div>
-        <div className="bg-[#16181c] rounded-2xl text-[#e7e9ea]">
-          <div className="px-3 pt-3 pb-2 text-xl font-bold">Who to follow</div>
+        </article>
+
+        <article className={articleCSS}>
+          <h3 className="px-3 pt-3 pb-2 text-xl font-bold">Who to follow</h3>
 
           {whoToFollowTab.length > 0 &&
             whoToFollowTab.map((demoacc: any) => (
@@ -318,36 +321,36 @@ export default function RightSidebar({ currentLoggedInUser }: any) {
                 href={`/user/${demoacc.userNickname}`}
                 className="flex gap-3 select-none hover:bg-[#1d1f24] px-4 py-3 duration-150"
               >
-                <div className="">
+                <figure className="">
                   <img
                     className="rounded-full min-w-[40px] max-w-[40px] hover:brightness-[.85] 
                   h-[40px] duration-200 object-cover"
                     src={demoacc.userProfileImg}
                     alt="user profile image"
                   />
-                </div>
+                </figure>
                 <div className="flex justify-between gap-3 items-center w-full max-w-[80%]">
                   <div className="truncate">
-                    <div className="font-bold hover:underline text-[15px] truncate">
+                    <h4 className="font-bold hover:underline text-[15px] truncate">
                       {demoacc.userName}
-                    </div>
+                    </h4>
 
-                    <div className="text-[#71767b] text-[15px] leading-5">
+                    <h4 className="text-[#71767b] text-[15px] leading-5">
                       @{demoacc.userNickname}
-                    </div>
+                    </h4>
                   </div>
                   {renderFollowButton(demoacc)}
                 </div>
               </Link>
             ))}
-          <div
+          <button
             className="w-full px-3 py-3 rounded-b-2xl hover:bg-[#1d1f24] duration-100 text-[#1d9bf0]
-          select-none"
+          select-none text-start"
           >
             Show more
-          </div>
-        </div>
+          </button>
+        </article>
       </div>
-    </div>
+    </aside>
   );
 }

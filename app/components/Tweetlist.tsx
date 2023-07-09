@@ -3,7 +3,8 @@ import { FC, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import ImageModal from './ImageModal.tsx';
+import React from 'react';
+import ImageModal from './modals/ImageModal.tsx';
 import displayMiniMenuModal from './displayMiniMenuModal.tsx';
 
 export const Tweetlist: FC = ({
@@ -19,12 +20,12 @@ export const Tweetlist: FC = ({
   const router = useRouter();
 
   return (
-    <>
+    <section>
       {allTweets.map((tweet: any, index: number) => {
         // Reply tweets are filtered out of the timeline
         if (!tweet.isAReply) {
           return (
-            <div
+            <article
               key={tweet.id}
               className="border-b-[1px] border-[#2f3336] flex hover:bg-[#0a0a0a] duration-200"
             >
@@ -57,13 +58,13 @@ export const Tweetlist: FC = ({
                         @{tweet.authorNickname}
                       </div>
                       <span className="text-[#71767b] px-0.5">·</span>
-                      <div className=" text-[#71767b] text-[15.2px] ">
+                      <time className=" text-[#71767b] text-[15.2px] ">
                         {tweet.date}
-                      </div>
+                      </time>
                     </div>
-                    <div className="break-all py-1.5 sm:py-0 text-[15.2px] leading-6">
+                    <p className="break-all py-1.5 sm:py-0 text-[15.2px] leading-6">
                       {tweet.text}
-                    </div>
+                    </p>
 
                     {tweet.image.imageId !== '' && (
                       <button
@@ -200,7 +201,7 @@ export const Tweetlist: FC = ({
                   </svg>
                 </button>
               </Link>
-            </div>
+            </article>
           );
         }
       })}
@@ -212,7 +213,7 @@ export const Tweetlist: FC = ({
           />
         </div>
       )}
-    </>
+    </section>
   );
 };
 export default Tweetlist;

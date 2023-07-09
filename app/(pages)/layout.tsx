@@ -217,7 +217,7 @@ export default function MainLayout({
   };
 
   const renderPreview = () => (
-    <div className="relative">
+    <figure className="relative">
       <button
         onClick={() => {
           setImageUpload();
@@ -243,7 +243,7 @@ export default function MainLayout({
         alt={`preview of image`}
         className="rounded-xl max-w-[100%] max-h-[300px]"
       />
-    </div>
+    </figure>
   );
 
   const [isCreateTweetModalOpen, setIsCreateTweetModalOpen] =

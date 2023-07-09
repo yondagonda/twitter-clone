@@ -1,5 +1,5 @@
-import { FC, useEffect, useRef } from 'react';
-import Userlist from './Userlist.tsx';
+import React, { FC, useEffect, useRef } from 'react';
+import Userlist from '../Userlist.tsx';
 
 export const LikesModal: FC = ({
   showLikesModal,
@@ -38,7 +38,7 @@ export const LikesModal: FC = ({
             </g>
           </svg>
         </button>
-        <div className="text-xl font-bold">Liked By</div>
+        <h3 className="text-xl font-bold">Liked By</h3>
       </div>
 
       {likedBy.length > 0 && <Userlist likedBy={likedBy} />}

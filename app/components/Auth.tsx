@@ -2,7 +2,7 @@
 
 'use client';
 
-import { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import {
   signInWithPopup,
   onAuthStateChanged,
@@ -97,6 +97,11 @@ const Auth: FC = () => {
     }
   };
 
+  const demoAccProfileImageCSS = `h-[68px] w-[68px] rounded-full object-cover border-[2px] border-[#536471]
+  group-hover:border-[#c5cace] duration-200`;
+
+  const demoAccProfileBtnCSS = 'flex flex-col items-center gap-1 group';
+
   return (
     <div className="flex flex-col text-lg pl-2 sm:pl-14 pt-8 gap-4">
       {showLoading && <LoadingPage />}
@@ -135,14 +140,14 @@ const Auth: FC = () => {
             </g>
           </svg>
         </div>
-        Continue with Google
+        <h3>Continue with Google</h3>
       </button>
 
       <button
         className="py-3 px-8 sm:px-20 text-white rounded-full bg-[#1d9bf0] font-bold
        cursor-not-allowed"
       >
-        Sign up
+        <h3>Sign up</h3>
       </button>
 
       <button
@@ -150,12 +155,12 @@ const Auth: FC = () => {
       outline-[#536471] outline outline-[0.5px] 
       cursor-not-allowed"
       >
-        Log in
+        <h3>Log in</h3>
       </button>
 
       <div className="grid-cols-[1fr_auto_1fr] grid items-center">
         <div className="h-[1px] bg-[#2f3336]"></div>
-        <div className="px-3">OR use a demo account</div>
+        <h4 className="px-3">OR use a demo account</h4>
         <div className="h-[1px] bg-[#2f3336]"></div>
       </div>
 
@@ -163,49 +168,46 @@ const Auth: FC = () => {
         <motion.button
           whileHover={{ scale: 1.06 }}
           whileTap={{ scale: 0.98 }}
-          className="flex flex-col items-center gap-1 group"
+          className={demoAccProfileBtnCSS}
           onClick={signInToBatman}
         >
           <Image
             alt="avatar aang"
             src={batman}
-            className="h-[68px] w-[68px] rounded-full object-cover border-[2px] border-[#536471]
-            group-hover:border-[#c5cace] duration-200"
+            className={demoAccProfileImageCSS}
             draggable={false}
           />
-          <div>Batman</div>
+          <h4>Batman</h4>
         </motion.button>
 
         <motion.button
           whileHover={{ scale: 1.06 }}
           whileTap={{ scale: 0.98 }}
-          className="flex flex-col items-center gap-1 group"
+          className={demoAccProfileBtnCSS}
           onClick={signInToAang}
         >
           <Image
             alt="avatar aang"
             src={aang}
-            className="h-[68px] w-[68px] rounded-full object-cover border-[2px] border-[#536471]
-            group-hover:border-[#c5cace] duration-200"
+            className={demoAccProfileImageCSS}
             draggable={false}
           />
-          <div>Aang</div>
+          <h4>Aang</h4>
         </motion.button>
 
         <motion.button
           whileHover={{ scale: 1.06 }}
           whileTap={{ scale: 0.98 }}
-          className="flex flex-col items-center gap-1 group"
+          className={demoAccProfileBtnCSS}
           onClick={signInToWalter}
         >
           <Image
             alt="avatar aang"
             src={walter}
-            className="h-[68px] w-[68px] rounded-full object-cover border-[2px] border-[#536471]
-            group-hover:border-[#c5cace] duration-200"
+            className={demoAccProfileImageCSS}
             draggable={false}
           />
-          <div>Walter</div>
+          <h4>Walter</h4>
         </motion.button>
       </div>
     </div>

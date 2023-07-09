@@ -1,7 +1,7 @@
 'use client';
 
 import Userlist from '@/app/components/Userlist.tsx';
-import { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { HelloContext } from '@/app/(pages)/layout.tsx';
 
 export default function FollowPage({ params }: any) {
@@ -50,10 +50,10 @@ export default function FollowPage({ params }: any) {
             </svg>
           </button>
           <div className="flex flex-col">
-            <div className="text-xl font-bold">{profileDetails.userName}</div>
-            <div className="text-[#71767b] text-[13.2px] leading-3">
+            <h2 className="text-xl font-bold">{profileDetails.userName}</h2>
+            <h4 className="text-[#71767b] text-[13.2px] leading-3">
               @{profileDetails.userNickname}
-            </div>
+            </h4>
           </div>
         </div>
         <div className="grid grid-cols-2 w-full justify-between text-center border-b-[1px] border-[#2f3336]">
