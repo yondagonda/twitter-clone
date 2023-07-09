@@ -26,12 +26,12 @@ import differenceInMinutes from 'date-fns/differenceInMinutes';
 import differenceInHours from 'date-fns/differenceInHours';
 import { useRouter } from 'next/navigation';
 import { getStorage, ref, deleteObject } from 'firebase/storage';
-import displayMiniMenuModal from '@/app/components/displayMiniMenuModal.tsx';
 import { db, auth } from '@/app/config/firebase.tsx';
 import useAutosizeTextArea from '../../../hooks/useAutoSizeTextArea.tsx';
 import { HelloContext } from '../../layout.tsx';
 import LikesModal from '../../../components/modals/LikesModal.tsx';
 import ImageModal from '../../../components/modals/ImageModal.tsx';
+import displayMiniMenuModal from '../../../components/modals/displayMiniMenuModal.tsx';
 
 export default function TweetPage({ params }: any) {
   const router = useRouter();

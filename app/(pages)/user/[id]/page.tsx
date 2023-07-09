@@ -23,11 +23,11 @@ import differenceInMinutes from 'date-fns/differenceInMinutes';
 import differenceInHours from 'date-fns/differenceInHours';
 import Link from 'next/link';
 import { getStorage, ref, deleteObject } from 'firebase/storage';
-import EditProfileModal from '@/app/components/EditProfileModal.tsx';
 import { TweetRepliesList } from '@/app/components/TweetRepliesList.tsx';
 import Tweetlist from '@/app/components/Tweetlist.tsx';
 import { db, auth } from '@/app/config/firebase.tsx';
 import { HelloContext } from '../../layout.tsx';
+import EditProfileModal from '../../../components/modals/EditProfileModal.tsx';
 
 export default function UserPage({ params }: any) {
   const usersCollectionRef = collection(db, 'users');

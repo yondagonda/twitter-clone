@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import ImageModal from './modals/ImageModal.tsx';
-import displayMiniMenuModal from './displayMiniMenuModal.tsx';
+import displayMiniMenuModal from './modals/displayMiniMenuModal.tsx';
 
 export const Tweetlist: FC = ({
   allTweets,

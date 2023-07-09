@@ -4,9 +4,9 @@ import { signOut } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useState } from 'react';
 import { auth } from '../config/firebase.tsx';
-import CreateTweetModal from './CreateTweetModal.tsx';
 import { HelloContext } from '../(pages)/layout.tsx';
 import LoadingPage from './LoadingPage.tsx';
+import CreateTweetModal from './modals/CreateTweetModal.tsx';
 
 export default function LeftSidebar({
   userNickname,

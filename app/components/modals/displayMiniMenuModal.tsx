@@ -1,4 +1,4 @@
-import { auth } from '../config/firebase.tsx';
+import { auth } from '../../config/firebase.tsx';
 
 const handleClickOutside = (event: Object) => {
   const modal = document.querySelector('.modal');

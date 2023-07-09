@@ -1,9 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 import { FC, useEffect, useRef, useContext } from 'react';
 import React from 'react';
-import { auth } from '../config/firebase.tsx';
-import { HelloContext } from '../(pages)/layout.tsx';
-import useAutosizeTextArea from '../hooks/useAutoSizeTextArea.tsx';
+import { auth } from '../../config/firebase.tsx';
+import { HelloContext } from '../../(pages)/layout.tsx';
+import useAutosizeTextArea from '../../hooks/useAutoSizeTextArea.tsx';
 
 export const CreateTweetModal: FC = ({ setIsCreateTweetModalOpen }: any) => {
   const {

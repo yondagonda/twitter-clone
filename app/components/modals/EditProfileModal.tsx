@@ -2,7 +2,7 @@
 import { FC, useEffect, useState, useRef } from 'react';
 import { doc, updateDoc } from 'firebase/firestore';
 import React from 'react';
-import { db } from '../config/firebase.tsx';
+import { db } from '../../config/firebase.tsx';
 
 export const EditProfileModal: FC = ({
   setIsEditProfileModalOpen,
